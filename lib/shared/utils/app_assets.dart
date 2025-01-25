@@ -21,4 +21,11 @@ class AppAssets {
   static String sponsorAdIcon = 'assets/imgs/sponsorAd.png';
   static String walletIcon = 'assets/imgs/wallet.png';
   static String webIcon = 'assets/imgs/web.png';
+  static String bestemLogo = 'assets/imgs/bestemLogo.png';
+  static String homeIcon = 'assets/imgs/home.png';
+  static String emptyHomeIcon = 'assets/imgs/emptyHome.png';
+  static String emptyFavIcon = 'assets/imgs/emptyFav.png';
+  static String emptyMoreIcon = 'assets/imgs/emptyMore.png';
+  static String moneyIcon = 'assets/imgs/money.png';
+  static String shareIcon = 'assets/imgs/share.png';
 }
