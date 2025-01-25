@@ -1,4 +1,5 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/screens/bottom_nav_bar_screen.dart';
 import 'package:bestemapp/user_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,16 +25,18 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AppSettingsCubit(),
         )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        locale: Locale('en'),
-        supportedLocales: [Locale('ar'), Locale('en')],
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
-        ],
-        home: BottomNavBarScreen(),
+      child: BlocBuilder<AppSettingsCubit, AppSettingsStates>(
+        builder: (context, state) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          locale: BlocProvider.of<AppSettingsCubit>(context).selectedLocale,
+          supportedLocales: [Locale('ar'), Locale('en')],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
+          home: BottomNavBarScreen(),
+        ),
       ),
     );
   }

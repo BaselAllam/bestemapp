@@ -2,9 +2,6 @@ import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:flutter/material.dart';
 
-
-
-
 class CustomSwitchTile extends StatefulWidget {
   final String title;
   final String subTitle;
@@ -22,14 +19,14 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(widget.title, style: AppFonts.subFontBlackColor),
+      title: Text(widget.title, style: AppFonts.primaryFontBlackColor),
       subtitle: widget.subTitle.isEmpty ? null : Text(widget.subTitle, style: AppFonts.subFontGreyColor),
       leading: widget.leading,
       trailing: Switch(
         value: widget.value,
         activeColor: AppColors.whiteColor,
-        activeTrackColor: AppColors.redColor,
-        hoverColor: AppColors.redColor,
+        activeTrackColor: AppColors.primaryColor,
+        hoverColor: AppColors.primaryColor,
         inactiveThumbColor: AppColors.whiteColor,
         inactiveTrackColor: AppColors.greyColor,
         onChanged: widget.onChange,

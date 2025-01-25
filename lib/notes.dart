@@ -12,10 +12,6 @@ https://www.behance.net/gallery/213303233/Car-selling-and-buying-App?tracking_so
   - Responsive Design
   - Deep Link for shared QRCode
 
-  Home Page 
-    - My Booking Section
-    - Requested Booking Section 
-
 
   - Screens
     User Module
@@ -49,6 +45,8 @@ https://www.behance.net/gallery/213303233/Car-selling-and-buying-App?tracking_so
       - Edit Ad Screen
       - BloggerReviews Section
       - BloggerReview Full Dialog
+      - addBloggerReview 
+      - bloggerVideos
 
 
 */

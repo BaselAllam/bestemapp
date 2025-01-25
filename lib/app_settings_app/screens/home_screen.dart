@@ -4,6 +4,7 @@ import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/ad_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/booking_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -47,7 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildBookingSection() {
-    return Container();
+    return Container(
+      height: 150,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          for (int i = 0; i < 5; i++)
+          BookingWidget(isHomeView: true)
+        ],
+      ),
+    );
   }
 
   sectionTitle(String title, bool showSeeMore) {

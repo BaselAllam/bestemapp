@@ -28,4 +28,14 @@ class AppAssets {
   static String emptyMoreIcon = 'assets/imgs/emptyMore.png';
   static String moneyIcon = 'assets/imgs/money.png';
   static String shareIcon = 'assets/imgs/share.png';
+  static String bookingNavIcon = 'assets/imgs/navBooking.png';
+  static String emptyBookingNavIcon = 'assets/imgs/emptyBooking.png';
+  static String helpDeskIcon = 'assets/imgs/helpDesk.png';
+  static String privacyPolicyIcon = 'assets/imgs/privacyPolicy.png';
+  static String myReviewsIcon = 'assets/imgs/myReviews.png';
+  static String usersReviewsIcon = 'assets/imgs/usersReviews.png';
+  static String myAdsIcon = 'assets/imgs/myAds.png';
+  static String acceptNotificationIcon = 'assets/imgs/acceptNotification.png';
+  static String searchIcon = 'assets/imgs/search.png';
+  static String emptySearchIcon = 'assets/imgs/emptySearch.png';
 }

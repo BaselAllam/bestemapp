@@ -26,4 +26,7 @@ class AppFonts {
   static TextStyle primaryFontGreyColor = TextStyle(fontSize: 20.0, color: AppColors.greyColor, fontWeight: FontWeight.bold);
   static TextStyle subFontGreyColor = TextStyle(fontSize: 17, color: AppColors.greyColor);
   static TextStyle miniFontGreyColor = TextStyle(fontSize: 13, color: AppColors.greyColor);
+  static TextStyle primaryFontGreenColor = TextStyle(fontSize: 20.0, color: AppColors.greenColor, fontWeight: FontWeight.bold);
+  static TextStyle subFontGreenColor = TextStyle(fontSize: 17, color: AppColors.greenColor);
+  static TextStyle miniFontGreenColor = TextStyle(fontSize: 13, color: AppColors.greenColor);
 }
