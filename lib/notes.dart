@@ -3,6 +3,7 @@
 https://www.behance.net/gallery/215922551/Luxury-Car-Buy-Mobile-App?tracking_source=search_projects|car+buying+app&l=9 ( perfect )
 https://www.behance.net/gallery/213303233/Car-selling-and-buying-App?tracking_source=search_projects|car+buying+app&l=2
 
+  - replace search button in bottom nav bar with add button & screen and add search jusst a design text field in home page under curosal
   - complete arData file
   - Firebase Integration & Notification
   - Google Maps Integration
