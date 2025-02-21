@@ -63,5 +63,24 @@
         <string>http</string>
         <string>https</string>
     </array>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera to allow users to upload or capture their profile pictures.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs location access to provide relevant notifications.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs background location access to deliver notifications.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs location access to show relevant notifications.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires access to the microphone to allow recording of audio during interactions.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library to allow users to upload images for their profile pictures.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
