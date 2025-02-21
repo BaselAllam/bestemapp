@@ -1,0 +1,2 @@
+/Users/basselallam/Downloads/Projects/BestemProject/bestemapp/android/app/.cxx/RelWithDebInfo/672q2o18/x86/CMakeFiles/edit_cache.dir
+/Users/basselallam/Downloads/Projects/BestemProject/bestemapp/android/app/.cxx/RelWithDebInfo/672q2o18/x86/CMakeFiles/rebuild_cache.dir

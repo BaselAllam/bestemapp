@@ -1,4 +1,4 @@
-package com.example.bestemapp
+package com.bestem.app
 
 import io.flutter.embedding.android.FlutterActivity
 
