@@ -1,4 +1,5 @@
 import 'package:bestemapp/ads_app/screens/my_ads_screen.dart';
+import 'package:bestemapp/ads_app/screens/my_reviews_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/screens/about_us_screen.dart';
@@ -13,6 +14,8 @@ import 'package:bestemapp/shared/shared_widgets/sell_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/url_launcher.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/ticketing_app/views/tickets_screen.dart';
+import 'package:bestemapp/user_app/screens/my_addresses_screen.dart';
 import 'package:bestemapp/user_app/screens/user_profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +78,8 @@ class _MoreScreenState extends State<MoreScreen> {
               children: [
                 sectionSubWidget(icon: AppAssets.personIcon, title: selectedLang[AppLangAssets.myProfile]!, screen: UserProfileScreen()),
                 sectionSubWidget(icon: AppAssets.myAdsIcon, title: selectedLang[AppLangAssets.myAds]!, screen: MyAdsScreen()),
-                sectionSubWidget(icon: AppAssets.adressIcon, title: selectedLang[AppLangAssets.myAddresses]!, screen: SizedBox()),
-                sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: SizedBox()),
+                sectionSubWidget(icon: AppAssets.adressIcon, title: selectedLang[AppLangAssets.myAddresses]!, screen: MyAddressesScreen()),
+                sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: MyReviewsScreen()),
               ],
             )
           ),
@@ -102,7 +105,7 @@ class _MoreScreenState extends State<MoreScreen> {
             Column(
               children: [
                 sectionSubWidget(icon: AppAssets.aboutUsIcon, title: selectedLang[AppLangAssets.aboutUs]!, screen: AboutUsScreen()),
-                sectionSubWidget(icon: AppAssets.helpDeskIcon, title: selectedLang[AppLangAssets.getSupport]!, screen: SizedBox()),
+                sectionSubWidget(icon: AppAssets.helpDeskIcon, title: selectedLang[AppLangAssets.getSupport]!, screen: TicketsScreen()),
                 sectionSubWidget(icon: AppAssets.privacyPolicyIcon, title: selectedLang[AppLangAssets.privacyPolicy]!, screen: PrivacyPolicySreen()),
               ],
             )
