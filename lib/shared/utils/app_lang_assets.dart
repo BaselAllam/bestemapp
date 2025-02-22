@@ -20,7 +20,9 @@ class AppLangAssets {
   static String navBarWishlist = 'navBarWishlist';
   static String navBarBooking = 'navBarBooking';
   static String navBarSearch = 'navBarSearch';
+  static String navBarStore = 'navBarStore';
   static String homeWlcTitle = 'homeWlcTitle';
+  static String bestemStore = 'bestemStore';
   static String cars = 'cars';
   static String motorBikes = 'motorBikes';
   static String bikes = 'bikes';
@@ -66,6 +68,7 @@ class AppLangAssets {
   static String privacyPolicy = 'privacyPolicy';
   static String termAndConditions = 'termAndConditions';
   static String myReviews = 'myReviews';
+  static String myAddresses = 'myAddresses';
   static String usersReviews = 'usersReviews';
   static String myAds = 'myAds';
   static String gender = 'gender';
@@ -81,4 +84,6 @@ class AppLangAssets {
   static String blogs = 'blogs';
   static String blogsDetails = 'blogsDetails';
   static String sourceBy = 'sourceBy';
+  static String adChart = 'adChart';
+  static String search = 'search';
 }

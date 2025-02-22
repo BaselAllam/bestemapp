@@ -75,6 +75,7 @@ class _MoreScreenState extends State<MoreScreen> {
               children: [
                 sectionSubWidget(icon: AppAssets.personIcon, title: selectedLang[AppLangAssets.myProfile]!, screen: UserProfileScreen()),
                 sectionSubWidget(icon: AppAssets.myAdsIcon, title: selectedLang[AppLangAssets.myAds]!, screen: MyAdsScreen()),
+                sectionSubWidget(icon: AppAssets.adressIcon, title: selectedLang[AppLangAssets.myAddresses]!, screen: SizedBox()),
                 sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: SizedBox()),
               ],
             )

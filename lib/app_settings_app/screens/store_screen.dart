@@ -1,28 +1,29 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
-import 'package:bestemapp/shared/shared_widgets/back_btn.dart';
+import 'package:bestemapp/shared/shared_widgets/store_cart.dart';
+import 'package:bestemapp/shared/shared_widgets/store_fav.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+class StoreScreen extends StatefulWidget {
+  const StoreScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<StoreScreen> createState() => _StoreScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.ofWhiteColor,
       appBar: AppBar(
-        leading: BackBtn(),
         elevation: 0.0,
         backgroundColor: AppColors.ofWhiteColor,
-        title: Text(selectedLang[AppLangAssets.navBarSearch]!, style: AppFonts.primaryFontBlackColor),
+        title: Text('${selectedLang[AppLangAssets.bestemStore]}', style: AppFonts.primaryFontBlackColor),
+        actions: [StoreCart(), StoreFav()],
       ),
     );
   }

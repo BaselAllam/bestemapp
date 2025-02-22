@@ -1,9 +1,9 @@
-import 'package:bestemapp/ads_app/screens/search_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/screens/bookings_screen.dart';
 import 'package:bestemapp/app_settings_app/screens/fav_screen.dart';
 import 'package:bestemapp/app_settings_app/screens/home_screen.dart';
 import 'package:bestemapp/app_settings_app/screens/more_screen.dart';
+import 'package:bestemapp/app_settings_app/screens/store_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
@@ -33,10 +33,10 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       'screen': BookingsScreen()
     },
     {
-      'activeIcon': Image.asset(AppAssets.searchIcon, height: 25.0, width: 25.0),
-      'icon': Image.asset(AppAssets.emptySearchIcon, height: 25.0, width: 25.0),
-      'title': selectedLang[AppLangAssets.navBarSearch],
-      'screen': SearchScreen()
+      'activeIcon': Image.asset(AppAssets.storeNavIcon, height: 30.0, width: 30.0),
+      'icon': Image.asset(AppAssets.emptyStoreNavIcon, height: 30.0, width: 30.0),
+      'title': selectedLang[AppLangAssets.navBarStore],
+      'screen': StoreScreen()
     },
     {
       'activeIcon': Image.asset(AppAssets.favIcon, height: 25.0, width: 25.0),

@@ -56,13 +56,17 @@ class _BlogDetailsScreenState extends State<BlogDetailsScreen> {
                   ),
                   Row(
                     children: [
-                      CircleAvatar(
-                        minRadius: 15,
-                        maxRadius: 15,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: NetworkImage('https://img.youm7.com/images/graphics/logoyoum7.png'),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage('https://img.youm7.com/images/graphics/logoyoum7.png'),
+                            fit: BoxFit.contain
+                          )
+                        ),
                       ),
-                      Text('  ${selectedLang[AppLangAssets.sourceBy]}: Youm7', style: AppFonts.subFontPrimaryColor),
+                      Text('  ${selectedLang[AppLangAssets.sourceBy]}: Youm7', style: AppFonts.subFontBlackColor),
                     ],
                   )
                 ],

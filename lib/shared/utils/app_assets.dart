@@ -39,6 +39,9 @@ class AppAssets {
   static String acceptNotificationIcon = 'assets/imgs/acceptNotification.png';
   static String searchIcon = 'assets/imgs/search.png';
   static String emptySearchIcon = 'assets/imgs/emptySearch.png';
+  static String storeNavIcon = 'assets/imgs/storeNavIcon.png';
+  static String emptyStoreNavIcon = 'assets/imgs/emptyStoreNavIcon.png';
+  static String adressIcon = 'assets/imgs/address.png';
   // txts
   static String appLang = 'AppLang';
 }

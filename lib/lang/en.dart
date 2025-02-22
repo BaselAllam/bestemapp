@@ -67,6 +67,7 @@ final Map<String, String> enData = {
   AppLangAssets.myReviews: 'My Reviews',
   AppLangAssets.usersReviews: 'User Reviews',
   AppLangAssets.navBarSearch: 'Search',
+  AppLangAssets.navBarStore: 'Store',
   AppLangAssets.gender: 'Gender',
   AppLangAssets.male: 'Male',
   AppLangAssets.female: 'Female',
@@ -81,4 +82,8 @@ final Map<String, String> enData = {
   AppLangAssets.blogs: 'Blogs',
   AppLangAssets.blogsDetails: 'Read it',
   AppLangAssets.sourceBy: 'Source',
+  AppLangAssets.adChart: 'Ad Progress',
+  AppLangAssets.search: 'Find your favourite',
+  AppLangAssets.myAddresses: 'My Addresses',
+  AppLangAssets.bestemStore: 'Bestem Store',
 };

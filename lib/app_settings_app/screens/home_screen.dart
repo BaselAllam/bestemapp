@@ -1,14 +1,17 @@
 import 'package:bestemapp/ads_app/screens/search_result_screen.dart';
+import 'package:bestemapp/ads_app/screens/search_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/blogs_app/views/blogs_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
+import 'package:bestemapp/shared/shared_widgets/ad_chart.dart';
 import 'package:bestemapp/shared/shared_widgets/ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/blog_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/booking_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/sell_btn.dart';
+import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,13 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           buildAdsSection(),
-          sectionTitle('${selectedLang[AppLangAssets.booking]} ', false, false, () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.booking]!)));
-          }),
+          buildSearchWidget(),
+          sectionTitle('${selectedLang[AppLangAssets.adChart]} ', false, false, () {}),
+          buildChart(),
+          sectionTitle('${selectedLang[AppLangAssets.booking]} ', false, false, () {}),
           buildBookingSection(),
-          sectionTitle('${selectedLang[AppLangAssets.iLike]} ', false, false, () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.iLike]!)));
-          }),
+          sectionTitle('${selectedLang[AppLangAssets.iLike]} ', false, false, () {}),
           buildTabs(),
           sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
@@ -62,15 +64,43 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  buildChart() {
+    return AdChart();
+  }
+
+  buildSearchWidget() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchScreen()));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        height: 70,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: AppColors.whiteColor
+        ),
+        alignment: Alignment.center,
+        child: ListTile(
+          title: Text(selectedLang[AppLangAssets.search]!, style: AppFonts.primaryFontBlackColor),
+          trailing: Image.asset(AppAssets.searchIcon, width: 30.0, height: 30.0),
+        ),
+      ),
+    );
+  }
+
   buildBookingSection() {
-    return Container(
-      height: 150,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          for (int i = 0; i < 5; i++)
-          BookingWidget(isHomeView: true)
-        ],
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: 150,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (int i = 0; i < 5; i++)
+            BookingWidget(isHomeView: true)
+          ],
+        ),
       ),
     );
   }
