@@ -86,4 +86,5 @@ class AppLangAssets {
   static String sourceBy = 'sourceBy';
   static String adChart = 'adChart';
   static String search = 'search';
+  static String myWalletTransactions = 'myWalletTransactions';
 }

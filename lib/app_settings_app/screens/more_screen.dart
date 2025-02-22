@@ -17,6 +17,7 @@ import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/ticketing_app/views/tickets_screen.dart';
 import 'package:bestemapp/user_app/screens/my_addresses_screen.dart';
 import 'package:bestemapp/user_app/screens/user_profile_screen.dart';
+import 'package:bestemapp/user_app/screens/wallet_transactions_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,6 +79,7 @@ class _MoreScreenState extends State<MoreScreen> {
               children: [
                 sectionSubWidget(icon: AppAssets.personIcon, title: selectedLang[AppLangAssets.myProfile]!, screen: UserProfileScreen()),
                 sectionSubWidget(icon: AppAssets.myAdsIcon, title: selectedLang[AppLangAssets.myAds]!, screen: MyAdsScreen()),
+                sectionSubWidget(icon: AppAssets.walletIcon, title: selectedLang[AppLangAssets.myWalletTransactions]!, screen: WalletTransactionsScreen()),
                 sectionSubWidget(icon: AppAssets.adressIcon, title: selectedLang[AppLangAssets.myAddresses]!, screen: MyAddressesScreen()),
                 sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: MyReviewsScreen()),
               ],

@@ -86,4 +86,5 @@ final Map<String, String> enData = {
   AppLangAssets.search: 'Find your favourite',
   AppLangAssets.myAddresses: 'My Addresses',
   AppLangAssets.bestemStore: 'Bestem Store',
+  AppLangAssets.myWalletTransactions: 'My Wallet Transactions'
 };
