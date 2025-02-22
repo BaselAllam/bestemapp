@@ -2,10 +2,11 @@ import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/lang/en.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/shared/utils/local_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-final Map<String, String> selectedLang = enData;
+Map<String, String> selectedLang = enData;
 enum LanguageOption {ar, en}
 
 class AppSettingsCubit extends Cubit<AppSettingsStates> {
@@ -17,10 +18,33 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
   Locale _selectedLocale = Locale('en');
   Locale get selectedLocale => _selectedLocale;
 
-  void changeLanguage(LanguageOption newLang) {
+  Future<void> changeLanguage(LanguageOption newLang) async {
     _selectedLangOption = newLang;
-    if (newLang == LanguageOption.ar) _selectedLocale = Locale('ar');
-    if (newLang == LanguageOption.en) _selectedLocale = Locale('en');
+    if (newLang == LanguageOption.ar) {
+      _selectedLocale = Locale('ar');
+      // selectedLang = arData;
+      saveStringToLocal(AppAssets.appLang, LanguageOption.ar.name);
+    } else if (newLang == LanguageOption.en) {
+      _selectedLocale = Locale('en');
+      // selectedLang = enData;
+      saveStringToLocal(AppAssets.appLang, 'en');
+    }
+    emit(ChangeLanguageState());
+  }
+
+  Future<void> checkLang() async {
+    String lang = await getStringFromLocal(AppAssets.appLang);
+    if (lang == LanguageOption.ar.name) {
+      _selectedLangOption = LanguageOption.ar;
+      _selectedLocale = Locale('ar');
+      // selectedLang = arData;
+      saveStringToLocal(AppAssets.appLang, 'ar');
+    } else if (lang == LanguageOption.en.name || lang.isEmpty) {
+      _selectedLangOption = LanguageOption.en;
+      _selectedLocale = Locale('en');
+      // selectedLang = enData;
+      saveStringToLocal(AppAssets.appLang, LanguageOption.en.name);
+    }
     emit(ChangeLanguageState());
   }
 

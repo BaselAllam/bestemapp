@@ -28,7 +28,7 @@ class MoreScreen extends StatefulWidget {
 
 class _MoreScreenState extends State<MoreScreen> {
 
-  final List<Map<String, dynamic>> social = [{'icon': AppAssets.webIcon, 'url': 'https://basselallam.com'}, {'icon': AppAssets.facebookIcon, 'url': 'https://basselallam.com'}, {'icon': AppAssets.instagramIcon, 'url': 'https://basselallam.com'}, {'icon': AppAssets.linkedinIcon, 'url': 'https://basselallam.com'}];
+  final List<Map<String, dynamic>> social = [{'icon': AppAssets.webIcon, 'url': 'https://bestem.app'}, {'icon': AppAssets.facebookIcon, 'url': 'https://www.facebook.com/profile.php?id=61572279167259'}, {'icon': AppAssets.instagramIcon, 'url': 'https://www.instagram.com/bestem.app/?hl=en'}, {'icon': AppAssets.linkedinIcon, 'url': 'https://basselallam.com'}];
 
   String versionNumber = '';
   bool isAcceptLang = true;
@@ -148,6 +148,7 @@ class _MoreScreenState extends State<MoreScreen> {
   buildChangeLanguage() {
     return BlocBuilder<AppSettingsCubit, AppSettingsStates>(
       builder: (context, state) => ListTile(
+        leading: Image.asset(AppAssets.langIcon, height: 25, width: 25.0),
         title: Text(selectedLang[AppLangAssets.changeLang]!, style: AppFonts.primaryFontBlackColor),
         trailing: PopupMenuButton(
           color: AppColors.whiteColor,
@@ -175,8 +176,9 @@ class _MoreScreenState extends State<MoreScreen> {
                     size: Size(100.0, 30.0),
                     color: AppColors.redColor,
                     radius: 15.0,
-                    onPress: () {
-                      BlocProvider.of<AppSettingsCubit>(context).changeLanguage(value);
+                    onPress: () async {
+                      await BlocProvider.of<AppSettingsCubit>(context).changeLanguage(value);
+                      Navigator.pop(context);
                     }
                   ),
                 ],

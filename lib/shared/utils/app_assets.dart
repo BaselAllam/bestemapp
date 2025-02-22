@@ -1,6 +1,7 @@
 
 
 class AppAssets {
+  // icons
   static String aboutUsIcon = 'assets/imgs/aboutUs.png';
   static String addToFavIcon = 'assets/imgs/addToFav.png';
   static String appVersionIcon = 'assets/imgs/appVersion.png';
@@ -38,4 +39,6 @@ class AppAssets {
   static String acceptNotificationIcon = 'assets/imgs/acceptNotification.png';
   static String searchIcon = 'assets/imgs/search.png';
   static String emptySearchIcon = 'assets/imgs/emptySearch.png';
+  // txts
+  static String appLang = 'AppLang';
 }
