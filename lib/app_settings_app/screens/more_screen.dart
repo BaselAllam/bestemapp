@@ -54,100 +54,102 @@ class _MoreScreenState extends State<MoreScreen> {
         title: Text(selectedLang[AppLangAssets.navBarMore]!, style: AppFonts.primaryFontBlackColor),
         actions: [SellBtn(), NotificationButton()],
       ),
-      body: ListView(
-        children: [
-          Column(
-            children: [
-              Container(
-                height: 120.0,
-                width: 120,
-                margin: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage('https://avatars.githubusercontent.com/u/44323531?v=4'),
-                    fit: BoxFit.contain
+      body: BlocBuilder<AppSettingsCubit, AppSettingsStates>(
+        builder: (context, state) => ListView(
+          children: [
+            Column(
+              children: [
+                Container(
+                  height: 120.0,
+                  width: 120,
+                  margin: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage('https://avatars.githubusercontent.com/u/44323531?v=4'),
+                      fit: BoxFit.contain
+                    )
+                  ),
+                  alignment: Alignment.bottomRight,
+                ),
+              ],
+            ),
+            sectionTitle(selectedLang[AppLangAssets.profileData]!),
+            sectionContainer(
+              Column(
+                children: [
+                  sectionSubWidget(icon: AppAssets.personIcon, title: selectedLang[AppLangAssets.myProfile]!, screen: UserProfileScreen()),
+                  sectionSubWidget(icon: AppAssets.myAdsIcon, title: selectedLang[AppLangAssets.myAds]!, screen: MyAdsScreen()),
+                  sectionSubWidget(icon: AppAssets.walletIcon, title: selectedLang[AppLangAssets.myWalletTransactions]!, screen: WalletTransactionsScreen()),
+                  sectionSubWidget(icon: AppAssets.adressIcon, title: selectedLang[AppLangAssets.myAddresses]!, screen: MyAddressesScreen()),
+                  sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: MyReviewsScreen()),
+                ],
+              )
+            ),
+            sectionTitle(selectedLang[AppLangAssets.settingsSection]!),
+            sectionContainer(
+              Column(
+                children: [
+                  buildChangeLanguage(),
+                  CustomSwitchTile(
+                    title: selectedLang[AppLangAssets.acceptNotification]!,
+                    leading: Image.asset(AppAssets.acceptNotificationIcon, height: 25, width: 25.0),
+                    value: isAcceptNotifications,
+                    onChange: (v) {
+                      isAcceptNotifications = v;
+                      setState(() {});
+                    },
                   )
-                ),
-                alignment: Alignment.bottomRight,
+                ],
+              )
+            ),
+            sectionTitle(selectedLang[AppLangAssets.appSection]!),
+            sectionContainer(
+              Column(
+                children: [
+                  sectionSubWidget(icon: AppAssets.aboutUsIcon, title: selectedLang[AppLangAssets.aboutUs]!, screen: AboutUsScreen()),
+                  sectionSubWidget(icon: AppAssets.helpDeskIcon, title: selectedLang[AppLangAssets.getSupport]!, screen: TicketsScreen()),
+                  sectionSubWidget(icon: AppAssets.privacyPolicyIcon, title: selectedLang[AppLangAssets.privacyPolicy]!, screen: PrivacyPolicySreen()),
+                ],
+              )
+            ),
+            sectionTitle(selectedLang[AppLangAssets.followUs]!),
+            Container(
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: AppColors.whiteColor,
               ),
-            ],
-          ),
-          sectionTitle(selectedLang[AppLangAssets.profileData]!),
-          sectionContainer(
-            Column(
-              children: [
-                sectionSubWidget(icon: AppAssets.personIcon, title: selectedLang[AppLangAssets.myProfile]!, screen: UserProfileScreen()),
-                sectionSubWidget(icon: AppAssets.myAdsIcon, title: selectedLang[AppLangAssets.myAds]!, screen: MyAdsScreen()),
-                sectionSubWidget(icon: AppAssets.walletIcon, title: selectedLang[AppLangAssets.myWalletTransactions]!, screen: WalletTransactionsScreen()),
-                sectionSubWidget(icon: AppAssets.adressIcon, title: selectedLang[AppLangAssets.myAddresses]!, screen: MyAddressesScreen()),
-                sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: MyReviewsScreen()),
-              ],
-            )
-          ),
-          sectionTitle(selectedLang[AppLangAssets.settingsSection]!),
-          sectionContainer(
-            Column(
-              children: [
-                buildChangeLanguage(),
-                CustomSwitchTile(
-                  title: selectedLang[AppLangAssets.acceptNotification]!,
-                  leading: Image.asset(AppAssets.acceptNotificationIcon, height: 25, width: 25.0),
-                  value: isAcceptNotifications,
-                  onChange: (v) {
-                    isAcceptNotifications = v;
-                    setState(() {});
-                  },
-                )
-              ],
-            )
-          ),
-          sectionTitle(selectedLang[AppLangAssets.appSection]!),
-          sectionContainer(
-            Column(
-              children: [
-                sectionSubWidget(icon: AppAssets.aboutUsIcon, title: selectedLang[AppLangAssets.aboutUs]!, screen: AboutUsScreen()),
-                sectionSubWidget(icon: AppAssets.helpDeskIcon, title: selectedLang[AppLangAssets.getSupport]!, screen: TicketsScreen()),
-                sectionSubWidget(icon: AppAssets.privacyPolicyIcon, title: selectedLang[AppLangAssets.privacyPolicy]!, screen: PrivacyPolicySreen()),
-              ],
-            )
-          ),
-          sectionTitle(selectedLang[AppLangAssets.followUs]!),
-          Container(
-            margin: EdgeInsets.all(10.0),
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: AppColors.whiteColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  for (int i = 0; i < social.length; i++)
+                  IconButton(
+                    icon: Image.asset(social[i]['icon']!, height: 30.0, width: 30.0,),
+                    iconSize: 30.0,
+                    onPressed: () {
+                      openUrl(context, social[i]['url']!);
+                    },
+                  ),
+                ],
+              ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                for (int i = 0; i < social.length; i++)
-                IconButton(
-                  icon: Image.asset(social[i]['icon']!, height: 30.0, width: 30.0,),
-                  iconSize: 30.0,
-                  onPressed: () {
-                    openUrl(context, social[i]['url']!);
-                  },
-                ),
-              ],
+            Container(
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: AppColors.whiteColor,
+              ),
+              child: ListTile(
+                title: Text(selectedLang[AppLangAssets.appVersion]!, style: AppFonts.primaryFontBlackColor),
+                subtitle: Text(versionNumber, style: AppFonts.subFontGreyColor),
+                leading: Image.asset(AppAssets.appVersionIcon, height: 25, width: 25.0),
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: AppColors.whiteColor,
-            ),
-            child: ListTile(
-              title: Text(selectedLang[AppLangAssets.appVersion]!, style: AppFonts.primaryFontBlackColor),
-              subtitle: Text(versionNumber, style: AppFonts.subFontGreyColor),
-              leading: Image.asset(AppAssets.appVersionIcon, height: 25, width: 25.0),
-            ),
-          ),
-          buildLogoutBtn()
-        ],
+            buildLogoutBtn()
+          ],
+        ),
       ),
     );
   }

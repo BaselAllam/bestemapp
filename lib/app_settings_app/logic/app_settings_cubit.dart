@@ -5,6 +5,11 @@ import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/shared/utils/local_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bestemapp/app_settings_app/screens/bookings_screen.dart';
+import 'package:bestemapp/app_settings_app/screens/fav_screen.dart';
+import 'package:bestemapp/app_settings_app/screens/home_screen.dart';
+import 'package:bestemapp/app_settings_app/screens/more_screen.dart';
+import 'package:bestemapp/app_settings_app/screens/store_screen.dart';
 
 Map<String, String> selectedLang = enData;
 enum LanguageOption {ar, en}
@@ -17,6 +22,47 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
   LanguageOption get selectedLangOption => _selectedLangOption;
   Locale _selectedLocale = Locale('en');
   Locale get selectedLocale => _selectedLocale;
+
+  final List<Map<String, dynamic>> bottomScreens = [
+    {
+      'activeIcon': Image.asset(AppAssets.homeIcon, height: 25.0, width: 25.0),
+      'icon': Image.asset(AppAssets.emptyHomeIcon, height: 25.0, width: 25.0),
+      'title': selectedLang[AppLangAssets.navBarHome],
+      'screen': HomeScreen()
+    },
+    {
+      'activeIcon': Image.asset(AppAssets.bookingNavIcon, height: 25.0, width: 25.0),
+      'icon': Image.asset(AppAssets.emptyBookingNavIcon, height: 25.0, width: 25.0),
+      'title': selectedLang[AppLangAssets.navBarBooking],
+      'screen': BookingsScreen()
+    },
+    {
+      'activeIcon': Image.asset(AppAssets.storeNavIcon, height: 30.0, width: 30.0),
+      'icon': Image.asset(AppAssets.emptyStoreNavIcon, height: 30.0, width: 30.0),
+      'title': selectedLang[AppLangAssets.navBarStore],
+      'screen': StoreScreen()
+    },
+    {
+      'activeIcon': Image.asset(AppAssets.favIcon, height: 25.0, width: 25.0),
+      'icon': Image.asset(AppAssets.emptyFavIcon, height: 25.0, width: 25.0),
+      'title': selectedLang[AppLangAssets.navBarWishlist],
+      'screen': FavScreen()
+    },
+    {
+      'activeIcon': Image.asset(AppAssets.moreIcon, height: 25.0, width: 25.0),
+      'icon': Image.asset(AppAssets.emptyMoreIcon, height: 25.0, width: 25.0),
+      'title': selectedLang[AppLangAssets.navBarMore],
+      'screen': MoreScreen()
+    },
+  ];
+
+  int _selectedNavIndex = 0;
+  int get selectedNavIndex => _selectedNavIndex;
+
+  void changeNav(int index) {
+    _selectedNavIndex = index;
+    emit(ChangeNavState());
+  }
 
   Future<void> changeLanguage(LanguageOption newLang) async {
     _selectedLangOption = newLang;
