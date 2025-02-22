@@ -50,14 +50,14 @@ class _AdWidgetState extends State<AdWidget> {
                   Row(
                     children: [
                       Text('E300', style: AppFonts.subFontPrimaryColor),
-                      Text(' - 1000 ${selectedLang[AppLangAssets.adViews]}', style: AppFonts.miniFontGreyColor),
+                      Text(' - 1K ${selectedLang[AppLangAssets.adViews]}', style: AppFonts.miniFontGreyColor),
+                      Text(' - 1M ${selectedLang[AppLangAssets.booking]}', style: AppFonts.miniFontGreyColor),
                     ],
                   ),
                   Row(
                     children: [
-                      Text('12-12-2024', style: AppFonts.miniFontGreyColor),
-                      SizedBox(width: 5.0),
-                      Text('- Cairo, Nasr City ', style: AppFonts.miniFontGreyColor),
+                      Text('Cairo, Nasr City ', style: AppFonts.miniFontGreyColor),
+                      Text(' - 12-12-2024', style: AppFonts.miniFontGreyColor),
                     ],
                   ),
                 ],

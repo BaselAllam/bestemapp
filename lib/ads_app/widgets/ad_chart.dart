@@ -15,6 +15,7 @@ class _AdChartState extends State<AdChart> {
   Widget build(BuildContext context) {
     return Container(
       height: 200,
+      padding: EdgeInsets.all(15),
       margin: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -36,7 +37,7 @@ class _AdChartState extends State<AdChart> {
             rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
-          borderData: FlBorderData(show: false),
+          borderData: FlBorderData(show: false, border: Border.all()),
           barTouchData: BarTouchData(enabled: true),
           gridData: FlGridData(show: false),
         ),

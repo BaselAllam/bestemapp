@@ -3,7 +3,7 @@ import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/back_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/field.dart';
-import 'package:bestemapp/shared/shared_widgets/view_password_widget.dart';
+import 'package:bestemapp/user_app/widgets/view_password_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,8 +104,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             SizedBox(height: 15.0),
             ListTile(
               title: Text(selectedLang[AppLangAssets.gender]!, style: AppFonts.primaryFontBlackColor),
-              subtitle: Text(gender, style: AppFonts.subFontGreenColor),
+              subtitle: Text(gender, style: AppFonts.subFontGreyColor),
               trailing: PopupMenuButton(
+                color: AppColors.ofWhiteColor,
                 icon: Icon(Icons.arrow_downward, color: AppColors.primaryColor, size: 20.0),
                 onSelected: (value) {
                   gender = value;

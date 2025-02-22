@@ -23,7 +23,7 @@ class _SellBtnState extends State<SellBtn> {
         color: AppColors.primaryColor,
         iconSize: 30.0,
         onPressed: () {
-          // Navigator.push(context, MaterialPageRoute(builder: (_) => AddAdScreen()));
+          // Navigator.push(context, CupertinoPageRoute(builder: (_) => AddAdScreen()));
         },
       ),
     );

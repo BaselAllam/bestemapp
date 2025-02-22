@@ -6,7 +6,7 @@ import 'package:bestemapp/shared/shared_widgets/custom_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/field.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/shared_widgets/snack_widget.dart';
-import 'package:bestemapp/shared/shared_widgets/view_password_widget.dart';
+import 'package:bestemapp/user_app/widgets/view_password_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
