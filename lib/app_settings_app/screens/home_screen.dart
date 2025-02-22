@@ -6,6 +6,7 @@ import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/booking_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
+import 'package:bestemapp/shared/shared_widgets/sell_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         backgroundColor: AppColors.ofWhiteColor,
         title: Text('${selectedLang[AppLangAssets.homeWlcTitle]} Bassel Allam 👋', style: AppFonts.primaryFontBlackColor),
-        actions: [NotificationButton()],
+        actions: [SellBtn(), NotificationButton()],
       ),
       body: ListView(
         children: [

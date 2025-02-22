@@ -9,6 +9,7 @@ import 'package:bestemapp/shared/shared_widgets/custom_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/custom_dialog.dart';
 import 'package:bestemapp/shared/shared_widgets/custom_switchtile.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
+import 'package:bestemapp/shared/shared_widgets/sell_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/url_launcher.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
@@ -31,7 +32,7 @@ class _MoreScreenState extends State<MoreScreen> {
   final List<Map<String, dynamic>> social = [{'icon': AppAssets.webIcon, 'url': 'https://bestem.app'}, {'icon': AppAssets.facebookIcon, 'url': 'https://www.facebook.com/profile.php?id=61572279167259'}, {'icon': AppAssets.instagramIcon, 'url': 'https://www.instagram.com/bestem.app/?hl=en'}, {'icon': AppAssets.linkedinIcon, 'url': 'https://basselallam.com'}];
 
   String versionNumber = '';
-  bool isAcceptLang = true;
+  bool isAcceptNotifications = true;
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _MoreScreenState extends State<MoreScreen> {
         elevation: 0.0,
         backgroundColor: AppColors.ofWhiteColor,
         title: Text(selectedLang[AppLangAssets.navBarMore]!, style: AppFonts.primaryFontBlackColor),
-        actions: [NotificationButton()],
+        actions: [SellBtn(), NotificationButton()],
       ),
       body: ListView(
         children: [
@@ -86,9 +87,9 @@ class _MoreScreenState extends State<MoreScreen> {
                 CustomSwitchTile(
                   title: selectedLang[AppLangAssets.acceptNotification]!,
                   leading: Image.asset(AppAssets.acceptNotificationIcon, height: 25, width: 25.0),
-                  value: isAcceptLang,
+                  value: isAcceptNotifications,
                   onChange: (v) {
-                    isAcceptLang = v;
+                    isAcceptNotifications = v;
                     setState(() {});
                   },
                 )

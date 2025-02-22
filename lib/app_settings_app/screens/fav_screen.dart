@@ -3,6 +3,7 @@ import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
+import 'package:bestemapp/shared/shared_widgets/sell_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class _FavScreenState extends State<FavScreen> {
         elevation: 0.0,
         backgroundColor: AppColors.ofWhiteColor,
         title: Text(selectedLang[AppLangAssets.navBarWishlist]!, style: AppFonts.primaryFontBlackColor),
-        actions: [NotificationButton()],
+        actions: [SellBtn(), NotificationButton()],
       ),
       body: ListView.builder(
         itemCount: 15,

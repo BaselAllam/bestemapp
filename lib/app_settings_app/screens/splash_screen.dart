@@ -1,9 +1,6 @@
-
-
-
 import 'package:bestemapp/app_settings_app/screens/bottom_nav_bar_screen.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
-import 'package:bestemapp/shared/utils/app_assets.dart';
+import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/utils/init_data.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(AppAssets.bestemLogo, height: 400, width: 400),
+                  LogoContainer(size: Size(300, 300)),
                   SizedBox(height: 20.0,),
                   CustomLoadingSpinner(),
                 ],
