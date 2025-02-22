@@ -78,4 +78,7 @@ final Map<String, String> enData = {
   AppLangAssets.adViews: 'Views',
   AppLangAssets.save: 'Save',
   AppLangAssets.edit: 'Edit',
+  AppLangAssets.blogs: 'Blogs',
+  AppLangAssets.blogsDetails: 'Read it',
+  AppLangAssets.sourceBy: 'Source',
 };

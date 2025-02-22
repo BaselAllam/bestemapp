@@ -78,4 +78,7 @@ class AppLangAssets {
   static String adViews = 'adViews';
   static String save = 'save';
   static String edit = 'edit';
+  static String blogs = 'blogs';
+  static String blogsDetails = 'blogsDetails';
+  static String sourceBy = 'sourceBy';
 }

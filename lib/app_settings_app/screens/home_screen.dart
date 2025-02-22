@@ -1,9 +1,11 @@
 import 'package:bestemapp/ads_app/screens/search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
+import 'package:bestemapp/blogs_app/views/blogs_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/ad_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/blog_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/booking_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/sell_btn.dart';
@@ -35,14 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           buildAdsSection(),
-          sectionTitle('${selectedLang[AppLangAssets.booking]} ', false),
+          sectionTitle('${selectedLang[AppLangAssets.booking]} ', false, false, () {
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.booking]!)));
+          }),
           buildBookingSection(),
-          sectionTitle('${selectedLang[AppLangAssets.iLike]} ', false),
+          sectionTitle('${selectedLang[AppLangAssets.iLike]} ', false, false, () {
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.iLike]!)));
+          }),
           buildTabs(),
-          sectionTitle('${selectedLang[AppLangAssets.popular]} ', true),
+          sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, true, () {
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
+          }),
           buildItemsSection(),
-          sectionTitle('${selectedLang[AppLangAssets.recentlyAdded]} ', true),
+          sectionTitle('${selectedLang[AppLangAssets.recentlyAdded]} ', true, true, () {
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.recentlyAdded]!)));
+          }),
           buildItemsSection(),
+          sectionTitle('${selectedLang[AppLangAssets.blogs]} ', true, false, () {
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => BlogsScreen()));
+          }),
+          buildBlogItemsSection()
         ],
       ),
     );
@@ -61,20 +75,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  sectionTitle(String title, bool showSeeMore) {
+  sectionTitle(String title, bool showSeeMore, bool showBesidTxt, Function onTap) {
     return BlocBuilder<AppSettingsCubit, AppSettingsStates>(
       builder: (context, state) {
         return ListTile(
           title: Row(
             children: [
               Text(title, style: AppFonts.primaryFontBlackColor),
-              if (showSeeMore)
+              if (showBesidTxt)
               Text(BlocProvider.of<AppSettingsCubit>(context).selectedHomeFilter, style: AppFonts.italicPrimaryFontOrangeColor),
             ],
           ),
           trailing: showSeeMore ? Text(selectedLang[AppLangAssets.seeMore]!, style: AppFonts.miniFontGreyColor) : SizedBox(),
           onTap: !showSeeMore ? () {} : () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: title)));
+            onTap();
           },
         );
       },
@@ -157,6 +171,18 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) => AdWidget(imgHieght: 200,),
+      ),
+    );
+  }
+
+  buildBlogItemsSection() {
+    return Container(
+      height: 470.0,
+      margin: EdgeInsets.only(bottom: 10.0),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) => BlogWidget(imgHieght: 200,),
       ),
     );
   }
