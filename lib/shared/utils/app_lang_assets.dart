@@ -115,4 +115,6 @@ class AppLangAssets {
   static String flatNumber = 'flatNumber';
   static String streetName = 'streetName';
   static String landMark = 'landMark';
+  static String newCondition = 'newCondition';
+  static String usedCondition = 'usedCondition';
 }

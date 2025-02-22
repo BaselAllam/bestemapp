@@ -115,4 +115,6 @@ final Map<String, String> arData = {
   AppLangAssets.flatNumber: 'رقم الطابق',
   AppLangAssets.streetName: 'اسم الشارع',
   AppLangAssets.landMark: 'علامة مميزة',
+  AppLangAssets.newCondition: 'جديد',
+  AppLangAssets.usedCondition: 'مستعمل',
 };

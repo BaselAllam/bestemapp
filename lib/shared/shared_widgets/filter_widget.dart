@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class FilterWidget extends StatefulWidget {
   final IconData icon;
   final String txt;
-  FilterWidget({required this.icon, required this.txt});
+  Function onTap;
+  FilterWidget({required this.icon, required this.txt, required this.onTap});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -16,7 +17,9 @@ class _FilterWidgetState extends State<FilterWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        widget.onTap();
+      },
       child: Container(
         margin: EdgeInsets.all(5.0),
         width: 100.0,

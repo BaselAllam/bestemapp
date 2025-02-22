@@ -115,4 +115,6 @@ final Map<String, String> enData = {
   AppLangAssets.flatNumber: 'Flat Number',
   AppLangAssets.streetName: 'Street Name',
   AppLangAssets.landMark: 'Land Mark',
+  AppLangAssets.newCondition: 'New',
+  AppLangAssets.usedCondition: 'Used',
 };

@@ -8,4 +8,13 @@ https://www.behance.net/gallery/213303233/Car-selling-and-buying-App?tracking_so
   - impelment Gimini & make add ads as a steps and make gimini suggest title & description for the ad 
 
 
+  - sell screen ( add available balance in create ad )
+  - edit ad screen
+  - submit bookin review
+  - booking details screen
+  - view user profile with his her ads
+  - filter ads dialog
+  - search screen
+
+
 */
