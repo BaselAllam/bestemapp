@@ -1,3 +1,4 @@
+import 'package:bestemapp/ads_app/screens/ads_details_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
@@ -5,6 +6,7 @@ import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/share_btn.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AdWidget extends StatefulWidget {
@@ -20,7 +22,9 @@ class _AdWidgetState extends State<AdWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context, CupertinoPageRoute(builder: (_) => AdsDetailsScreen()));
+      },
       child: Container(
         width: MediaQuery.of(context).size.width / 1.2,
         margin: EdgeInsets.all(10.0),
