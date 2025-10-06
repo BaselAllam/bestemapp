@@ -23,7 +23,7 @@ class _AdWidgetState extends State<AdWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, CupertinoPageRoute(builder: (_) => AdsDetailsScreen()));
+        Navigator.push(context, CupertinoPageRoute(builder: (_) => CarDetailScreen()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width / 1.2,
