@@ -28,7 +28,7 @@ class _FavScreenState extends State<FavScreen> {
       ),
       body: ListView.builder(
         itemCount: 15,
-        itemBuilder: (context, state) => AdWidget(imgHieght: 280,),
+        itemBuilder: (context, state) => AdWidget(imgHieght: 250,),
       ),
     );
   }

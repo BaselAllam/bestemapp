@@ -1,5 +1,4 @@
 import 'package:bestemapp/ads_app/screens/my_ads_screen.dart';
-import 'package:bestemapp/ads_app/screens/my_reviews_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/screens/about_us_screen.dart';
@@ -79,7 +78,6 @@ class _MoreScreenState extends State<MoreScreen> {
                   sectionSubWidget(icon: AppAssets.personIcon, title: selectedLang[AppLangAssets.myProfile]!, screen: UserProfileScreen()),
                   sectionSubWidget(icon: AppAssets.myAdsIcon, title: selectedLang[AppLangAssets.myAds]!, screen: MyAdsScreen()),
                   sectionSubWidget(icon: AppAssets.walletIcon, title: selectedLang[AppLangAssets.myWalletTransactions]!, screen: WalletTransactionsScreen()),
-                  sectionSubWidget(icon: AppAssets.myReviewsIcon, title: selectedLang[AppLangAssets.myReviews]!, screen: MyReviewsScreen()),
                 ],
               )
             ),

@@ -3,6 +3,7 @@
 class AppLangAssets {
   static String login = 'login';
   static String phoneNumber = 'phoneNumber';
+  static String email = 'email';
   static String enterUrPhoneNumber = 'enterUrPhoneNumber';
   static String password = 'password';
   static String enterUrPassword = 'enterUrPassword';
@@ -11,6 +12,8 @@ class AppLangAssets {
   static String dontHaveAccount = 'dontHaveAccount';
   static String register = 'register';
   static String fullName = 'fullName';
+  static String firstName = 'firstName';
+  static String lastName = 'lastName';
   static String enterFullName = 'enterFullName';
   static String fieldsRequired = 'fieldsRequired';
   static String passwordLegnthError = 'passwordLegnthError';

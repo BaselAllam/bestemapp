@@ -20,11 +20,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
   bool isSecure = true;
-  String gender = selectedLang[AppLangAssets.male]!;
 
   bool isEditable = false;
 
@@ -62,8 +62,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ],
             ),
             authField(
-              title: selectedLang[AppLangAssets.fullName]!,
-              controller: userNameController,
+              title: selectedLang[AppLangAssets.firstName]!,
+              controller: firstNameController,
               textInputAction: TextInputAction.done,
               enabled: isEditable,
               keyBoardType: TextInputType.text,
@@ -71,7 +71,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               formaters: [],
               inputStyle: AppFonts.subFontGreyColor,
               fillColor: AppColors.whiteColor,
-              inputTitle: selectedLang[AppLangAssets.fullName]!
+              inputTitle: selectedLang[AppLangAssets.firstName]!
+            ),
+            authField(
+              title: selectedLang[AppLangAssets.lastName]!,
+              controller: lastNameController,
+              textInputAction: TextInputAction.done,
+              enabled: isEditable,
+              keyBoardType: TextInputType.text,
+              validatorMethod: (v) {},
+              formaters: [],
+              inputStyle: AppFonts.subFontGreyColor,
+              fillColor: AppColors.whiteColor,
+              inputTitle: selectedLang[AppLangAssets.lastName]!
             ),
             authField(
               title: selectedLang[AppLangAssets.phoneNumber]!,
@@ -83,6 +95,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               inputStyle: AppFonts.subFontGreyColor,
               fillColor: AppColors.whiteColor,
               inputTitle: selectedLang[AppLangAssets.phoneNumber]!
+            ),
+            authField(
+              title: selectedLang[AppLangAssets.email]!,
+              controller: emailController,
+              textInputAction: TextInputAction.done,
+              enabled: isEditable,
+              formaters: [],
+              keyBoardType: TextInputType.emailAddress,
+              inputStyle: AppFonts.subFontGreyColor,
+              fillColor: AppColors.whiteColor,
+              inputTitle: selectedLang[AppLangAssets.email]!
             ),
             authField(
               title: selectedLang[AppLangAssets.password]!,
@@ -102,30 +125,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               inputTitle: selectedLang[AppLangAssets.password]!
             ),
             SizedBox(height: 15.0),
-            ListTile(
-              title: Text(selectedLang[AppLangAssets.gender]!, style: AppFonts.primaryFontBlackColor),
-              subtitle: Text(gender, style: AppFonts.subFontGreyColor),
-              trailing: PopupMenuButton(
-                color: AppColors.ofWhiteColor,
-                icon: Icon(Icons.arrow_downward, color: AppColors.primaryColor, size: 20.0),
-                onSelected: (value) {
-                  gender = value;
-                  setState(() {});
-                },
-                itemBuilder: (BuildContext context) {
-                  return <PopupMenuEntry<String>>[
-                    PopupMenuItem(
-                      child: Text(selectedLang[AppLangAssets.male]!, style: AppFonts.subFontBlackColor),
-                      value: selectedLang[AppLangAssets.male]!,
-                    ),
-                    PopupMenuItem(
-                      child: Text(selectedLang[AppLangAssets.male]!, style: AppFonts.subFontBlackColor),
-                      value: selectedLang[AppLangAssets.male]!,
-                    ),
-                  ];
-                },
-              ),
-            ),
             Column(
               children: [
                 TextButton(

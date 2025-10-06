@@ -3,6 +3,7 @@ import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 final Map<String, String> arData = {
   AppLangAssets.login: 'تسجيل الدخول',
   AppLangAssets.phoneNumber: 'رقم الهاتف',
+  AppLangAssets.email: 'البريد الالكتروني',
   AppLangAssets.enterUrPhoneNumber: 'أدخل رقم هاتفك',
   AppLangAssets.password: 'كلمة المرور',
   AppLangAssets.enterUrPassword: 'أدخل كلمة المرور',
@@ -11,6 +12,8 @@ final Map<String, String> arData = {
   AppLangAssets.dontHaveAccount: 'ليس لديك حساب؟',
   AppLangAssets.register: 'تسجيل',
   AppLangAssets.fullName: 'الاسم الكامل',
+  AppLangAssets.firstName: 'الاسم الاول',
+  AppLangAssets.lastName: 'اسم العائله',
   AppLangAssets.enterFullName: 'أدخل اسمك الكامل',
   AppLangAssets.passwordNotMatch: 'كلمة المرور غير متطابقة',
   AppLangAssets.passwordLegnthError: 'يجب أن تكون كلمة المرور 8 أحرف على الأقل',

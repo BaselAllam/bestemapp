@@ -3,6 +3,7 @@ import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 final Map<String, String> enData = {
   AppLangAssets.login: 'Login',
   AppLangAssets.phoneNumber: 'Phone Number',
+  AppLangAssets.email: 'Email',
   AppLangAssets.enterUrPhoneNumber: 'Enter your phone number',
   AppLangAssets.password: 'Password',
   AppLangAssets.enterUrPassword: 'Enter your password',
@@ -11,6 +12,8 @@ final Map<String, String> enData = {
   AppLangAssets.dontHaveAccount: 'Don\'t have an account ?',
   AppLangAssets.register: 'Register',
   AppLangAssets.fullName: 'Full Name',
+  AppLangAssets.firstName: 'First Name',
+  AppLangAssets.lastName: 'Last Name',
   AppLangAssets.enterFullName: 'Enter ur Full Name',
   AppLangAssets.passwordNotMatch: 'Password Not Matched',
   AppLangAssets.passwordLegnthError: 'Password Must be at least 8 Characters',

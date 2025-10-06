@@ -27,7 +27,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
       ),
       body: ListView.builder(
         itemCount: 15,
-        itemBuilder: (context, state) => AdWidget(imgHieght: 280, isAdminView: true),
+        itemBuilder: (context, state) => AdWidget(imgHieght: 250, isAdminView: true),
       ),
     );
   }

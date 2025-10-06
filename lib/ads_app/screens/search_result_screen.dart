@@ -32,45 +32,42 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         backgroundColor: AppColors.ofWhiteColor,
         title: Text(widget.screenTitle, style: AppFonts.primaryFontBlackColor),
         leading: BackBtn(),
+        bottom: PreferredSize(
+        preferredSize: Size(0.00, 30),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              FilterWidget(
+                icon: Icons.sort,
+                txt: selectedLang[AppLangAssets.sort]!,
+                onTap: () {
+                  buildSortDialog();
+                },
+              ),
+              FilterWidget(
+                icon: Icons.tune,
+                txt: selectedLang[AppLangAssets.filter]!,
+                onTap: () {},
+              ),
+              FilterWidget(
+                icon: Icons.menu,
+                txt: selectedLang[AppLangAssets.vechileCondition]!,
+                onTap: () {
+                  buildConditionDialog();
+                },
+              ),
+            ],
+          ),
+        ),
       ),
-      body: Column(
-        children: [
-          SafeArea(
-            top: true,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                FilterWidget(
-                  icon: Icons.sort,
-                  txt: selectedLang[AppLangAssets.sort]!,
-                  onTap: () {
-                    buildSortDialog();
-                  },
-                ),
-                FilterWidget(
-                  icon: Icons.tune,
-                  txt: selectedLang[AppLangAssets.filter]!,
-                  onTap: () {},
-                ),
-                FilterWidget(
-                  icon: Icons.menu,
-                  txt: selectedLang[AppLangAssets.vechileCondition]!,
-                  onTap: () {
-                    buildConditionDialog();
-                  },
-                ),
-              ],
-            ),
-          ),
-          Flexible(
-            child: ListView(
-              children: [
-                for (int i = 0; i < 10; i++)
-                AdWidget(imgHieght: 280,)
-              ]
-            ),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15.0),
+        child: ListView(
+          children: [
+            for (int i = 0; i < 10; i++)
+            AdWidget(imgHieght: 250,)
+          ]
+        ),
       ),
     );
   }

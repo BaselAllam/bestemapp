@@ -21,7 +21,7 @@ class _FilterWidgetState extends State<FilterWidget> {
         widget.onTap();
       },
       child: Container(
-        margin: EdgeInsets.all(5.0),
+        margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0.0),
         width: 100.0,
         height: 30.0,
         decoration: BoxDecoration(

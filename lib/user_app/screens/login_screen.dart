@@ -1,4 +1,5 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/screens/bottom_nav_bar_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/custom_btn.dart';
@@ -89,6 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   radius: 12.0,
                   onPress: () async {
                     // await BlocProvider.of<UserCubit>(context).loginUser(emailController.text, passwordController.text);
+
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavBarScreen()));
                   }
                 ),
               ],

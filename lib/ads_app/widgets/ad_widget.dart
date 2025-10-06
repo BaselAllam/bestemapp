@@ -55,7 +55,7 @@ class _AdWidgetState extends State<AdWidget> {
                     children: [
                       Text('E300', style: AppFonts.subFontPrimaryColor),
                       Text(' - 1K ${selectedLang[AppLangAssets.adViews]}', style: AppFonts.miniFontGreyColor),
-                      Text(' - 1M ${selectedLang[AppLangAssets.booking]}', style: AppFonts.miniFontGreyColor),
+                      Text(' - Acive', style: AppFonts.miniFontGreenColor),
                     ],
                   ),
                   Row(
@@ -144,17 +144,6 @@ class _AdWidgetState extends State<AdWidget> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(5.0),
                     child: Text('Negotiable 👌🏻', style: AppFonts.miniFontWhiteColor)
-                  ),
-                  if (widget.isAdminView)
-                  Container(
-                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.greenColor,
-                      borderRadius: BorderRadius.circular(10.0)
-                    ),
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(5.0),
-                    child: Text('Active Ad', style: AppFonts.miniFontWhiteColor)
                   ),
                 ],
               ),
