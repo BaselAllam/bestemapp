@@ -1,19 +1,13 @@
 import 'package:bestemapp/ads_app/screens/search_result_screen.dart';
-import 'package:bestemapp/ads_app/screens/search_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
-import 'package:bestemapp/blogs_app/views/blogs_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/ads_app/widgets/ad_chart.dart';
 import 'package:bestemapp/ads_app/widgets/ad_widget.dart';
-import 'package:bestemapp/blogs_app/widgets/blog_widget.dart';
-import 'package:bestemapp/ads_app/widgets/booking_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/ads_app/widgets/sell_btn.dart';
-import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedTab = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,25 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           buildAdsSection(),
-          buildSearchWidget(),
-          sectionTitle('${selectedLang[AppLangAssets.adChart]} ', false, false, () {}),
+          sectionTitle('${selectedLang[AppLangAssets.adChart]} ', false, () {}),
           buildChart(),
-          sectionTitle('${selectedLang[AppLangAssets.booking]} ', false, false, () {}),
-          buildBookingSection(),
-          sectionTitle('${selectedLang[AppLangAssets.iLike]} ', false, false, () {}),
-          buildTabs(),
-          sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, true, () {
+          sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
           }),
           buildItemsSection(),
-          sectionTitle('${selectedLang[AppLangAssets.recentlyAdded]} ', true, true, () {
+          sectionTitle('${selectedLang[AppLangAssets.recentlyAdded]} ', true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.recentlyAdded]!)));
           }),
           buildItemsSection(),
-          sectionTitle('${selectedLang[AppLangAssets.blogs]} ', true, false, () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => BlogsScreen()));
-          }),
-          buildBlogItemsSection()
         ],
       ),
     );
@@ -68,54 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return AdChart();
   }
 
-  buildSearchWidget() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchScreen()));
-      },
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        height: 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: AppColors.whiteColor
-        ),
-        alignment: Alignment.center,
-        child: ListTile(
-          title: Text(selectedLang[AppLangAssets.search]!, style: AppFonts.primaryFontBlackColor),
-          trailing: Image.asset(AppAssets.searchIcon, width: 30.0, height: 30.0),
-        ),
-      ),
-    );
-  }
-
-  buildBookingSection() {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        height: 150,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            for (int i = 0; i < 5; i++)
-            BookingWidget(isHomeView: true)
-          ],
-        ),
-      ),
-    );
-  }
-
-  sectionTitle(String title, bool showSeeMore, bool showBesidTxt, Function onTap) {
+  sectionTitle(String title, bool showSeeMore, Function onTap) {
     return BlocBuilder<AppSettingsCubit, AppSettingsStates>(
       builder: (context, state) {
         return ListTile(
-          title: Row(
-            children: [
-              Text(title, style: AppFonts.primaryFontBlackColor),
-              if (showBesidTxt)
-              Text(BlocProvider.of<AppSettingsCubit>(context).selectedHomeFilter, style: AppFonts.italicPrimaryFontOrangeColor),
-            ],
-          ),
+          title: Text(title, style: AppFonts.primaryFontBlackColor),
           trailing: showSeeMore ? Text(selectedLang[AppLangAssets.seeMore]!, style: AppFonts.miniFontGreyColor) : SizedBox(),
           onTap: !showSeeMore ? () {} : () {
             onTap();
@@ -127,68 +70,230 @@ class _HomeScreenState extends State<HomeScreen> {
 
   buildAdsSection() {
     return Container(
-      height: 200,
+      height: 850,
       margin: EdgeInsets.only(bottom: 15.0, top: 15.0),
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: 200,
-          animateToClosest: true,
-          autoPlay: true,
-          autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
-          initialPage: 0,
-          enlargeCenterPage: true,
-          pauseAutoPlayOnTouch: true,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(
+            'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&h=1200&fit=crop',
+          ),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.3),
+            BlendMode.darken,
+          ),
         ),
-        items: ['https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/244206/pexels-photo-244206.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/707046/pexels-photo-707046.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=600',
-        'https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&w=600'].map((i) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              image: DecorationImage(
-                image: NetworkImage(i),
-                fit: BoxFit.fill
-              )
-            ),
-          );
-        }).toList(),
       ),
-    );
-  }
-
-  buildTabs() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          tabItem(selectedLang[AppLangAssets.cars]!),
-          tabItem(selectedLang[AppLangAssets.motorBikes]!),
-          tabItem(selectedLang[AppLangAssets.bikes]!),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                const Text(
+                  'Find Your\nPerfect Car',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    height: 1.1,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 24),
+          
+          // Tab Bar
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildTab('All', 0),
+                const SizedBox(width: 32),
+                _buildTab('New', 1),
+                const SizedBox(width: 32),
+                _buildTab('Used', 2),
+              ],
+            ),
+          ),
+          const SizedBox(height: 32),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                _buildDropdown('Any Makes'),
+                const SizedBox(height: 16),
+                _buildDropdown('Any Models'),
+                const SizedBox(height: 16),
+                _buildDropdown('Prices: All Prices'),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3B82F6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.search, color: Colors.white, size: 24),
+                        SizedBox(width: 12),
+                        Text(
+                          'Search Cars',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // const Spacer(),
+          
+          // Browse Featured Section
+          Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                const Text(
+                  'Or Browse Featured Model',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _buildCategoryChip('SUV', Icons.directions_car),
+                    _buildCategoryChip('Sedan', Icons.directions_car),
+                    _buildCategoryChip('Hatchback', Icons.directions_car),
+                    _buildCategoryChip('Coupe', Icons.directions_car),
+                    _buildCategoryChip('Hybrid', Icons.flash_on),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  tabItem(String title) {
-    return BlocBuilder<AppSettingsCubit, AppSettingsStates>(
-      builder: (context, state) => InkWell(
-        onTap: () {
-          BlocProvider.of<AppSettingsCubit>(context).changeHomeFilter(title);
-        },
-        child: Container(
-          height: 40.0,
-          width: title.length * 13,
-          margin: EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: BlocProvider.of<AppSettingsCubit>(context).selectedHomeFilter == title ? AppColors.primaryColor : AppColors.whiteColor,
+  Widget _buildTab(String label, int index) {
+    final isSelected = _selectedTab == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedTab = index;
+        });
+      },
+      child: Column(
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+            ),
           ),
-          alignment: Alignment.center,
-          child: Text(title, style: BlocProvider.of<AppSettingsCubit>(context).selectedHomeFilter == title ? AppFonts.subFontWhiteColor : AppFonts.subFontBlackColor),
+          const SizedBox(height: 8),
+          Container(
+            height: 3,
+            width: 60,
+            decoration: BoxDecoration(
+              color: isSelected ? const Color(0xFF3B82F6) : Colors.transparent,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropdown(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.grey[800],
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 24),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryChip(String label, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.3),
+          width: 1,
         ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 20),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -201,18 +306,6 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) => AdWidget(imgHieght: 200,),
-      ),
-    );
-  }
-
-  buildBlogItemsSection() {
-    return Container(
-      height: 470.0,
-      margin: EdgeInsets.only(bottom: 10.0),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (context, index) => BlogWidget(imgHieght: 200,),
       ),
     );
   }

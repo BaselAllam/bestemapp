@@ -4,7 +4,6 @@ import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class AdsDetailsScreen extends StatefulWidget {
@@ -22,7 +21,7 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
 
   @override
   void initState() {
-    selectedImg = widget.coSpaceModel.imgs[0];
+    // selectedImg = widget.coSpaceModel.imgs[0];
     super.initState();
   }
 
@@ -36,7 +35,7 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
           buildUpperTitleSection(),
           buildTitleSection(),
           buildTabsSection(),
-          selectedTab == 0 ? buildAboutView() : selectedTab == 1 ? buildGalleryView() : buildReviewsView()
+          selectedTab == 0 ? buildAboutView() : buildGalleryView()
         ],
       ),
     );
@@ -48,7 +47,7 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
       height: MediaQuery.of(context).size.height / 3.5,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(selectedImg!),
+          image: NetworkImage('https://media.ed.edmunds-media.com/bugatti/chiron/2024/fe/2024_bugatti_chiron_f34_fe_110424_1600.jpg'),
           fit: BoxFit.fill
         )
       ),
@@ -167,7 +166,7 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
               borderRadius: BorderRadius.circular(5),
             ),
             padding: EdgeInsets.all(5.0),
-            child: Text(selectedLang[AppLangAssets.usedCondition]!, style: AppFonts.miniFontGreenColor),
+            child: Text(selectedLang[AppLangAssets.usedCondition]!, style: AppFonts.primaryFontBlackColor),
           ),
           Text(
             '⭐ 4.9 ( 365 reviews )',
@@ -185,7 +184,7 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
       trailing: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.greenColor
+          color: AppColors.primaryColor
         ),
         child: IconButton(
           icon: Icon(Icons.location_on_outlined),
@@ -212,10 +211,10 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
             },
             child: Container(
               decoration: BoxDecoration(
-                border: selectedTab != 0 ? Border() : Border(bottom: BorderSide(color: AppColors.greenColor))
+                border: selectedTab != 0 ? Border() : Border(bottom: BorderSide(color: AppColors.primaryColor))
               ),
               alignment: Alignment.center,
-              child: Text('About', style: selectedTab == 0 ? AppFonts.priamryGreenFont : AppFonts.primaryNormalBlackFont),
+              child: Text('About', style: selectedTab == 0 ? AppFonts.primaryFontBlackColor : AppFonts.subFontBlackColor),
             )
           ),
           InkWell(
@@ -225,23 +224,10 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
             },
             child: Container(
               decoration: BoxDecoration(
-                border: selectedTab != 1 ? Border() : Border(bottom: BorderSide(color: AppColors.greenColor))
+                border: selectedTab != 1 ? Border() : Border(bottom: BorderSide(color: AppColors.primaryColor))
               ),
               alignment: Alignment.center,
-              child: Text('Gallery', style: selectedTab == 1 ? AppFonts.priamryGreenFont : AppFonts.primaryNormalBlackFont),
-            )
-          ),
-          InkWell(
-            onTap: () {
-              selectedTab = 2;
-              setState(() {});
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: selectedTab != 2 ? Border() : Border(bottom: BorderSide(color: AppColors.greenColor))
-              ),
-              alignment: Alignment.center,
-              child: Text('Reviews', style: selectedTab == 2 ? AppFonts.priamryGreenFont : AppFonts.primaryNormalBlackFont),
+              child: Text('Gallery', style: selectedTab == 1 ? AppFonts.primaryFontBlackColor : AppFonts.subFontBlackColor),
             )
           ),
         ],
@@ -262,19 +248,19 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          for (int i = 0; i < widget.coSpaceModel.imgs.length; i++)
-          InkWell(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                image: DecorationImage(
-                  image: NetworkImage(widget.coSpaceModel.imgs[i]),
-                  fit: BoxFit.fill
-                )
-              ),
-            ),
-          ),
+          // for (int i = 0; i < widget.coSpaceModel.imgs.length; i++)
+          // InkWell(
+          //   onTap: () {},
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(10.0),
+          //       image: DecorationImage(
+          //         image: NetworkImage(widget.coSpaceModel.imgs[i]),
+          //         fit: BoxFit.fill
+          //       )
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -290,64 +276,31 @@ class _AdsDetailsScreenState extends State<AdsDetailsScreen> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.directions_walk_rounded, color: AppColors.greenColor),
-                  Text(' 5 ', style: AppFonts.primaryNormalBlackFont),
-                  Text('MIN', style: AppFonts.priamryGreyFont),
+                  Icon(Icons.directions_walk_rounded, color: AppColors.primaryColor),
+                  Text(' 5 ', style: AppFonts.primaryFontBlackColor),
+                  Text('MIN', style: AppFonts.primaryFontGreyColor),
                 ],
               ),
               Row(
                 children: [
-                  Icon(Icons.location_on, color: AppColors.greenColor),
-                  Text(' 2.3 ', style: AppFonts.primaryNormalBlackFont),
-                  Text('KM', style: AppFonts.priamryGreyFont),
+                  Icon(Icons.location_on, color: AppColors.primaryColor),
+                  Text(' 2.3 ', style: AppFonts.primaryFontBlackColor),
+                  Text('KM', style: AppFonts.primaryFontGreyColor),
                 ],
               ),
               Row(
                 children: [
-                  Icon(Icons.watch_later, color: AppColors.greenColor),
-                  Text(' open', style: AppFonts.primaryNormalBlackFont),
+                  Icon(Icons.watch_later, color: AppColors.primaryColor),
+                  Text(' open', style: AppFonts.primaryFontBlackColor),
                 ],
               ),
             ],
           ),
           SizedBox(height: 30.0),
           ListTile(
-            title: Text('Description', style: AppFonts.primaryNormalBlackFont),
-            subtitle: Text(widget.coSpaceModel.bio, style: AppFonts.priamryGreyFont),
+            title: Text('Description', style: AppFonts.primaryFontBlackColor),
+            subtitle: Text('bio', style: AppFonts.primaryFontGreyColor),
           ),
-        ],
-      ),
-    );
-  }
-
-  buildReviewsView() {
-    return Container(
-      child: Column(
-        children: [
-          ListTile(
-          title: Text(
-            '⭐ 4.9 ( 365 reviews )',
-            style: AppFonts.subBlackFont,
-          ),
-          trailing: CustomBtnWidget(title: 'Add Review', backgroundColor: AppColors.greenColor, textStyle: AppFonts.miniWhiteFont, size: Size(100, 30),
-          onPress: () {},
-          ),
-        ),
-          for (int i = 0; i < 10; i++)
-          Column(
-            children: [
-              ListTile(
-                leading: CircleAvatar(
-                  minRadius: 40,
-                  maxRadius: 40,
-                  backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/44323531?v=4'),
-                ),
-                title: Text('Bassel Allam', style: AppFonts.primaryNormalBlackFont),
-                subtitle: Text('a great workspace i enojoed there', style: AppFonts.priamryGreyFont),
-              ),
-              Divider(endIndent: 20, indent: 20, thickness: 0.3, color: AppColors.greyColor)
-            ],
-          )
         ],
       ),
     );
