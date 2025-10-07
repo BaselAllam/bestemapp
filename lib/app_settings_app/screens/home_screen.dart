@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   buildAdsSection() {
     return Container(
-      height: 850,
+      height: 500,
       margin: EdgeInsets.only(bottom: 15.0, top: 15.0),
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -86,40 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                const Text(
-                  'Find Your\nPerfect Car',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    height: 1.1,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          
-          const SizedBox(height: 24),
-          
-          // Tab Bar
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildTab('All', 0),
-                const SizedBox(width: 32),
-                _buildTab('New', 1),
-                const SizedBox(width: 32),
-                _buildTab('Used', 2),
-              ],
-            ),
-          ),
           const SizedBox(height: 32),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -137,6 +103,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Column(
               children: [
+                Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                    _buildTab('All', 0),
+                    const SizedBox(width: 32),
+                    _buildTab('New', 1),
+                    const SizedBox(width: 32),
+                    _buildTab('Used', 2),
+                  ],
+                ),
+                const SizedBox(height: 16),
                 _buildDropdown('Any Makes'),
                 const SizedBox(height: 16),
                 _buildDropdown('Any Models'),
@@ -175,38 +152,34 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          
-          // const Spacer(),
-          
-          // Browse Featured Section
-          Container(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                const Text(
-                  'Or Browse Featured Model',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    _buildCategoryChip('SUV', Icons.directions_car),
-                    _buildCategoryChip('Sedan', Icons.directions_car),
-                    _buildCategoryChip('Hatchback', Icons.directions_car),
-                    _buildCategoryChip('Coupe', Icons.directions_car),
-                    _buildCategoryChip('Hybrid', Icons.flash_on),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.all(24),
+          //   child: Column(
+          //     children: [
+          //       const Text(
+          //         'Or Browse Featured Model',
+          //         style: TextStyle(
+          //           color: Colors.white,
+          //           fontSize: 18,
+          //           fontWeight: FontWeight.w500,
+          //         ),
+          //       ),
+          //       const SizedBox(height: 16),
+          //       Wrap(
+          //         spacing: 12,
+          //         runSpacing: 12,
+          //         alignment: WrapAlignment.center,
+          //         children: [
+          //           _buildCategoryChip('SUV', Icons.directions_car),
+          //           _buildCategoryChip('Sedan', Icons.directions_car),
+          //           _buildCategoryChip('Hatchback', Icons.directions_car),
+          //           _buildCategoryChip('Coupe', Icons.directions_car),
+          //           _buildCategoryChip('Hybrid', Icons.flash_on),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
@@ -225,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(
             label,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.blue,
               fontSize: 18,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
@@ -283,13 +256,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 20),
+          Icon(icon, color: Colors.white, size: 15),
           const SizedBox(width: 8),
           Text(
             label,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w500,
             ),
           ),
