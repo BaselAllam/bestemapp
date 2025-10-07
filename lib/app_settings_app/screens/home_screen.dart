@@ -3,7 +3,6 @@ import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
-import 'package:bestemapp/ads_app/widgets/ad_chart.dart';
 import 'package:bestemapp/ads_app/widgets/ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/ads_app/widgets/sell_btn.dart';
@@ -36,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           buildAdsSection(),
           sectionTitle('${selectedLang[AppLangAssets.adChart]} ', false, () {}),
-          buildChart(),
           sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
           }),
@@ -48,10 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-  }
-
-  buildChart() {
-    return AdChart();
   }
 
   sectionTitle(String title, bool showSeeMore, Function onTap) {
