@@ -1,7 +1,7 @@
+import 'package:bestemapp/app_settings_app/screens/onboarding_screen.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/utils/init_data.dart';
-import 'package:bestemapp/user_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         future: fun(),
         builder: (context, snapshot) {
           if (snapshot.hasData == true) {
-            return AuthScreen();
+            return OnboardingScreen();
             // if (widget.isNotification) {
             //   return NotificationScreen(isNotification: widget.isNotification);
             // } else if (snapshot.data == 'home') {

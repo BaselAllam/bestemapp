@@ -1,18 +1,19 @@
 import 'package:bestemapp/app_settings_app/screens/bottom_nav_bar_screen.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/user_app/screens/register_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
 // Login Screen
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -88,7 +89,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                           builder: (context) => const ForgotPasswordScreen(),
                         ),
                       );
@@ -112,7 +113,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Login successful!')),
                       );
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavBarScreen()));
+                      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -137,7 +138,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                           builder: (context) => const RegisterScreen(),
                         ),
                       );
@@ -252,7 +253,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                           builder: (context) => OTPScreen(
                             phoneNumber: _phoneController.text,
                           ),
@@ -378,7 +379,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       if (_otpController.text.length == 6) {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => const ResetPasswordScreen(),
                           ),
                         );
