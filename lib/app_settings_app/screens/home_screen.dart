@@ -152,34 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          // Container(
-          //   padding: const EdgeInsets.all(24),
-          //   child: Column(
-          //     children: [
-          //       const Text(
-          //         'Or Browse Featured Model',
-          //         style: TextStyle(
-          //           color: Colors.white,
-          //           fontSize: 18,
-          //           fontWeight: FontWeight.w500,
-          //         ),
-          //       ),
-          //       const SizedBox(height: 16),
-          //       Wrap(
-          //         spacing: 12,
-          //         runSpacing: 12,
-          //         alignment: WrapAlignment.center,
-          //         children: [
-          //           _buildCategoryChip('SUV', Icons.directions_car),
-          //           _buildCategoryChip('Sedan', Icons.directions_car),
-          //           _buildCategoryChip('Hatchback', Icons.directions_car),
-          //           _buildCategoryChip('Coupe', Icons.directions_car),
-          //           _buildCategoryChip('Hybrid', Icons.flash_on),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
