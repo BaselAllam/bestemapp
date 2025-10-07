@@ -1,7 +1,7 @@
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/utils/init_data.dart';
-import 'package:bestemapp/user_app/screens/auth_screen.dart';
+import 'package:bestemapp/user_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
