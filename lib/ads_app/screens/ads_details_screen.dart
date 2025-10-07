@@ -744,42 +744,15 @@ class SellerCard extends StatelessWidget {
               )
             ],
           ),
-
           const SizedBox(height: 16),
-
-          /// View Profile button
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
               icon: const Icon(Icons.person_outline),
-              label: const Text("View Profile"),
-              onPressed: () {},
-            ),
-          ),
-
-          const Divider(height: 32),
-
-          /// Call Seller button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              icon: const Icon(Icons.phone),
               label: const Text("Call Seller"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
               onPressed: () {},
             ),
           ),
-
-          const SizedBox(height: 12),
-
-          /// WhatsApp button
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
@@ -788,18 +761,7 @@ class SellerCard extends StatelessWidget {
               onPressed: () {},
             ),
           ),
-
-          const SizedBox(height: 12),
-
-          /// Email button
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.email_outlined),
-              label: const Text("Email Seller"),
-              onPressed: () {},
-            ),
-          ),
+          const Divider(height: 32),
         ],
       ),
     );
