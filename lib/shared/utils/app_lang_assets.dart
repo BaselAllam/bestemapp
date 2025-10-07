@@ -120,4 +120,5 @@ class AppLangAssets {
   static String landMark = 'landMark';
   static String newCondition = 'newCondition';
   static String usedCondition = 'usedCondition';
+  static String someThingWentWrong = 'someThingWentWrong';
 }

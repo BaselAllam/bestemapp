@@ -8,7 +8,7 @@ final Map<String, String> arData = {
   AppLangAssets.password: 'كلمة المرور',
   AppLangAssets.enterUrPassword: 'أدخل كلمة المرور',
   AppLangAssets.confirmPassword: 'تأكيد كلمة المرور',
-  AppLangAssets.forgetPassword: 'نسيت كلمة المرور',
+  AppLangAssets.forgetPassword: 'نسيت كلمة المرور ؟',
   AppLangAssets.dontHaveAccount: 'ليس لديك حساب؟',
   AppLangAssets.register: 'تسجيل',
   AppLangAssets.fullName: 'الاسم الكامل',
@@ -120,4 +120,5 @@ final Map<String, String> arData = {
   AppLangAssets.landMark: 'علامة مميزة',
   AppLangAssets.newCondition: 'جديد',
   AppLangAssets.usedCondition: 'مستعمل',
+  AppLangAssets.someThingWentWrong: 'حدث خطأ برجاء المحاوله لاحقا',
 };

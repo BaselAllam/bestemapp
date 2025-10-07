@@ -1,6 +1,7 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/screens/splash_screen.dart';
+import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,6 +23,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(
           create: (context) => AppSettingsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => UserCubit(),
         )
       ],
       child: BlocBuilder<AppSettingsCubit, AppSettingsStates>(

@@ -1,8 +1,6 @@
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:flutter/material.dart';
 
-
-
 snack(String message, Color color) {
   return SnackBar(
     content: Text(message, style: AppFonts.miniFontWhiteColor),

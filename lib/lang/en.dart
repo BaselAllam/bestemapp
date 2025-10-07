@@ -8,7 +8,7 @@ final Map<String, String> enData = {
   AppLangAssets.password: 'Password',
   AppLangAssets.enterUrPassword: 'Enter your password',
   AppLangAssets.confirmPassword: 'Confirm password',
-  AppLangAssets.forgetPassword: 'Forget Password',
+  AppLangAssets.forgetPassword: 'Forget Password ?',
   AppLangAssets.dontHaveAccount: 'Don\'t have an account ?',
   AppLangAssets.register: 'Register',
   AppLangAssets.fullName: 'Full Name',
@@ -120,4 +120,5 @@ final Map<String, String> enData = {
   AppLangAssets.landMark: 'Land Mark',
   AppLangAssets.newCondition: 'New',
   AppLangAssets.usedCondition: 'Used',
+  AppLangAssets.someThingWentWrong: 'Some thing went wrong',
 };

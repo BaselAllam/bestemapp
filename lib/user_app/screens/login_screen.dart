@@ -1,11 +1,19 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/screens/bottom_nav_bar_screen.dart';
+import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
+import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
+import 'package:bestemapp/shared/shared_widgets/snack_widget.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/user_app/logic/user_cubit.dart';
+import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:bestemapp/user_app/screens/register_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-// Login Screen
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -20,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -42,44 +50,35 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(child: LogoContainer(size: Size(MediaQuery.of(context).size.width / 2.5, 150))),
-                const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Text(
+                  selectedLang[AppLangAssets.login]!,
+                  style: AppFonts.hugeFontBlackColor
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Phone Number',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Text(
+                  selectedLang[AppLangAssets.phoneNumber]!,
+                  style: AppFonts.subFontBlackColor
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(
-                    hintText: '+966 XX XXX XXXX',
-                    hintStyle: TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                    hintText: '+2 XX XXX XXXX',
+                    hintStyle: AppFonts.subFontGreyColor
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Password',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Text(
+                  selectedLang[AppLangAssets.password]!,
+                  style: AppFonts.subFontBlackColor
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your password',
-                    hintStyle: TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.password]!,
+                    hintStyle: AppFonts.subFontGreyColor,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -94,12 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 14,
-                      ),
+                    child: Text(
+                      selectedLang[AppLangAssets.forgetPassword]!,
+                      style: AppFonts.miniFontPrimaryColor
                     ),
                   ),
                 ),
@@ -107,26 +103,41 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle login
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Login successful!')),
-                      );
-                      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
+                  child: BlocConsumer<UserCubit, UserStates>(
+                    listener: (context, state) {
+                      if (state is LoginSomeThingWentWrongState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          snack(selectedLang[AppLangAssets.someThingWentWrong]!, AppColors.redColor)
+                        );
+                      } else if (state is LoginErrorState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          snack(state.errMsg, AppColors.redColor)
+                        );
+                      } else if (state is LoginOTPState) {
+                        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => OTPScreen(phoneNumber: _phoneController.text)));
+                      } else if (state is LoginSuccessState) {
+                        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
+                      }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    builder: (context, state) => ElevatedButton(
+                      onPressed: state is LoginLoadingState ? () {} : () async {
+                        if (_phoneController.text.isEmpty || _passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            snack(selectedLang[AppLangAssets.fieldsRequired]!, AppColors.redColor)
+                          );
+                        } else {
+                          await BlocProvider.of<UserCubit>(context).login(_phoneController.text, _passwordController.text);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      child: state is LoginLoadingState ? CustomLoadingSpinner() : Text(
+                        selectedLang[AppLangAssets.login]!,
+                        style: AppFonts.primaryFontWhiteColor
                       ),
                     ),
                   ),
@@ -148,19 +159,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: "Don't Have an Account?! ",
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
+                            text: '${selectedLang[AppLangAssets.dontHaveAccount]!} ',
+                            style: AppFonts.miniFontBlackColor,
                             children: [
                               TextSpan(
-                                text: 'Sign Up',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                text: selectedLang[AppLangAssets.register]!,
+                                style: AppFonts.subFontPrimaryColor
                               ),
                             ],
                           ),
