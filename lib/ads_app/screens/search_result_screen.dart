@@ -1,4 +1,5 @@
 import 'package:bestemapp/ads_app/logic/ads_cubit.dart';
+import 'package:bestemapp/ads_app/widgets/filter_widget.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
@@ -47,7 +48,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               FilterWidget(
                 icon: Icons.tune,
                 txt: selectedLang[AppLangAssets.filter]!,
-                onTap: () {},
+                onTap: () {
+                  _showFilterBottomSheet(context);
+                },
               ),
               FilterWidget(
                 icon: Icons.menu,
@@ -149,6 +152,20 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       ),
       minHeight: 200,
       maxHeight: 200
+    );
+  }
+
+  void _showFilterBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CarFilterBottomSheet(
+        onApplyFilters: (filters) {
+          
+          // Handle the filters here
+        },
+      ),
     );
   }
 }
