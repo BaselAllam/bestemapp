@@ -50,6 +50,21 @@ class CarCubit extends Cubit<CarStates> {
   List<CarMakeModel> _carMakes = [];
   List<CarMakeModel> get carMakes => _carMakes;
 
+  List<CarAdModel> _userCarAds = [];
+  List<CarAdModel> get userCarAds => _userCarAds;
+
+  List<CarAdModel> _searchCarAdsResult = [];
+  List<CarAdModel> get searchCarAdsResult => _searchCarAdsResult;
+
+  Map<String, List<CarAdModel>> _landingCarAdsResult = {
+    'popular': <CarAdModel>[],
+    'recently_added': <CarAdModel>[]
+  };
+  Map<String, List<CarAdModel>> get landingCarAdsResult => _landingCarAdsResult;
+
+  List<CarAdModel> _favUserCarAds = [];
+  List<CarAdModel> get favUserCarAds => _favUserCarAds;
+
   Future<void> getCarShapes() async {
     emit(GetCarShapesLoadingState());
     try {
@@ -107,7 +122,7 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
-  Future<void> handleCarAdWishlist({required CarAdModel carAdModel, String wishlistId = '', String carAd = ''}) async {
+  Future<void> handleCarAdWishlist({required CarAdModel carAdModel, String wishlistId = '', String carAd = '', int favListIndex = 0}) async {
     emit(GetCarMakesLoadingState());
     try {
       String userToken = await getStringFromLocal(AppApi.userToken);
@@ -121,12 +136,77 @@ class CarCubit extends Cubit<CarStates> {
       }
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
+        if (!carAdModel.isFav) {
+          _favUserCarAds.insert(0, carAdModel);
+        } else {
+          _favUserCarAds.removeAt(favListIndex);
+        }
         emit(GetCarMakesSuccessState());
       } else {
         emit(GetCarMakesErrorState(data['data']));
       }
     } catch (e) {
       emit(GetCarMakesSomeThingWentWrongState());
+    }
+  }
+
+  Future<void> getUserCarAds() async {
+    emit(GetUserCarAdsLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/user_car_ads/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data) {
+          _userCarAds.add(CarAdModel.fromJson(i));
+        }
+        emit(GetUserCarAdsSuccessState());
+      } else {
+        emit(GetUserCarAdsErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(GetUserCarAdsSomeThingWentWrongState());
+    }
+  }
+
+  Future<void> searchCarAds() async {
+    emit(SearchCarAdsLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_car_ads/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data) {
+          _searchCarAdsResult.add(CarAdModel.fromJson(i));
+        }
+        emit(SearchCarAdsSuccessState());
+      } else {
+        emit(SearchCarAdsErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(SearchCarAdsSomeThingWentWrongState());
+    }
+  }
+
+  Future<void> getCarsLanding() async {
+    emit(LandingCarAdsLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/landing_car_ads/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data['popular']) {
+          _landingCarAdsResult['popular']!.add(CarAdModel.fromJson(i));
+        }
+        for (var i in data['recently_added']) {
+          _landingCarAdsResult['recently_added']!.add(CarAdModel.fromJson(i));
+        }
+        emit(LandingCarAdsSuccessState());
+      } else {
+        emit(LandingCarAdsErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(LandingCarAdsSomeThingWentWrongState());
     }
   }
 }

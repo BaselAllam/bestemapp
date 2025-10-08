@@ -6,14 +6,9 @@
 
   GetAppData ( AppVersion, )
 
-  SearchAd
-  GetLandingAds
   AdDetails
-  GetUserAds
   CreateAd
   UpdateAd
-
-  HandleWishlist
 
 # Need Implementation
   Login
@@ -28,6 +23,10 @@
   getMake
   getCarShapes
   getCarSpecs
+  HandleWishlist
+  GetUserAds
+  SearchAd
+  GetLandingAds
 
 
 */

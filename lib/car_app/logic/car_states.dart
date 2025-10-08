@@ -51,3 +51,39 @@ class HandleCardAdWishlistErrorState extends CarStates {
 }
 
 class HandleCardAdWishlistSomeThingWentWrongState extends CarStates {}
+
+class GetUserCarAdsLoadingState extends CarStates {}
+
+class GetUserCarAdsSuccessState extends CarStates {}
+
+class GetUserCarAdsErrorState extends CarStates {
+
+  String errorMsg;
+  GetUserCarAdsErrorState(this.errorMsg);
+}
+
+class GetUserCarAdsSomeThingWentWrongState extends CarStates {}
+
+class SearchCarAdsLoadingState extends CarStates {}
+
+class SearchCarAdsSuccessState extends CarStates {}
+
+class SearchCarAdsErrorState extends CarStates {
+
+  String errorMsg;
+  SearchCarAdsErrorState(this.errorMsg);
+}
+
+class SearchCarAdsSomeThingWentWrongState extends CarStates {}
+
+class LandingCarAdsLoadingState extends CarStates {}
+
+class LandingCarAdsSuccessState extends CarStates {}
+
+class LandingCarAdsErrorState extends CarStates {
+
+  String errorMsg;
+  LandingCarAdsErrorState(this.errorMsg);
+}
+
+class LandingCarAdsSomeThingWentWrongState extends CarStates {}
