@@ -4,7 +4,7 @@
   VerifyOTP
   ResetPassword
 
-  GetAppData ( Countries, Make & Models, Colors, AppVersion, )
+  GetAppData ( Make & Models, AppVersion, )
 
   SearchAd
   GetLandingAds
@@ -14,7 +14,6 @@
   UpdateAd
 
   Add or Remove To Wishlist
-  GetUserWishlist
 
 # Need Implementation
   Login
@@ -23,6 +22,9 @@
   UpdateUserData
   GetUserNotifications
   MarkNotificationsAsRead
+  getFaq
+  getColors
+  getCountries
 
 
 */

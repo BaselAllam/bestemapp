@@ -1,5 +1,8 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
+import 'package:bestemapp/app_settings_app/logic/color_model.dart';
+import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/lang/en.dart';
+import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/shared/utils/local_storage.dart';
@@ -8,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bestemapp/app_settings_app/screens/fav_screen.dart';
 import 'package:bestemapp/app_settings_app/screens/home_screen.dart';
 import 'package:bestemapp/app_settings_app/screens/more_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 Map<String, String> selectedLang = enData;
 enum LanguageOption {ar, en}
@@ -20,6 +25,15 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
   LanguageOption get selectedLangOption => _selectedLangOption;
   Locale _selectedLocale = Locale('en');
   Locale get selectedLocale => _selectedLocale;
+
+  Map<String, dynamic> _faqs = {};
+  Map<String, dynamic> get faqs => _faqs;
+
+  List<CountryModel> _countries = [];
+  List<CountryModel> get countries => _countries;
+
+  List<ColorModel> _colors = [];
+  List<ColorModel> get colors => _colors;
 
   final List<Map<String, dynamic>> bottomScreens = [
     {
@@ -80,28 +94,58 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
     emit(ChangeLanguageState());
   }
 
-  // int selectedOnBoardingScreen = 1;
+  Future<void> getFaq() async {
+    emit(GetFaqLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/core/faq/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        _faqs = data['data'];
+        emit(GetFaqSuccessState());
+      } else {
+        emit(GetFaqErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(GetFaqSomeThingWentWrongState());
+    }
+  }
 
-  // final Map<int, Map<String, dynamic>> onBoardingScreens = {
-  //   1: {
-  //     'img': AppAssets.onBoarding1,
-  //     'title': AppLangAssets.onBoardingOneTitle,
-  //     'subTitle': AppLangAssets.onBoardingOneSubTitle
-  //   },
-  //   2: {
-  //     'img': AppAssets.onBoarding2,
-  //     'title': AppLangAssets.onBoardingTwoTitle,
-  //     'subTitle': AppLangAssets.onBoardingTwoSubTitle
-  //   },
-  //   3: {
-  //     'img': AppAssets.onBoarding3,
-  //     'title': AppLangAssets.onBoardingThreeTitle,
-  //     'subTitle': AppLangAssets.onBoardingThreeSubTitle
-  //   },
-  // };
+  Future<void> getCountries() async {
+    emit(GetCountriesLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/core/countries/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data) {
+          _countries.add(CountryModel.fromJson(i));
+        }
+        emit(GetCountriesSuccessState());
+      } else {
+        emit(GetCountriesErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(GetCountriesSomeThingWentWrongState());
+    }
+  }
 
-  // void updateOnPording(int key) {
-  //   selectedOnBoardingScreen = key;
-  //   emit(ChangeOnBoardingAppSettingsState());
-  // }
+  Future<void> getColors() async {
+    emit(GetColorsLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/core/colors/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data) {
+          _colors.add(ColorModel.fromJson(i));
+        }
+        emit(GetColorsSuccessState());
+      } else {
+        emit(GetColorsErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(GetColorsSomeThingWentWrongState());
+    }
+  }
 }
