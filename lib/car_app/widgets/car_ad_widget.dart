@@ -1,4 +1,4 @@
-import 'package:bestemapp/ads_app/screens/ads_details_screen.dart';
+import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';

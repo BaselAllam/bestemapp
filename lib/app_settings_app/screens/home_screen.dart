@@ -1,11 +1,11 @@
-import 'package:bestemapp/ads_app/screens/search_result_screen.dart';
+import 'package:bestemapp/car_app/screens/car_search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
-import 'package:bestemapp/ads_app/widgets/ad_widget.dart';
+import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
-import 'package:bestemapp/ads_app/widgets/sell_btn.dart';
+import 'package:bestemapp/car_app/widgets/sell_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

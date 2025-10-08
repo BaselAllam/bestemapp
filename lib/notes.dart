@@ -1,12 +1,8 @@
 /*
 
-  Login
-  Register
   RequestOTP
   VerifyOTP
   ResetPassword
-  GetUserData
-  UpdateUserData
 
   GetAppData ( Countries, Make & Models, Colors, AppVersion, )
 
@@ -20,6 +16,11 @@
   Add or Remove To Wishlist
   GetUserWishlist
 
+# Need Implementation
+  Login
+  Register
+  GetUserData
+  UpdateUserData
   GetUserNotifications
   MarkNotificationsAsRead
 

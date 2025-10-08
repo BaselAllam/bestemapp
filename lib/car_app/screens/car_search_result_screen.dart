@@ -1,9 +1,9 @@
-import 'package:bestemapp/ads_app/logic/ads_cubit.dart';
-import 'package:bestemapp/ads_app/widgets/filter_widget.dart';
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/widgets/filter_widget.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
-import 'package:bestemapp/ads_app/widgets/ad_widget.dart';
+import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/back_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/field.dart';
 import 'package:bestemapp/shared/shared_widgets/filter_widget.dart';
