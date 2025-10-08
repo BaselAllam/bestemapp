@@ -1,4 +1,4 @@
-import 'package:bestemapp/app_settings_app/screens/notification_screen.dart';
+import 'package:bestemapp/notification_app/screens/notification_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
