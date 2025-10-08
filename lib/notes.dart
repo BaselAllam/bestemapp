@@ -4,7 +4,7 @@
   VerifyOTP
   ResetPassword
 
-  GetAppData ( Make & Models, AppVersion, )
+  GetAppData ( AppVersion, )
 
   SearchAd
   GetLandingAds
@@ -25,6 +25,9 @@
   getFaq
   getColors
   getCountries
+  getMake
+  getCarShapes
+  getCarSpecs
 
 
 */

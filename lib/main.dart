@@ -1,6 +1,7 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/screens/splash_screen.dart';
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/notification_app/logic/notification_cubit.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,10 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => NotificationCubit(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => CarCubit(),
+        ),
       ],
       child: BlocBuilder<AppSettingsCubit, AppSettingsStates>(
         builder: (context, state) => MaterialApp(
