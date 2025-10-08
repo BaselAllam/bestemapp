@@ -39,3 +39,15 @@ class GetCarShapesErrorState extends CarStates {
 }
 
 class GetCarShapesSomeThingWentWrongState extends CarStates {}
+
+class HandleCardAdWishlistLoadingState extends CarStates {}
+
+class HandleCardAdWishlistSuccessState extends CarStates {}
+
+class HandleCardAdWishlistErrorState extends CarStates {
+
+  String errorMsg;
+  HandleCardAdWishlistErrorState(this.errorMsg);
+}
+
+class HandleCardAdWishlistSomeThingWentWrongState extends CarStates {}

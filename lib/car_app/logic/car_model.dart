@@ -1,3 +1,12 @@
+
+
+class CarAdModel {
+  final String id;
+  bool isFav;
+
+  CarAdModel({required this.id, required this.isFav});
+}
+
 class CarSpecsModel {
   final String id;
   final String spec;

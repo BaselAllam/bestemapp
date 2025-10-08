@@ -1,6 +1,7 @@
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
+import 'package:bestemapp/shared/utils/local_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -97,6 +98,29 @@ class CarCubit extends Cubit<CarStates> {
         for (var i in data) {
           _carMakes.add(CarMakeModel.fromJson(i));
         }
+        emit(GetCarMakesSuccessState());
+      } else {
+        emit(GetCarMakesErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(GetCarMakesSomeThingWentWrongState());
+    }
+  }
+
+  Future<void> handleCarAdWishlist({required CarAdModel carAdModel, String wishlistId = '', String carAd = ''}) async {
+    emit(GetCarMakesLoadingState());
+    try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
+      Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
+      http.Response? response;
+      if (carAdModel.isFav) {
+        response = await http.delete(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers, body: json.encode({'wishlist_id': wishlistId}));
+      } else {
+        response = await http.post(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers, body: json.encode({'car_ad': carAd}));
+      }
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
         emit(GetCarMakesSuccessState());
       } else {
         emit(GetCarMakesErrorState(data['data']));

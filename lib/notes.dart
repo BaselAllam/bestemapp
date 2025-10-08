@@ -13,7 +13,7 @@
   CreateAd
   UpdateAd
 
-  Add or Remove To Wishlist
+  HandleWishlist
 
 # Need Implementation
   Login
