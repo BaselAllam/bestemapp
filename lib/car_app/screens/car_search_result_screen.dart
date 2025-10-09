@@ -1,6 +1,6 @@
-import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/widgets/filter_widget.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/car_app/widgets/sort_widget.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
@@ -21,6 +21,26 @@ class SearchResultScreen extends StatefulWidget {
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
 
+  CarSortOption? _currentSort;
+
+  void _showSortBottomSheet() async {
+    final result = await CarSortBottomSheet.show(
+      context: context,
+      currentSort: _currentSort,
+      showMileageOptions: true,
+    );
+
+    if (result != null) {
+      setState(() {
+        _currentSort = result;
+      });
+      _applySorting(result);
+    }
+  }
+
+  void _applySorting(CarSortOption sort) {
+    
+  }
   bool isNewCondition = false;
   bool isUsedCondition = true;
 
@@ -42,7 +62,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 icon: Icons.sort,
                 txt: selectedLang[AppLangAssets.sort]!,
                 onTap: () {
-                  buildSortDialog();
+                  _showSortBottomSheet();
                 },
               ),
               FilterWidget(
@@ -72,41 +92,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ]
         ),
       ),
-    );
-  }
-
-  buildSortDialog() {
-    return bottomSheet(
-      context: context,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(selectedLang[AppLangAssets.sort]!, style: AppFonts.primaryFontBlackColor, textAlign: TextAlign.center),
-            for (int i = 0; i < sortData.length; i++)
-            ListTile(
-              title: Text(sortData[i]['title'], style: AppFonts.subFontBlackColor),
-              trailing: Checkbox(
-                value: sortData[i]['value'],
-                activeColor: AppColors.primaryColor,
-                checkColor: AppColors.whiteColor,
-                hoverColor: AppColors.primaryColor,
-                onChanged: (v) {
-                  sortData[i]['value'] = v;
-                  for (var x in sortData) {
-                    if (x['title'] != sortData[i]['title']) {
-                      x['value'] = false;
-                    }
-                  }
-                  setState(() {});
-                  Navigator.pop(context);
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-      minHeight: 300,
-      maxHeight: 300
     );
   }
 
@@ -162,8 +147,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) => CarFilterBottomSheet(
         onApplyFilters: (filters) {
-          
-          // Handle the filters here
         },
       ),
     );

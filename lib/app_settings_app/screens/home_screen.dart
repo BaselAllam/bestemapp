@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           buildAdsSection(),
-          sectionTitle('${selectedLang[AppLangAssets.adChart]} ', false, () {}),
           sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
           }),

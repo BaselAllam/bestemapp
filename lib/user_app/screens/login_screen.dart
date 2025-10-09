@@ -121,14 +121,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     builder: (context, state) => ElevatedButton(
                       onPressed: state is LoginLoadingState ? () {} : () async {
-                        if (_phoneController.text.isEmpty || _passwordController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            snack(selectedLang[AppLangAssets.fieldsRequired]!, AppColors.redColor)
-                          );
-                        } else {
-                          await BlocProvider.of<UserCubit>(context).login(_phoneController.text, _passwordController.text);
-                        }
-                        // Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
+                        // if (_phoneController.text.isEmpty || _passwordController.text.isEmpty) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     snack(selectedLang[AppLangAssets.fieldsRequired]!, AppColors.redColor)
+                        //   );
+                        // } else {
+                        //   await BlocProvider.of<UserCubit>(context).login(_phoneController.text, _passwordController.text);
+                        // }
+                        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,

@@ -4,8 +4,6 @@
   VerifyOTP
   ResetPassword
 
-  GetAppData ( AppVersion, )
-
   AdDetails
   CreateAd
   UpdateAd
