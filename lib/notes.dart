@@ -4,7 +4,6 @@
   VerifyOTP
   ResetPassword
 
-  AdDetails
   CreateAd
   UpdateAd
 
