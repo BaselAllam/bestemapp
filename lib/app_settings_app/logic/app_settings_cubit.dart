@@ -26,8 +26,8 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
   Locale _selectedLocale = Locale('en');
   Locale get selectedLocale => _selectedLocale;
 
-  Map<String, dynamic> _faqs = {};
-  Map<String, dynamic> get faqs => _faqs;
+  List<Map<String, dynamic>> _faqs = [];
+  List<Map<String, dynamic>> get faqs => _faqs;
 
   List<CountryModel> _countries = [];
   List<CountryModel> get countries => _countries;

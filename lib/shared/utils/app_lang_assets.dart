@@ -122,4 +122,11 @@ class AppLangAssets {
   static String newCondition = 'newCondition';
   static String usedCondition = 'usedCondition';
   static String someThingWentWrong = 'someThingWentWrong';
+  static String weAreSorry = 'weAreSorry';
+  static String tryAgain = 'tryAgain';
+  static String contactSupport = 'contactSupport';
+  static String searchFaq = 'searchFaq';
+  static String noResultFound = 'noResultFound';
+  static String tryDifferentKeyWord = 'tryDifferentKeyWord';
+  static String stillHaveAQuestion = 'stillHaveAQuestion';
 }

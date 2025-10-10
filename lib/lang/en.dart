@@ -121,5 +121,12 @@ final Map<String, String> enData = {
   AppLangAssets.landMark: 'Land Mark',
   AppLangAssets.newCondition: 'New',
   AppLangAssets.usedCondition: 'Used',
-  AppLangAssets.someThingWentWrong: 'Some thing went wrong',
+  AppLangAssets.someThingWentWrong: 'We Are Sorry, Some thing went wrong',
+  AppLangAssets.weAreSorry: 'We Are Sorry',
+  AppLangAssets.tryAgain: 'Try Again',
+  AppLangAssets.contactSupport: 'Contact Support',
+  AppLangAssets.searchFaq: 'Search FAQs...',
+  AppLangAssets.noResultFound: 'No results found',
+  AppLangAssets.tryDifferentKeyWord: 'Try different keywords',
+  AppLangAssets.stillHaveAQuestion: 'Still have questions?',
 };
