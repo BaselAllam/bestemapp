@@ -8,7 +8,7 @@ bool isInitLoading = false;
 Future<void> initData(BuildContext context) async {
   isInitLoading = true;
   await BlocProvider.of<AppSettingsCubit>(context).checkLang();
-  // BlocProvider.of<AppSettingsCubit>(context).getFaq();
+  BlocProvider.of<AppSettingsCubit>(context).getFaq();
   // BlocProvider.of<AppSettingsCubit>(context).getColors();
   // BlocProvider.of<AppSettingsCubit>(context).getCountries();
   // BlocProvider.of<CarCubit>(context).getCarMakes();

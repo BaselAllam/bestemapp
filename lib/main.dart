@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate
           ],
-          home: SplashScreen(isNotification: false),
+          home: SplashScreen(),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
@@ -26,8 +28,8 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
   Locale _selectedLocale = Locale('en');
   Locale get selectedLocale => _selectedLocale;
 
-  List<Map<String, dynamic>> _faqs = [];
-  List<Map<String, dynamic>> get faqs => _faqs;
+  List _faqs = [];
+  List get faqs => _faqs;
 
   List<CountryModel> _countries = [];
   List<CountryModel> get countries => _countries;
@@ -107,6 +109,7 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
         emit(GetFaqErrorState(data['data']));
       }
     } catch (e) {
+      log(e.toString());
       emit(GetFaqSomeThingWentWrongState());
     }
   }

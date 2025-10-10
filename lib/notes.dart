@@ -20,7 +20,6 @@
   GetLandingAds
 
   initData =>
-  getFaq
   getColors
   getCountries
   getMake

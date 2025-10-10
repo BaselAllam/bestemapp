@@ -21,7 +21,6 @@ class UserCubit extends Cubit<UserStates> {
       http.Response response = await http.post(Uri.parse('${AppApi.ipAddress}/users/login/'), headers: AppApi.headerData, body: json.encode({'phone': phone, 'password': password}));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        await saveBoolToLocal(AppApi.isLoggedIn, true);
         await saveStringToLocal(AppApi.userToken, data['data']['access']);
         await saveStringToLocal(AppApi.userRefreshToken, data['data']['refresh_token']);
         if (!data['data']['is_phoneVerifued']) {
@@ -100,7 +99,7 @@ class UserCubit extends Cubit<UserStates> {
       if (response.statusCode == 200) {
         _userModel = UserModel.fromJson(data['data']);
         if (data['is_phone_verified'] == false) {
-          return 'redirectEmail';
+          return 'redirectPhone';
         } else {
           return 'home';
         }

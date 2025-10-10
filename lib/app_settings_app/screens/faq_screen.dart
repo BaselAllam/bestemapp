@@ -18,7 +18,7 @@ class _FAQScreenState extends State<FAQScreen> {
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
-  List<Map<String, dynamic>> get filteredFAQs {
+  List get filteredFAQs {
     if (_searchQuery.isEmpty) return BlocProvider.of<AppSettingsCubit>(context).faqs;
     return BlocProvider.of<AppSettingsCubit>(context).faqs.where((faq) {
       return faq['faq_title']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
@@ -254,15 +254,15 @@ class _FAQScreenState extends State<FAQScreen> {
 
   Color _getCategoryColor(String category) {
     switch (category) {
-      case 'Buying':
+      case 'buying':
         return Colors.blue[600]!;
-      case 'Selling':
+      case 'selling':
         return Colors.green[600]!;
-      case 'Payment':
+      case 'payment':
         return Colors.orange[600]!;
-      case 'Account':
+      case 'account':
         return Colors.purple[600]!;
-      case 'Safety':
+      case 'safety':
         return Colors.red[600]!;
       default:
         return Colors.grey[600]!;
