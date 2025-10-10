@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/local_storage.dart';
@@ -21,14 +20,14 @@ class UserCubit extends Cubit<UserStates> {
     try {
       http.Response response = await http.post(Uri.parse('${AppApi.ipAddress}/users/login/'), headers: AppApi.headerData, body: json.encode({'phone': phone, 'password': password}));
       var data = json.decode(response.body);
-      log(data.toString());
       if (response.statusCode == 200) {
-        // await saveStringToLocal(AppApi.userToken, data['data']['access']);
-        // await saveStringToLocal(AppApi.userRefreshToken, data['data']['refresh']);
+        await saveStringToLocal(AppApi.userToken, data['data']['access']);
+        await saveStringToLocal(AppApi.userRefreshToken, data['data']['refresh']);
         if (!data['data']['is_phone_verified']) {
           emit(LoginOTPState());
           return;
         }
+        await getUserData();
         emit(LoginSuccessState());
         return;
       } else {
@@ -36,7 +35,6 @@ class UserCubit extends Cubit<UserStates> {
         return;
       }
     } catch (e) {
-      log(e.toString());
       emit(LoginSomeThingWentWrongState());
     }
   }
@@ -101,7 +99,7 @@ class UserCubit extends Cubit<UserStates> {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         _userModel = UserModel.fromJson(data['data']);
-        if (data['is_phone_verified'] == false) {
+        if (data['data']['is_phone_verified'] == false) {
           return 'redirectPhone';
         } else {
           return 'home';

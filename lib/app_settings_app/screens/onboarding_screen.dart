@@ -166,7 +166,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                         children: [
                           TextSpan(
-                            text: selectedLang[AppLangAssets.login]!,
+                            text: '  ${selectedLang[AppLangAssets.login]!}',
                             style: TextStyle(
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w600,

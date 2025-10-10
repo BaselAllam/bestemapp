@@ -11,6 +11,7 @@ import 'package:bestemapp/shared/utils/init_data.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:bestemapp/user_app/screens/register_screen.dart';
+import 'package:bestemapp/user_app/screens/verify_phone_otp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -106,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else if (state is LoginErrorState) {
                         ScaffoldMessenger.of(context).showSnackBar(snack(state.errMsg, AppColors.redColor));
                       } else if (state is LoginOTPState) {
-                        Navigator.push(context, CupertinoPageRoute(builder: (_) => OTPScreen(phoneNumber: _phoneController.text)));
+                        Navigator.push(context, CupertinoPageRoute(builder: (_) => VerifyPhoneOTPScreen(phoneNumber: _phoneController.text)));
                       } else if (state is LoginSuccessState) {
                         initData(context);
                         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));

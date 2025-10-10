@@ -145,4 +145,10 @@ final Map<String, String> enData = {
   AppLangAssets.phoneNumberIsTooShort: 'Please enter only numbers',
   AppLangAssets.enterFirstName: "Enter your first name",
   AppLangAssets.enterLastName: "Enter your last name",
+  AppLangAssets.verifyYourPhone: "Verify your Phone Number",
+  AppLangAssets.verifyYourPhoneSubTitle: "Verify your phone number for the best experience. An OTP has been sent to your registered number.",
+  AppLangAssets.enterOTP: "Enter OTP",
+  AppLangAssets.enter6DigitsOTP: "Enter 6-digits OTP",
+  AppLangAssets.verifyOTP: "Verify OTP",
+  AppLangAssets.backToLogin: "Back to Login"
 };

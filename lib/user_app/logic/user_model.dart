@@ -18,14 +18,14 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> userData) {
     return UserModel(
       id: userData['id'],
-      firstName: userData['first_name'],
-      lastName: userData['last_name'],
+      firstName: userData['first_name'] ?? '',
+      lastName: userData['last_name'] ?? '',
       profilePic: userData['profile_pic'] == null ? '' : '${AppApi.imgIp}${userData['profile_pic']}',
-      email: userData['email'],
-      phone: userData['phone'],
-      isAcceptNotification: userData['is_accept_notification'],
-      isMale: userData['is_male'],
-      country: userData['country']
+      email: userData['email'] ?? '',
+      phone: userData['phone'] ?? '',
+      isAcceptNotification: userData['is_accept_notification'] ?? '',
+      isMale: userData['is_male'] ?? '',
+      country: userData['country'] ?? ''
     );
   }
 }

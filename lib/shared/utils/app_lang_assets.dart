@@ -145,4 +145,10 @@ class AppLangAssets {
   static String pleaseEnterPhoneNumber = 'pleaseEnterPhoneNumber';
   static String plzEnterOnlyPhoneNumber = 'plzEnterOnlyPhoneNumber';
   static String phoneNumberIsTooShort = 'phoneNumberIsTooShort';
+  static String verifyYourPhone = 'verifyYourPhone';
+  static String verifyYourPhoneSubTitle = 'verifyYourPhoneSubTitle';
+  static String enterOTP = "enterOTP";
+  static String enter6DigitsOTP = 'enter6DigitsOTP';
+  static String verifyOTP = 'verifyOTP';
+  static String backToLogin = 'backToLogin';
 }

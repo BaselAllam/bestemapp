@@ -1,5 +1,6 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 
@@ -124,7 +125,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
       controller: _phoneController,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-        labelText: widget.labelText ?? selectedLang[AppLangAssets.phoneNumber]!,
+        labelStyle: AppFonts.subFontGreyColor,
         hintText: widget.hintText ?? selectedLang[AppLangAssets.enterUrPhoneNumber]!,
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),

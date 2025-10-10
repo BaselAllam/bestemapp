@@ -5,6 +5,7 @@ import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/init_data.dart';
 import 'package:bestemapp/shared/utils/local_storage.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
+import 'package:bestemapp/user_app/screens/verify_phone_otp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else if (screen == 'home') {
       Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
     } else if (screen == 'redirectPhone') {
-      // Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
+      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => VerifyPhoneOTPScreen(phoneNumber: BlocProvider.of<UserCubit>(context).userModel!.phone)));
     }
     
   }
