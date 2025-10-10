@@ -14,16 +14,18 @@
   UpdateUserData
   GetUserNotifications
   MarkNotificationsAsRead
+  HandleWishlist
+  GetUserAds
+  SearchAd
+  GetLandingAds
+
+  initData =>
   getFaq
   getColors
   getCountries
   getMake
   getCarShapes
   getCarSpecs
-  HandleWishlist
-  GetUserAds
-  SearchAd
-  GetLandingAds
 
 
 */

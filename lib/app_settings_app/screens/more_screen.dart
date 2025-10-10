@@ -1,3 +1,4 @@
+import 'package:bestemapp/app_settings_app/screens/faq_screen.dart';
 import 'package:bestemapp/car_app/screens/my_ads_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
@@ -103,6 +104,7 @@ class _MoreScreenState extends State<MoreScreen> {
               Column(
                 children: [
                   sectionSubWidget(icon: AppAssets.aboutUsIcon, title: selectedLang[AppLangAssets.aboutUs]!, screen: AboutUsScreen()),
+                  sectionSubWidget(icon: AppAssets.faqIcon, title: selectedLang[AppLangAssets.faq]!, screen: FAQScreen()),
                   sectionSubWidget(icon: AppAssets.privacyPolicyIcon, title: selectedLang[AppLangAssets.privacyPolicy]!, screen: PrivacyPolicySreen()),
                 ],
               )

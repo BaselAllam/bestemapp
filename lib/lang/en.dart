@@ -66,6 +66,7 @@ final Map<String, String> enData = {
   AppLangAssets.myProfile: 'My Profile',
   AppLangAssets.getSupport: 'Get Support',
   AppLangAssets.privacyPolicy: 'Privacy Policy',
+  AppLangAssets.faq: 'FAQ',
   AppLangAssets.myAds: 'My Ads',
   AppLangAssets.myReviews: 'My Reviews',
   AppLangAssets.usersReviews: 'User Reviews',

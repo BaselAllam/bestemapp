@@ -69,6 +69,7 @@ class AppLangAssets {
   static String myProfile = 'myProfile';
   static String getSupport = 'getSupport';
   static String privacyPolicy = 'privacyPolicy';
+  static String faq = 'faq';
   static String termAndConditions = 'termAndConditions';
   static String myReviews = 'myReviews';
   static String myAddresses = 'myAddresses';

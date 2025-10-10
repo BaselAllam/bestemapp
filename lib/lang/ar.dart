@@ -66,6 +66,7 @@ final Map<String, String> arData = {
   AppLangAssets.myProfile: 'ملفي الشخصي',
   AppLangAssets.getSupport: 'الحصول على الدعم',
   AppLangAssets.privacyPolicy: 'سياسة الخصوصية',
+  AppLangAssets.privacyPolicy: 'الاسئله الاكثر شيوعا',
   AppLangAssets.myAds: 'إعلاناتي',
   AppLangAssets.myReviews: 'تقييماتي',
   AppLangAssets.usersReviews: 'تقييمات المستخدمين',

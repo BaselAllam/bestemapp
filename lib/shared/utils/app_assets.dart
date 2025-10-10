@@ -42,6 +42,7 @@ class AppAssets {
   static String storeNavIcon = 'assets/imgs/storeNavIcon.png';
   static String emptyStoreNavIcon = 'assets/imgs/emptyStoreNavIcon.png';
   static String adressIcon = 'assets/imgs/address.png';
+  static String faqIcon = 'assets/imgs/faq.png';
   // txts
   static String appLang = 'AppLang';
 }
