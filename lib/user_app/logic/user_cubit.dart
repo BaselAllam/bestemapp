@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/local_storage.dart';
@@ -20,10 +21,11 @@ class UserCubit extends Cubit<UserStates> {
     try {
       http.Response response = await http.post(Uri.parse('${AppApi.ipAddress}/users/login/'), headers: AppApi.headerData, body: json.encode({'phone': phone, 'password': password}));
       var data = json.decode(response.body);
+      log(data.toString());
       if (response.statusCode == 200) {
-        await saveStringToLocal(AppApi.userToken, data['data']['access']);
-        await saveStringToLocal(AppApi.userRefreshToken, data['data']['refresh_token']);
-        if (!data['data']['is_phoneVerifued']) {
+        // await saveStringToLocal(AppApi.userToken, data['data']['access']);
+        // await saveStringToLocal(AppApi.userRefreshToken, data['data']['refresh']);
+        if (!data['data']['is_phone_verified']) {
           emit(LoginOTPState());
           return;
         }
@@ -34,6 +36,7 @@ class UserCubit extends Cubit<UserStates> {
         return;
       }
     } catch (e) {
+      log(e.toString());
       emit(LoginSomeThingWentWrongState());
     }
   }

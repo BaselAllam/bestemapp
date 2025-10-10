@@ -1,6 +1,8 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/user_app/screens/login_screen.dart';
 import 'package:bestemapp/user_app/screens/register_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,21 +22,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingData> _pages = [
     OnboardingData(
-      title: 'Browse through cars',
-      description:
-          'Explore a wide selection of quality vehicles tailored to your needs and preferences.',
+      title: selectedLang[AppLangAssets.onBoardingTitle1]!,
+      description: selectedLang[AppLangAssets.onBoarding1SubTitle]!,
       link: AppAssets.onBoarding1
     ),
     OnboardingData(
-      title: 'Connect with showroom',
-      description:
-          'Get in touch with trusted dealers and showrooms for the best car buying experience.',
+      title: selectedLang[AppLangAssets.onBoardingTitle2]!,
+      description: selectedLang[AppLangAssets.onBoarding2SubTitle]!,
       link: AppAssets.onBoarding2
     ),
     OnboardingData(
-      title: 'Get your own car',
-      description:
-          'Drive home your dream car with easy financing options and transparent deals.',
+      title: selectedLang[AppLangAssets.onBoardingTitle3]!,
+      description: selectedLang[AppLangAssets.onBoarding3SubTitle]!,
       link: AppAssets.onBoarding3
     ),
   ];
@@ -67,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _completeOnboarding() {
-    Navigator.pushReplacement(
+    Navigator.push(
     context,
     CupertinoPageRoute(
       builder: (context) {
@@ -97,8 +96,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (_currentPage < _pages.length - 1)
                     TextButton(
                       onPressed: _skipOnboarding,
-                      child: const Text(
-                        'Skip',
+                      child: Text(
+                        selectedLang[AppLangAssets.skip]!,
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
@@ -142,8 +141,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       child: Text(
                         _currentPage == _pages.length - 1
-                            ? 'Create an account'
-                            : 'Next',
+                            ? selectedLang[AppLangAssets.createAccount]!
+                            : selectedLang[AppLangAssets.next]!,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -163,11 +162,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     },
                     child: RichText(
                       text: TextSpan(
-                        text: 'Already have an account? ',
+                        text: selectedLang[AppLangAssets.alreadyHaveAccount]!,
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                         children: [
                           TextSpan(
-                            text: 'Sign in',
+                            text: selectedLang[AppLangAssets.login]!,
                             style: TextStyle(
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w600,

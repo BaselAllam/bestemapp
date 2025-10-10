@@ -1,4 +1,7 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
+import 'package:bestemapp/shared/shared_widgets/phone_input_field.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -41,8 +44,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(child: LogoContainer(size: Size(MediaQuery.of(context).size.width / 2.5, 150))),
-                const Text(
-                  'Register',
+                Text(
+                  selectedLang[AppLangAssets.register]!,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -55,8 +58,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'First Name',
+                          Text(
+                            selectedLang[AppLangAssets.firstName]!,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -65,8 +68,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 8),
                           TextField(
                             controller: _firstNameController,
-                            decoration: const InputDecoration(
-                              hintText: 'Enter your first name',
+                            decoration: InputDecoration(
+                              hintText: selectedLang[AppLangAssets.enterFirstName],
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
@@ -78,8 +81,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Last Name',
+                          Text(
+                            selectedLang[AppLangAssets.lastName]!,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -88,8 +91,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 8),
                           TextField(
                             controller: _lastNameController,
-                            decoration: const InputDecoration(
-                              hintText: 'Enter your last name',
+                            decoration: InputDecoration(
+                              hintText: selectedLang[AppLangAssets.enterLastName],
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
@@ -99,8 +102,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Email',
+                Text(
+                  selectedLang[AppLangAssets.email]!,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -115,24 +118,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Phone Number',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(
-                    hintText: '+966 XX XXX XXXX',
-                    hintStyle: TextStyle(color: Colors.grey),
-                  ),
-                ),
+                PhoneInputField(controller: _phoneController),
                 const SizedBox(height: 24),
-                const Text(
-                  'Password',
+                Text(
+                  selectedLang[AppLangAssets.password]!,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -142,14 +131,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your password',
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.enterUrPassword],
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Confirm Password',
+                Text(
+                  selectedLang[AppLangAssets.confirmPassword]!,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -159,8 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextField(
                   controller: _confirmPasswordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Confirm your password',
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.enterUrPassword],
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -170,9 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 56,
                   child: ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Account created!')),
-                      );
+                      
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
@@ -181,8 +168,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      'Create Account',
+                    child: Text(
+                      selectedLang[AppLangAssets.createAccount]!,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

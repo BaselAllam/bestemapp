@@ -4,8 +4,10 @@ import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
+import 'package:bestemapp/shared/shared_widgets/phone_input_field.dart';
 import 'package:bestemapp/shared/shared_widgets/snack_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/shared/utils/init_data.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:bestemapp/user_app/screens/register_screen.dart';
@@ -60,13 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: AppFonts.subFontBlackColor
                 ),
                 const SizedBox(height: 8),
-                TextField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(
-                    hintText: '+2 XX XXX XXXX',
-                    hintStyle: AppFonts.subFontGreyColor
-                  ),
-                ),
+                PhoneInputField(controller: _phoneController),
                 const SizedBox(height: 24),
                 Text(
                   selectedLang[AppLangAssets.password]!,
@@ -106,29 +102,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: BlocConsumer<UserCubit, UserStates>(
                     listener: (context, state) {
                       if (state is LoginSomeThingWentWrongState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          snack(selectedLang[AppLangAssets.someThingWentWrong]!, AppColors.redColor)
-                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snack(selectedLang[AppLangAssets.someThingWentWrong]!, AppColors.redColor));
                       } else if (state is LoginErrorState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          snack(state.errMsg, AppColors.redColor)
-                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snack(state.errMsg, AppColors.redColor));
                       } else if (state is LoginOTPState) {
-                        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => OTPScreen(phoneNumber: _phoneController.text)));
+                        Navigator.push(context, CupertinoPageRoute(builder: (_) => OTPScreen(phoneNumber: _phoneController.text)));
                       } else if (state is LoginSuccessState) {
+                        initData(context);
                         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
                       }
                     },
                     builder: (context, state) => ElevatedButton(
                       onPressed: state is LoginLoadingState ? () {} : () async {
-                        // if (_phoneController.text.isEmpty || _passwordController.text.isEmpty) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     snack(selectedLang[AppLangAssets.fieldsRequired]!, AppColors.redColor)
-                        //   );
-                        // } else {
-                        //   await BlocProvider.of<UserCubit>(context).login(_phoneController.text, _passwordController.text);
-                        // }
-                        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
+                        if (_phoneController.text.isEmpty || _passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(snack(selectedLang[AppLangAssets.fieldsRequired]!, AppColors.redColor));
+                        } else {
+                          await BlocProvider.of<UserCubit>(context).login(_phoneController.text, _passwordController.text);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
@@ -235,21 +225,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  'Phone Number',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(
-                    hintText: '+966 XX XXX XXXX',
-                    hintStyle: TextStyle(color: Colors.grey),
-                  ),
-                ),
+                PhoneInputField(controller: _phoneController),
                 const SizedBox(height: 32),
                 SizedBox(
                   width: double.infinity,

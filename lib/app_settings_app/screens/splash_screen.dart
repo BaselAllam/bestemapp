@@ -37,8 +37,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void checkInitApp() async {
     await Future.delayed(Duration(seconds: 1));
     await initData(context);
-    bool isLogin = await getBoolFromLocal(AppApi.userToken);
-    if (!isLogin) {
+    String userToken = await getStringFromLocal(AppApi.userToken);
+    if (userToken.isEmpty) {
       Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => OnboardingScreen()));
       return;
     }

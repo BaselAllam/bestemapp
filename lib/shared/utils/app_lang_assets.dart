@@ -15,6 +15,8 @@ class AppLangAssets {
   static String firstName = 'firstName';
   static String lastName = 'lastName';
   static String enterFullName = 'enterFullName';
+  static String enterFirstName = 'enterFirstName';
+  static String enterLastName = 'enterFLastName';
   static String fieldsRequired = 'fieldsRequired';
   static String passwordLegnthError = 'passwordLegnthError';
   static String passwordNotMatch = 'passwordNotMatch';
@@ -129,4 +131,18 @@ class AppLangAssets {
   static String noResultFound = 'noResultFound';
   static String tryDifferentKeyWord = 'tryDifferentKeyWord';
   static String stillHaveAQuestion = 'stillHaveAQuestion';
+  static String onBoardingTitle1 = 'onBoardingTitle1';
+  static String onBoarding1SubTitle = 'onBoarding1SubTitle';
+  static String onBoardingTitle2 = 'onBoardingTitle2';
+  static String onBoarding2SubTitle = 'onBoarding2SubTitle';
+  static String onBoardingTitle3 = 'onBoardingTitle3';
+  static String onBoarding3SubTitle = 'onBoarding3SubTitle';
+  static String skip = 'skip';
+  static String createAccount = 'createAccount';
+  static String next = 'next';
+  static String alreadyHaveAccount = 'alreadyHaveAccount';
+  static String selectCountry = 'selectCountry';
+  static String pleaseEnterPhoneNumber = 'pleaseEnterPhoneNumber';
+  static String plzEnterOnlyPhoneNumber = 'plzEnterOnlyPhoneNumber';
+  static String phoneNumberIsTooShort = 'phoneNumberIsTooShort';
 }
