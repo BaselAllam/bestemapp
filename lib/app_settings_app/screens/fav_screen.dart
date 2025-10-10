@@ -28,7 +28,21 @@ class _FavScreenState extends State<FavScreen> {
       ),
       body: ListView.builder(
         itemCount: 15,
-        itemBuilder: (context, state) => AdWidget(imgHieght: 250,),
+        itemBuilder: (context, state) => CarAdWidget(car: {
+      'id': '1',
+      'title': '2023 Toyota Camry SE',
+      'price': 28500,
+      'year': 2023,
+      'mileage': 12500,
+      'location': 'Los Angeles, CA',
+      'transmission': 'Automatic',
+      'fuelType': 'Hybrid',
+      'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
+      'condition': 'Like New',
+      'seller': 'Premium Dealer',
+      'isFeatured': true,
+      'isVerified': true,
+    }),
       ),
     );
   }

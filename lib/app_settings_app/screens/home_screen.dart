@@ -35,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           buildAdsSection(),
           sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
           }),
           buildItemsSection(),
           sectionTitle('${selectedLang[AppLangAssets.recentlyAdded]} ', true, () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultScreen(screenTitle: selectedLang[AppLangAssets.recentlyAdded]!)));
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(screenTitle: selectedLang[AppLangAssets.recentlyAdded]!)));
           }),
           buildItemsSection(),
         ],
@@ -243,7 +243,21 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 10,
-        itemBuilder: (context, index) => AdWidget(imgHieght: 200,),
+        itemBuilder: (context, index) => CarAdWidget(car: {
+      'id': '1',
+      'title': '2023 Toyota Camry SE',
+      'price': 28500,
+      'year': 2023,
+      'mileage': 12500,
+      'location': 'Los Angeles, CA',
+      'transmission': 'Automatic',
+      'fuelType': 'Hybrid',
+      'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
+      'condition': 'Like New',
+      'seller': 'Premium Dealer',
+      'isFeatured': true,
+      'isVerified': true,
+    },),
       ),
     );
   }

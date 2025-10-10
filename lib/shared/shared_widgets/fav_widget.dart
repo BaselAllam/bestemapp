@@ -1,5 +1,4 @@
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
-import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:flutter/material.dart';
 
 class FavButton extends StatefulWidget {
@@ -14,14 +13,17 @@ class _FavButtonState extends State<FavButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
         shape: BoxShape.circle
       ),
+      alignment: Alignment.center,
       child: IconButton(
-        icon: isFav ? Image.asset(AppAssets.favIcon, height: 20.0, width: 20.0,) : Image.asset(AppAssets.addToFavIcon, height: 20.0, width: 20.0,),
+        icon: isFav ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
         color: AppColors.redColor,
-        iconSize: 15.0,
+        iconSize: 20.0,
         onPressed: () {
           isFav = !isFav;
           setState(() {});
