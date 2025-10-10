@@ -105,7 +105,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 children: [
                   sectionSubWidget(icon: AppAssets.aboutUsIcon, title: selectedLang[AppLangAssets.aboutUs]!, screen: AboutUsScreen()),
                   sectionSubWidget(icon: AppAssets.faqIcon, title: selectedLang[AppLangAssets.faq]!, screen: FAQScreen()),
-                  sectionSubWidget(icon: AppAssets.privacyPolicyIcon, title: selectedLang[AppLangAssets.privacyPolicy]!, screen: PrivacyPolicySreen()),
+                  sectionSubWidget(icon: AppAssets.privacyPolicyIcon, title: selectedLang[AppLangAssets.privacyPolicy]!, screen: PrivacyPolicyScreen()),
                 ],
               )
             ),
