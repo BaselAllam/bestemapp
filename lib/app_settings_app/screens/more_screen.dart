@@ -11,6 +11,7 @@ import 'package:bestemapp/shared/shared_widgets/custom_dialog.dart';
 import 'package:bestemapp/shared/shared_widgets/custom_switchtile.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/car_app/widgets/sell_btn.dart';
+import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/shared_widgets/url_launcher.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
@@ -267,12 +268,26 @@ class _MoreScreenState extends State<MoreScreen> {
                   Navigator.pop(context);
                 }
               ),
-              CustomBtn(
-                widget: Text(selectedLang[AppLangAssets.yes]!, style: AppFonts.miniFontWhiteColor),
-                size: Size(100.0, 30.0),
-                color: AppColors.redColor,
-                radius: 15.0,
-                onPress: () {}
+              BlocConsumer<UserCubit, UserStates>(
+                listener: (context, state) {
+                  if (state is LogoutErrorState || state is LogoutSomeThingWentWrongState) {
+                    Toaster.show(
+                      context,
+                      message: selectedLang[AppLangAssets.someThingWentWrong]!,
+                      type: ToasterType.error,
+                      position: ToasterPosition.top,
+                    );
+                  }
+                },
+                builder: (context, state) => CustomBtn(
+                  widget: Text(state is LogoutLoadingState ? selectedLang[AppLangAssets.loading]! : selectedLang[AppLangAssets.yes]!, style: AppFonts.miniFontWhiteColor),
+                  size: Size(100.0, 30.0),
+                  color: AppColors.redColor,
+                  radius: 15.0,
+                  onPress: state is LogoutLoadingState ? () {} : () {
+                    BlocProvider.of<UserCubit>(context).logout();
+                  }
+                ),
               ),
             ],
           )
