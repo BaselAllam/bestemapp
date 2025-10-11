@@ -4,7 +4,6 @@ import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/user_app/screens/login_screen.dart';
-import 'package:bestemapp/user_app/screens/register_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -66,15 +65,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _completeOnboarding() {
-    Navigator.push(
+    Navigator.pushReplacement(
     context,
     CupertinoPageRoute(
       builder: (context) {
-        if (_currentPage == _pages.length - 1){
-          return RegisterScreen();
-        } else {
-          return LoginScreen();
-        }
+        return LoginScreen();
       },
       )
     );

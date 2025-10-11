@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Toaster.show(
                           context,
                           message: selectedLang[AppLangAssets.success]!,
-                          type: ToasterType.error,
+                          type: ToasterType.success,
                           position: ToasterPosition.top,
                         );
                         initData(context);
