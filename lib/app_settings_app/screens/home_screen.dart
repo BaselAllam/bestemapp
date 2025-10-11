@@ -7,6 +7,7 @@ import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/car_app/widgets/sell_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: AppColors.ofWhiteColor,
-        title: Text('${selectedLang[AppLangAssets.homeWlcTitle]} Bassel Allam 👋', style: AppFonts.primaryFontBlackColor),
+        title: Text('${selectedLang[AppLangAssets.homeWlcTitle]} ${BlocProvider.of<UserCubit>(context).userModel!.firstName} 👋', style: AppFonts.primaryFontBlackColor),
         actions: [SellBtn(), NotificationButton()],
       ),
       body: ListView(

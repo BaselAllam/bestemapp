@@ -100,11 +100,14 @@ class UserCubit extends Cubit<UserStates> {
       if (response.statusCode == 200) {
         _userModel = UserModel.fromJson(data['data']);
         if (data['data']['is_phone_verified'] == false) {
+          emit(GetUserDataSuccessState());
           return 'redirectPhone';
         } else {
+          emit(GetUserDataSuccessState());
           return 'home';
         }
       } else {
+        emit(GetUserDataSuccessState());
         return 'welcome';
       }
     } catch (e) {

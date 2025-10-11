@@ -14,6 +14,8 @@ import 'package:bestemapp/car_app/widgets/sell_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/url_launcher.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/user_app/logic/user_cubit.dart';
+import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:bestemapp/user_app/screens/user_profile_screen.dart';
 import 'package:bestemapp/user_app/screens/wallet_transactions_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,7 +36,6 @@ class _MoreScreenState extends State<MoreScreen> {
   final List<Map<String, dynamic>> social = [{'icon': AppAssets.webIcon, 'url': 'https://bestem.app'}, {'icon': AppAssets.facebookIcon, 'url': 'https://www.facebook.com/profile.php?id=61582052996010'}, {'icon': AppAssets.instagramIcon, 'url': 'https://www.instagram.com/bestem.app/?hl=en'}, {'icon': AppAssets.linkedinIcon, 'url': 'https://www.linkedin.com/company/bestemapp/'}];
 
   String versionNumber = '';
-  bool isAcceptNotifications = true;
 
   @override
   void initState() {
@@ -57,18 +58,20 @@ class _MoreScreenState extends State<MoreScreen> {
           children: [
             Column(
               children: [
-                Container(
-                  height: 120.0,
-                  width: 120,
-                  margin: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage('https://avatars.githubusercontent.com/u/44323531?v=4'),
-                      fit: BoxFit.contain
-                    )
+                BlocBuilder<UserCubit, UserStates>(
+                  builder: (context, state) => Container(
+                    height: 120.0,
+                    width: 120,
+                    margin: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: BlocProvider.of<UserCubit>(context).userModel!.profilePic.isEmpty ? AssetImage(AppAssets.noPPIcon) : NetworkImage(BlocProvider.of<UserCubit>(context).userModel!.profilePic),
+                        fit: BoxFit.contain,
+                      ),
+                      shape: BoxShape.circle
+                    ),
+                    alignment: Alignment.bottomRight,
                   ),
-                  alignment: Alignment.bottomRight,
                 ),
               ],
             ),
@@ -87,14 +90,15 @@ class _MoreScreenState extends State<MoreScreen> {
               Column(
                 children: [
                   buildChangeLanguage(),
-                  CustomSwitchTile(
-                    title: selectedLang[AppLangAssets.acceptNotification]!,
-                    leading: Image.asset(AppAssets.acceptNotificationIcon, height: 25, width: 25.0),
-                    value: isAcceptNotifications,
-                    onChange: (v) {
-                      isAcceptNotifications = v;
-                      setState(() {});
-                    },
+                  BlocBuilder<UserCubit, UserStates>(
+                    builder: (context, state) => CustomSwitchTile(
+                      title: selectedLang[AppLangAssets.acceptNotification]!,
+                      leading: Image.asset(AppAssets.acceptNotificationIcon, height: 25, width: 25.0),
+                      value: BlocProvider.of<UserCubit>(context).userModel!.isAcceptNotification,
+                      onChange: (v) {
+                        
+                      },
+                    ),
                   )
                 ],
               )
