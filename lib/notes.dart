@@ -8,8 +8,6 @@
   UpdateAd
 
 # Need Implementation
-  Register
-  UpdateUserData
 
   HandleWishlist
   GetUserAds

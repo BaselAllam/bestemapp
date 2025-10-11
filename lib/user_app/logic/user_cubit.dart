@@ -163,4 +163,21 @@ class UserCubit extends Cubit<UserStates> {
     }
   }
 
+  Future<void> updateAcceptNotification(bool isAcceptNotification) async {
+    emit(UpdateUserDataLoadingState());
+    try {
+      http.Response response = await http.patch(Uri.parse('${AppApi.ipAddress}/users/user_data/'), headers: AppApi.headerData, body: json.encode({'is_accept_notification': isAcceptNotification}));
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        userModel!.isAcceptNotification = isAcceptNotification;
+        emit(UpdateUserDataSuccessState());
+        return;
+      } else {
+        emit(UpdateUserDataErrorState(data['data']));
+        return;
+      }
+    } catch (e) {
+      emit(UpdateUserDataSomeThingWentWrongState());
+    }
+  }
 }

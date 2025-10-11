@@ -91,13 +91,37 @@ class _MoreScreenState extends State<MoreScreen> {
               Column(
                 children: [
                   buildChangeLanguage(),
-                  BlocBuilder<UserCubit, UserStates>(
+                  BlocConsumer<UserCubit, UserStates>(
+                    listener: (context, state) {
+                      if (state is UpdateUserDataErrorState) {
+                        Toaster.show(
+                          context,
+                          message: state.errMsg,
+                          type: ToasterType.error,
+                          position: ToasterPosition.top
+                        );
+                      } else if (state is UpdateUserDataSomeThingWentWrongState) {
+                        Toaster.show(
+                          context,
+                          message: selectedLang[AppLangAssets.someThingWentWrong]!,
+                          type: ToasterType.error,
+                          position: ToasterPosition.top
+                        );
+                      } else if (state is UpdateUserDataSuccessState) {
+                        Toaster.show(
+                          context,
+                          message: selectedLang[AppLangAssets.profileUpdatedSuccess]!,
+                          type: ToasterType.success,
+                          position: ToasterPosition.top
+                        );
+                      }
+                    },
                     builder: (context, state) => CustomSwitchTile(
                       title: selectedLang[AppLangAssets.acceptNotification]!,
                       leading: Image.asset(AppAssets.acceptNotificationIcon, height: 25, width: 25.0),
                       value: BlocProvider.of<UserCubit>(context).userModel!.isAcceptNotification,
                       onChange: (v) {
-                        
+                        BlocProvider.of<UserCubit>(context).updateAcceptNotification(v);
                       },
                     ),
                   )
