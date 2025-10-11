@@ -161,4 +161,6 @@ class AppLangAssets {
   static String errorPickImg = 'errorPickImg';
   static String imgSelectedSuccess = 'imgSelectedSuccess';
   static String profileUpdatedSuccess = 'profileUpdatedSuccess';
+  static String featured = 'featured';
+  static String viewDetails = 'viewDetails';
 }

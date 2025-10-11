@@ -304,15 +304,15 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       body: Column(
         children: [
           _buildResultsHeader(),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(5),
-              itemCount: _cars.length,
-              itemBuilder: (context, index) {
-                return CarAdWidget(car: _cars[index]);
-              },
-            ),
-          ),
+          // Expanded(
+          //   child: ListView.builder(
+          //     padding: const EdgeInsets.all(5),
+          //     itemCount: _cars.length,
+          //     itemBuilder: (context, index) {
+          //       return CarAdWidget(car: _cars[index]);
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );

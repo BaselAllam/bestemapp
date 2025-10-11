@@ -48,24 +48,25 @@ class _FavScreenState extends State<FavScreen> {
               textAlign: TextAlign.center,
             ));
           } else {
-            return ListView.builder(
-              itemCount: BlocProvider.of<CarCubit>(context).userWishlistCarAds.length,
-              itemBuilder: (context, state) => CarAdWidget(car: {
-            'id': '1',
-            'title': '2023 Toyota Camry SE',
-            'price': 28500,
-            'year': 2023,
-            'mileage': 12500,
-            'location': 'Los Angeles, CA',
-            'transmission': 'Automatic',
-            'fuelType': 'Hybrid',
-            'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
-            'condition': 'Like New',
-            'seller': 'Premium Dealer',
-            'isFeatured': true,
-            'isVerified': true,
-                }),
-            );
+            return SizedBox();
+            // return ListView.builder(
+            //   itemCount: BlocProvider.of<CarCubit>(context).userWishlistCarAds.length,
+            //   itemBuilder: (context, state) => CarAdWidget(car: {
+            // 'id': '1',
+            // 'title': '2023 Toyota Camry SE',
+            // 'price': 28500,
+            // 'year': 2023,
+            // 'mileage': 12500,
+            // 'location': 'Los Angeles, CA',
+            // 'transmission': 'Automatic',
+            // 'fuelType': 'Hybrid',
+            // 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
+            // 'condition': 'Like New',
+            // 'seller': 'Premium Dealer',
+            // 'isFeatured': true,
+            // 'isVerified': true,
+            //     }),
+            // );
           }
         }
       ),

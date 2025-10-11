@@ -1,9 +1,12 @@
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/screens/car_search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/car_app/widgets/sell_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
@@ -38,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
           sectionTitle('${selectedLang[AppLangAssets.popular]} ', true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(screenTitle: selectedLang[AppLangAssets.popular]!)));
           }),
-          buildItemsSection(),
+          buildItemsSection('recently_added'),
           sectionTitle('${selectedLang[AppLangAssets.recentlyAdded]} ', true, () {
             Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(screenTitle: selectedLang[AppLangAssets.recentlyAdded]!)));
           }),
-          buildItemsSection(),
+          buildItemsSection('popular'),
         ],
       ),
     );
@@ -237,28 +240,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  buildItemsSection() {
+  buildItemsSection(String sectionTitle) {
     return Container(
       height: 470.0,
       margin: EdgeInsets.only(bottom: 10.0),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (context, index) => CarAdWidget(car: {
-      'id': '1',
-      'title': '2023 Toyota Camry SE',
-      'price': 28500,
-      'year': 2023,
-      'mileage': 12500,
-      'location': 'Los Angeles, CA',
-      'transmission': 'Automatic',
-      'fuelType': 'Hybrid',
-      'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
-      'condition': 'Like New',
-      'seller': 'Premium Dealer',
-      'isFeatured': true,
-      'isVerified': true,
-    },),
+      child: BlocBuilder<CarCubit, CarStates>(
+        builder: (context, state) {
+          if (state is LandingCarAdsErrorState || state is LandingCarAdsSomeThingWentWrongState) {
+            return Center(child: CustomErrorWidget());
+          } else {
+            return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: BlocProvider.of<CarCubit>(context).landingCarAdsResult[sectionTitle]!.length,
+          itemBuilder: (context, index) => CarAdWidget(carAdModel: BlocProvider.of<CarCubit>(context).landingCarAdsResult[sectionTitle]![index]),
+            );
+          }
+        }
       ),
     );
   }

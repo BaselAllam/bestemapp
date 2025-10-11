@@ -29,3 +29,16 @@ class UserModel {
     );
   }
 }
+
+
+class SellerModel {
+  final String profilePicture;
+  final String firstName;
+  final String lastName;
+
+  SellerModel({required this.profilePicture, required this.firstName, required this.lastName});
+
+  factory SellerModel.fromJson(Map<String, dynamic> data) {
+    return SellerModel(profilePicture: data['profile_pic'], firstName: data['first_name'], lastName: data['last_name']);
+  }
+}

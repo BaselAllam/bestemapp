@@ -1,11 +1,14 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CarAdWidget extends StatefulWidget {
-  Map<String, dynamic> car;
-  CarAdWidget({required this.car});
+  CarAdModel carAdModel;
+  CarAdWidget({required this.carAdModel});
 
   @override
   State<CarAdWidget> createState() => _CarAdWidgetState();
@@ -48,7 +51,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     width: double.infinity,
                     color: Colors.grey[300],
                     child: Image.network(
-                      widget.car['image'],
+                      widget.carAdModel.adImgs[0].image,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
@@ -61,7 +64,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     ),
                   ),
                 ),
-                if (widget.car['isFeatured'])
+                // if (widget.car['isFeatured'])
                   Positioned(
                     top: 12,
                     left: 12,
@@ -71,8 +74,8 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                         color: Colors.orange[600],
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Text(
-                        'FEATURED',
+                      child: Text(
+                        selectedLang[AppLangAssets.featured]!,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 11,
@@ -110,7 +113,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.car['title'],
+                          widget.carAdModel.adTitle,
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -118,24 +121,23 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                           ),
                         ),
                       ),
-                      if (widget.car['isVerified'])
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.green[50],
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.verified,
-                            color: Colors.green[700],
-                            size: 18,
-                          ),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          shape: BoxShape.circle,
                         ),
+                        child: Icon(
+                          Icons.verified,
+                          color: Colors.green[700],
+                          size: 18,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '\$${widget.car['price'].toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                    '\$${widget.carAdModel.price.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}EGP',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -145,11 +147,11 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      _buildInfoChip(Icons.calendar_today, '${widget.car['year']}'),
+                      _buildInfoChip(Icons.calendar_today, '${widget.carAdModel.carYear}'),
                       const SizedBox(width: 8),
-                      _buildInfoChip(Icons.speed, '${widget.car['mileage']} mi'),
+                      _buildInfoChip(Icons.speed, '${widget.carAdModel.kilometers} km'),
                       const SizedBox(width: 8),
-                      _buildInfoChip(Icons.local_gas_station, widget.car['fuelType']),
+                      _buildInfoChip(Icons.local_gas_station, widget.carAdModel.fuelType),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -158,7 +160,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                       Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
                       const SizedBox(width: 4),
                       Text(
-                        widget.car['location'],
+                        widget.carAdModel.adArea.areaName,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.grey[600],
@@ -172,7 +174,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          widget.car['condition'],
+                          widget.carAdModel.carCondition,
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
@@ -193,15 +195,20 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     child: Row(
                       children: [
                         Icon(
-                          widget.car['seller'] == 'Private Seller' 
-                              ? Icons.person_outline 
-                              : Icons.store_outlined,
+                             Icons.person_outline,
                           size: 16,
                           color: Colors.grey[600],
                         ),
+                        // Icon(
+                        //   widget.car['seller'] == 'Private Seller' 
+                        //       ? Icons.person_outline 
+                        //       : Icons.store_outlined,
+                        //   size: 16,
+                        //   color: Colors.grey[600],
+                        // ),
                         const SizedBox(width: 6),
                         Text(
-                          widget.car['seller'],
+                          '${widget.carAdModel.seller.firstName} ${widget.carAdModel.seller.lastName}',
                           style: TextStyle(
                             fontSize: 13,
                             color: Colors.grey[700],
@@ -209,7 +216,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                         ),
                         const Spacer(),
                         Text(
-                          'View Details',
+                          selectedLang[AppLangAssets.viewDetails]!,
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,

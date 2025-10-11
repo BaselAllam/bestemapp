@@ -161,4 +161,6 @@ final Map<String, String> enData = {
   AppLangAssets.errorPickImg: 'Error Pick Image',
   AppLangAssets.imgSelectedSuccess: 'Image selected successfully',
   AppLangAssets.profileUpdatedSuccess: 'Profile updated successfully',
+  AppLangAssets.featured: 'FEATURED',
+  AppLangAssets.viewDetails: 'View Details'
 };

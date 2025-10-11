@@ -2,6 +2,7 @@ import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
+import 'package:bestemapp/shared/shared_widgets/no_result_found.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,28 +98,7 @@ class _FAQScreenState extends State<FAQScreen> {
             ),
             Expanded(
               child: filteredList.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
-                          const SizedBox(height: 16),
-                          Text(
-                            selectedLang[AppLangAssets.noResultFound]!,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            selectedLang[AppLangAssets.tryDifferentKeyWord]!,
-                            style: TextStyle(color: Colors.grey[500]),
-                          ),
-                        ],
-                      ),
-                    )
+                  ? NoResultFoundWidget()
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
                       itemCount: filteredList.length,

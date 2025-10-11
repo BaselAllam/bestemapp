@@ -1,11 +1,24 @@
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
+import 'package:bestemapp/shared/utils/app_api.dart';
+import 'package:bestemapp/user_app/logic/user_model.dart';
 
 class CarAdWishlistModel {
   final String id;
   CarAdModel carAdModel;
 
   CarAdWishlistModel({required this.id, required this.carAdModel});
+}
+
+class CarAdImg {
+  final String id;
+  final String image;
+
+  CarAdImg({required this.id, required this.image});
+
+  factory CarAdImg.fromJson(Map<String, dynamic> data) {
+    return CarAdImg(id: data['id'], image: '${AppApi.imgIp}${data['image']}');
+  }
 }
 
 class CarAdModel {
@@ -29,13 +42,15 @@ class CarAdModel {
   int distanceRange;
   CarShapeModel carShape;
   String adVideo;
-  List<Map<String, String>> adImgs;
+  List<CarAdImg> adImgs;
   List<Map<String, dynamic>> specs;
   int viewsCount;
+  SellerModel seller;
 
   CarAdModel({required this.id, required this.isFav, required this.adStatus, required this.submittedAt, required this.carCondition, required this.adTitle, required this.adDescription,
   required this.carModel, required this.carYear, required this.carColor, required this.price, required this.isNegotiable, required this.adArea, required this.fuelType, required this.transmissionType,
-  required this.engineCapacity, required this.kilometers, required this.distanceRange, required this.carShape, required this.adVideo, required this.adImgs, required this.specs, required this.viewsCount
+  required this.engineCapacity, required this.kilometers, required this.distanceRange, required this.carShape, required this.adVideo, required this.adImgs, required this.specs, required this.viewsCount,
+  required this.seller
   });
 
   factory CarAdModel.fromJson(Map<String, dynamic> json) {
@@ -59,8 +74,9 @@ class CarAdModel {
       kilometers: json['kilometers'] ?? 0,
       distanceRange: json['distance_range'] ?? 0,
       carShape: json['car_shape'] != null ? CarShapeModel.fromJson(json['car_shape']) : CarShapeModel(id: '', shapeName: '', shapeIcon: ''),
+      seller: json['user'] != null ? SellerModel.fromJson(json['user']) : SellerModel(profilePicture: '', firstName: '', lastName: ''),
       adVideo: json['ad_video'] ?? '',
-      adImgs: (json['imgs'] as List?)?.map((img) => Map<String, String>.from(img)).toList() ?? [],
+      adImgs: (json['imgs'] as List?)?.map((img) => CarAdImg.fromJson(img)).toList() ?? [],
       specs: (json['specs_value'] as List?)?.map((spec) => Map<String, dynamic>.from(spec)).toList() ?? [],
       viewsCount: json['views_count']
     );
