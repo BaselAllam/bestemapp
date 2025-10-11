@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> initData(BuildContext context) async {
   await BlocProvider.of<AppSettingsCubit>(context).checkLang();
   BlocProvider.of<AppSettingsCubit>(context).getFaq();
-  BlocProvider.of<NotificationCubit>(context).getUserNotification();
   // BlocProvider.of<AppSettingsCubit>(context).getColors();
   // BlocProvider.of<AppSettingsCubit>(context).getCountries();
   // BlocProvider.of<CarCubit>(context).getCarMakes();

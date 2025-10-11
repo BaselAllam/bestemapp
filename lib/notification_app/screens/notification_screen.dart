@@ -31,14 +31,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
         title: Text(selectedLang[AppLangAssets.notification]!, style: AppFonts.primaryFontBlackColor),
         leading: BackBtn(),
         actions: [
-          Container(
-            padding: EdgeInsets.all(10.0),
-            margin: EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(15),
+          BlocBuilder<NotificationCubit, NotificationState>(
+            builder: (context, state) => Container(
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text('${BlocProvider.of<NotificationCubit>(context).unreadNotification} ${selectedLang[AppLangAssets.newNotification]}', style: AppFonts.miniFontWhiteColor),
             ),
-            child: Text('${BlocProvider.of<NotificationCubit>(context).unreadNotification} ${selectedLang[AppLangAssets.newNotification]}', style: AppFonts.miniFontWhiteColor),
           )
         ],
       ),
@@ -92,7 +94,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Column(
       children: [
         Container(
-          color: notificationItem['is_read'] ? Colors.transparent : Colors.grey.shade200,
+          color: Colors.transparent,
           child: ListTile(
             leading: Container(
               padding: EdgeInsets.all(10.0),
@@ -108,8 +110,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 color: AppColors.primaryColor, size: 25.0),
             ),
             title: Text(notificationItem['notification']['title'], style: AppFonts.primaryFontBlackColor),
-            subtitle: Text(notificationItem['notification']['description'], style: AppFonts.subFontGreyColor),
-            trailing: Text(notificationItem['notification']['created_at'].toString().substring(0, 10), style: AppFonts.subFontGreyColor),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(notificationItem['notification']['description'], style: AppFonts.subFontGreyColor),
+                Text(notificationItem['notification']['created_at'].toString().substring(0, 10), style: AppFonts.subFontGreyColor),
+              ],
+            ),
+            trailing: Icon(Icons.circle, color: !notificationItem['is_read'] ? AppColors.primaryColor : Colors.transparent, size: 10,)
           ),
         ),
         Divider(endIndent: 10.0, indent: 10.0, color: AppColors.greyColor, thickness: 0.2,)
