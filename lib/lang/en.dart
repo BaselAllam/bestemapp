@@ -150,5 +150,8 @@ final Map<String, String> enData = {
   AppLangAssets.enterOTP: "Enter OTP",
   AppLangAssets.enter6DigitsOTP: "Enter 6-digits OTP",
   AppLangAssets.verifyOTP: "Verify OTP",
-  AppLangAssets.backToLogin: "Back to Login"
+  AppLangAssets.backToLogin: "Back to Login",
+  AppLangAssets.markNotificationRead: 'Mark all as read',
+  AppLangAssets.loading: 'Loading',
+  AppLangAssets.success: 'Success'
 };

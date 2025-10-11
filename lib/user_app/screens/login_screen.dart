@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(context, CupertinoPageRoute(builder: (_) => VerifyPhoneOTPScreen(phoneNumber: _phoneController.text)));
                       } else if (state is LoginSuccessState) {
                         initData(context);
+                        initAuthData(context);
                         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
                       }
                     },

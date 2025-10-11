@@ -43,6 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => OnboardingScreen()));
       return;
     }
+    await initAuthData(context);
     String screen = '';
     screen = await BlocProvider.of<UserCubit>(context).getUserData();
     if (screen == 'welcome') {

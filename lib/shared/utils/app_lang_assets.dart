@@ -151,4 +151,7 @@ class AppLangAssets {
   static String enter6DigitsOTP = 'enter6DigitsOTP';
   static String verifyOTP = 'verifyOTP';
   static String backToLogin = 'backToLogin';
+  static String markNotificationRead = 'markNotificationRead';
+  static String loading = 'loading';
+  static String success = 'Success';
 }

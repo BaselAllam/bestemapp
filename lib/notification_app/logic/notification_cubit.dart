@@ -39,6 +39,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   int get unreadNotification => _unreadNotification;
 
   Future<void> getUserNotification() async {
+    _notifications.clear();
     emit(GetUserNotificationLoadingState());
     try {
       String userToken = await getStringFromLocal(AppApi.userToken);

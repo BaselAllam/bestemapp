@@ -12,8 +12,6 @@
   Register
   GetUserData
   UpdateUserData
-  GetUserNotifications
-  MarkNotificationsAsRead
   HandleWishlist
   GetUserAds
   SearchAd
