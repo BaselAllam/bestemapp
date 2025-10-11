@@ -154,4 +154,5 @@ class AppLangAssets {
   static String markNotificationRead = 'markNotificationRead';
   static String loading = 'loading';
   static String success = 'Success';
+  static String noWishlist = 'noWishlist';
 }

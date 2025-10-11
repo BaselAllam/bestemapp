@@ -1,6 +1,13 @@
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 
+class CarAdWishlistModel {
+  final String id;
+  CarAdModel carAdModel;
+
+  CarAdWishlistModel({required this.id, required this.carAdModel});
+}
+
 class CarAdModel {
   final String id;
   bool isFav;
@@ -12,7 +19,7 @@ class CarAdModel {
   CarMakeModelModel carModel;
   int carYear;
   ColorModel carColor;
-  num price;
+  String price;
   bool isNegotiable;
   AreaModel adArea;
   String fuelType;
@@ -42,8 +49,8 @@ class CarAdModel {
       adDescription: json['ad_description'] ?? '',
       carModel: json['car_model'] != null ? CarMakeModelModel.fromJson(json['car_model']) : CarMakeModelModel(id: '', modelName: ''),
       carYear: json['car_year'] ?? 0,
-      carColor: json['car_color'] != null ? ColorModel.fromJson(json['car_color']) : ColorModel(id: '', colorCode: '', colorName: ''),
-      price: json['price'] ?? 0,
+      carColor: json['car_color'] != null ? ColorModel.fromJson(json['car_color']) : ColorModel(id: '', colorCode: 0, colorName: ''),
+      price: json['price'].toString(),
       isNegotiable: json['is_negotiable'] ?? false,
       adArea: json['ad_area'] != null ? AreaModel.fromJson(json['ad_area']) : AreaModel(id: '', areaName: '', areaNameAr: ''),
       fuelType: json['fuel_type'] ?? '',

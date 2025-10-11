@@ -1,6 +1,6 @@
 class ColorModel {
   final String id;
-  final String colorCode;
+  final int colorCode;
   final String colorName;
 
   ColorModel({
@@ -12,7 +12,7 @@ class ColorModel {
   factory ColorModel.fromJson(Map<String, dynamic> json) {
     return ColorModel(
       id: json['id'] ?? '',
-      colorCode: json['color_code'] ?? '',
+      colorCode: json['color_code'] ?? 0,
       colorName: json['color_name'] ?? '',
     );
   }

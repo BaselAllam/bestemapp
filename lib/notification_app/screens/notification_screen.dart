@@ -6,7 +6,7 @@ import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/back_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
-import 'package:bestemapp/shared/shared_widgets/snack_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,12 +71,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return BlocConsumer<NotificationCubit, NotificationState>(
       listener: (context, state) {
         if (state is MarkNotificationReadErrorState || state is MarkNotificationReadSomeWentWrongState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            snack(selectedLang[AppLangAssets.someThingWentWrong]!, AppColors.redColor)
+          Toaster.show(
+            context,
+            message: selectedLang[AppLangAssets.someThingWentWrong]!,
+            type: ToasterType.error,
+            position: ToasterPosition.top,
           );
         } else if (state is MarkNotificationReadSuccessState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            snack(selectedLang[AppLangAssets.success]!, AppColors.greenColor)
+          Toaster.show(
+            context,
+            message: selectedLang[AppLangAssets.success]!,
+            type: ToasterType.success,
+            position: ToasterPosition.top,
           );
         }
       },

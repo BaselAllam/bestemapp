@@ -16,4 +16,5 @@ Future<void> initData(BuildContext context) async {
 
 Future<void> initAuthData(BuildContext context) async {
   BlocProvider.of<NotificationCubit>(context).getUserNotification();
+  BlocProvider.of<CarCubit>(context).getUserCarAdsWihslist();
 }

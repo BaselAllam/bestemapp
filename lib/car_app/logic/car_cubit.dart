@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
@@ -22,6 +24,9 @@ class CarCubit extends Cubit<CarStates> {
 
   List<CarAdModel> _userCarAds = [];
   List<CarAdModel> get userCarAds => _userCarAds;
+
+  List<CarAdWishlistModel> _userWishlistCarAds = [];
+  List<CarAdWishlistModel> get userWishlistCarAds => _userWishlistCarAds;
 
   List<CarAdModel> _searchCarAdsResult = [];
   List<CarAdModel> get searchCarAdsResult => _searchCarAdsResult;
@@ -92,22 +97,22 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
-  Future<void> handleCarAdWishlist({required CarAdModel carAdModel, String wishlistId = '', String carAd = '', int favListIndex = 0}) async {
+  Future<void> handleCarAdWishlist({required CarAdWishlistModel wihslistId, required CarAdModel carAd, int favListIndex = 0}) async {
     emit(GetCarMakesLoadingState());
     try {
       String userToken = await getStringFromLocal(AppApi.userToken);
       Map<String, String> headers = AppApi.headerData;
       headers['Authorization'] = 'Bearer $userToken';
       http.Response? response;
-      if (carAdModel.isFav) {
-        response = await http.delete(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers, body: json.encode({'wishlist_id': wishlistId}));
+      if (wihslistId.carAdModel.isFav) {
+        response = await http.delete(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers, body: json.encode({'wishlist_id': wihslistId.id}));
       } else {
-        response = await http.post(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers, body: json.encode({'car_ad': carAd}));
+        response = await http.post(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers, body: json.encode({'car_ad': carAd.id}));
       }
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        if (!carAdModel.isFav) {
-          _favUserCarAds.insert(0, carAdModel);
+        if (!wihslistId.carAdModel.isFav) {
+          _favUserCarAds.insert(0, wihslistId.carAdModel);
         } else {
           _favUserCarAds.removeAt(favListIndex);
         }
@@ -117,6 +122,30 @@ class CarCubit extends Cubit<CarStates> {
       }
     } catch (e) {
       emit(GetCarMakesSomeThingWentWrongState());
+    }
+  }
+
+  Future<void> getUserCarAdsWihslist() async {
+    emit(GetUserCarWishlistAdsLoadingState());
+    try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
+      Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/car_wishlist/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data['data']) {
+          CarAdWishlistModel new_obj = CarAdWishlistModel(id: i['id'], carAdModel: CarAdModel.fromJson(i['car_ad']));
+          new_obj.carAdModel.isFav = true;
+          _userWishlistCarAds.add(new_obj);
+        }
+        emit(GetUserCarWishlistAdsSuccessState());
+      } else {
+        emit(GetUserCarWishlistAdsErrorState(data['data']));
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(GetUserCarWishlistAdsSomeThingWentWrongState());
     }
   }
 

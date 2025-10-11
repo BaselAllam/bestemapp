@@ -5,7 +5,7 @@ import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/shared_widgets/phone_input_field.dart';
-import 'package:bestemapp/shared/shared_widgets/snack_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/shared/utils/init_data.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
@@ -103,12 +103,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: BlocConsumer<UserCubit, UserStates>(
                     listener: (context, state) {
                       if (state is LoginSomeThingWentWrongState) {
-                        ScaffoldMessenger.of(context).showSnackBar(snack(selectedLang[AppLangAssets.someThingWentWrong]!, AppColors.redColor));
+                        Toaster.show(
+                          context,
+                          message: selectedLang[AppLangAssets.someThingWentWrong]!,
+                          type: ToasterType.error,
+                          position: ToasterPosition.top,
+                        );
                       } else if (state is LoginErrorState) {
-                        ScaffoldMessenger.of(context).showSnackBar(snack(state.errMsg, AppColors.redColor));
+                        Toaster.show(
+                          context,
+                          message: state.errMsg,
+                          type: ToasterType.error,
+                          position: ToasterPosition.top,
+                        );
                       } else if (state is LoginOTPState) {
                         Navigator.push(context, CupertinoPageRoute(builder: (_) => VerifyPhoneOTPScreen(phoneNumber: _phoneController.text)));
                       } else if (state is LoginSuccessState) {
+                        Toaster.show(
+                          context,
+                          message: selectedLang[AppLangAssets.success]!,
+                          type: ToasterType.error,
+                          position: ToasterPosition.top,
+                        );
                         initData(context);
                         initAuthData(context);
                         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
@@ -117,7 +133,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, state) => ElevatedButton(
                       onPressed: state is LoginLoadingState ? () {} : () async {
                         if (_phoneController.text.isEmpty || _passwordController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(snack(selectedLang[AppLangAssets.fieldsRequired]!, AppColors.redColor));
+                          Toaster.show(
+                            context,
+                            message: selectedLang[AppLangAssets.fieldsRequired]!,
+                            type: ToasterType.error,
+                            position: ToasterPosition.top,
+                          );
                         } else {
                           await BlocProvider.of<UserCubit>(context).login(_phoneController.text, _passwordController.text);
                         }

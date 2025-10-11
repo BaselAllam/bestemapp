@@ -8,7 +8,6 @@
   UpdateAd
 
 # Need Implementation
-  Login
   Register
   GetUserData
   UpdateUserData

@@ -64,6 +64,18 @@ class GetUserCarAdsErrorState extends CarStates {
 
 class GetUserCarAdsSomeThingWentWrongState extends CarStates {}
 
+class GetUserCarWishlistAdsLoadingState extends CarStates {}
+
+class GetUserCarWishlistAdsSuccessState extends CarStates {}
+
+class GetUserCarWishlistAdsErrorState extends CarStates {
+
+  String errorMsg;
+  GetUserCarWishlistAdsErrorState(this.errorMsg);
+}
+
+class GetUserCarWishlistAdsSomeThingWentWrongState extends CarStates {}
+
 class SearchCarAdsLoadingState extends CarStates {}
 
 class SearchCarAdsSuccessState extends CarStates {}

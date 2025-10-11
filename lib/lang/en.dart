@@ -153,5 +153,6 @@ final Map<String, String> enData = {
   AppLangAssets.backToLogin: "Back to Login",
   AppLangAssets.markNotificationRead: 'Mark all as read',
   AppLangAssets.loading: 'Loading',
-  AppLangAssets.success: 'Success'
+  AppLangAssets.success: 'Success',
+  AppLangAssets.noWishlist: 'No Items here, Browse and add your favourit cars to wishlist'
 };
