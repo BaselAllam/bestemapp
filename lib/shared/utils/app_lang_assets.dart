@@ -155,4 +155,10 @@ class AppLangAssets {
   static String loading = 'loading';
   static String success = 'Success';
   static String noWishlist = 'noWishlist';
+  static String chooseProfilePic = 'chooseProfilePic';
+  static String camera = 'camera';
+  static String gallery = 'gallery';
+  static String errorPickImg = 'errorPickImg';
+  static String imgSelectedSuccess = 'imgSelectedSuccess';
+  static String profileUpdatedSuccess = 'profileUpdatedSuccess';
 }

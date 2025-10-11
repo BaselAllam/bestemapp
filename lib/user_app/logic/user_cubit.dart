@@ -116,7 +116,7 @@ class UserCubit extends Cubit<UserStates> {
     }
   }
 
-  void updateUserData({required String newPhone, required String newEmail, required String newFirstName, required String newLastName, required Map<String, dynamic> newCountry, required bool newIsMale, File? newProfilePicture, required bool newisAcceptNotification}) async {
+  void updateUserData({required String newPhone, required String newEmail, required String newFirstName, required String newLastName, required bool newIsMale, File? newProfilePicture, required bool newisAcceptNotification}) async {
     emit(UpdateUserDataLoadingState());
     try {
       Map<String, dynamic> toSendData = {};
@@ -124,7 +124,6 @@ class UserCubit extends Cubit<UserStates> {
       if (_userModel!.email != newEmail) toSendData['email'] = newEmail;
       if (_userModel!.firstName != newFirstName) toSendData['first_name'] = newFirstName;
       if (_userModel!.lastName != newLastName) toSendData['last_name'] = newLastName;
-      if (_userModel!.country != newCountry['id']) toSendData['country'] = newCountry['id'];
       if (_userModel!.isMale != newIsMale) toSendData['is_male'] = newIsMale;
       if (_userModel!.isAcceptNotification != newisAcceptNotification) toSendData['is_accept_notification'] = newisAcceptNotification;
 
@@ -153,7 +152,6 @@ class UserCubit extends Cubit<UserStates> {
         if (_userModel!.email != newEmail) userModel?.email = newEmail;
         if (_userModel!.firstName != newFirstName) userModel?.firstName = newFirstName;
         if (_userModel!.lastName != newLastName) userModel?.lastName = newLastName;
-        if (_userModel!.country != newCountry['id']) userModel?.country = newCountry['id'];
         if (_userModel!.isMale != newIsMale) userModel?.isMale = newIsMale;
         if (_userModel!.isAcceptNotification != newisAcceptNotification) userModel?.isAcceptNotification = newisAcceptNotification;
         emit(UpdateUserDataSuccessState());

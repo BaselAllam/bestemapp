@@ -154,5 +154,11 @@ final Map<String, String> enData = {
   AppLangAssets.markNotificationRead: 'Mark all as read',
   AppLangAssets.loading: 'Loading',
   AppLangAssets.success: 'Success',
-  AppLangAssets.noWishlist: 'No Items here, Browse and add your favourit cars to wishlist'
+  AppLangAssets.noWishlist: 'No Items here, Browse and add your favourit cars to wishlist',
+  AppLangAssets.chooseProfilePic: 'Choose Profile Picture',
+  AppLangAssets.camera: 'Camera',
+  AppLangAssets.gallery: 'Gallery',
+  AppLangAssets.errorPickImg: 'Error Pick Image',
+  AppLangAssets.imgSelectedSuccess: 'Image selected successfully',
+  AppLangAssets.profileUpdatedSuccess: 'Profile updated successfully',
 };

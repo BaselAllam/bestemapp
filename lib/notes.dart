@@ -9,7 +9,6 @@
 
 # Need Implementation
   Register
-  GetUserData
   UpdateUserData
 
   HandleWishlist
