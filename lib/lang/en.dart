@@ -199,4 +199,5 @@ final Map<String, String> enData = {
   AppLangAssets.benefitPricingDescription: 'Get AI-powered price recommendations based on market trends',
   AppLangAssets.benefitSupportTitle: '24/7 Support',
   AppLangAssets.benefitSupportDescription: 'Our dedicated team is always here to help you sell successfully',
+  AppLangAssets.acceptTermsConditions: 'Please Read & Accept Privacy Policy & Terms Conditions',
 };

@@ -10,6 +10,7 @@ import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/gestures.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   bool isSecure = true;
   bool? isMale;
+  bool acceptedTerms = false;
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +173,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
+                _buildTermsCheckbox(),
+                const SizedBox(height: 32),
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -214,6 +218,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Toaster.show(
                             context,
                             message: selectedLang[AppLangAssets.passwordNotMatch]!,
+                            position: ToasterPosition.top,
+                            type: ToasterType.error
+                          );
+                        } else if (!acceptedTerms) {
+                          Toaster.show(
+                            context,
+                            message: selectedLang[AppLangAssets.acceptTermsConditions]!,
                             position: ToasterPosition.top,
                             type: ToasterType.error
                           );
@@ -310,6 +321,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTermsCheckbox() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 24,
+          width: 24,
+          child: Checkbox(
+            value: acceptedTerms,
+            onChanged: (value) {
+              setState(() {
+                acceptedTerms = value ?? false;
+              });
+            },
+            activeColor: AppColors.primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[700],
+                height: 1.5,
+              ),
+              children: [
+                TextSpan(text: 'I agree to the '),
+                TextSpan(
+                  text: 'Terms & Conditions',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      // Navigate to Terms & Conditions page
+                      // Navigator.push(context, MaterialPageRoute(builder: (_) => TermsPage()));
+                    },
+                ),
+                TextSpan(text: ' and '),
+                TextSpan(
+                  text: 'Privacy Policy',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      // Navigate to Privacy Policy page
+                      // Navigator.push(context, MaterialPageRoute(builder: (_) => PrivacyPolicyPage()));
+                    },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
