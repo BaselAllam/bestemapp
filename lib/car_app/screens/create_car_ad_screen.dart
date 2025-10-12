@@ -1,6 +1,8 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -174,19 +176,19 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   List<StepData> _getSteps() {
     return [
       StepData(
-        title: 'Basic Details',
+        title: selectedLang[AppLangAssets.basicDetails]!,
         content: Column(
           children: [
             customDropdown(
-              title: 'Brand *',
-              hint: 'Select brand',
+              title: '${selectedLang[AppLangAssets.brand]} *',
+              hint: selectedLang[AppLangAssets.selectBrand]!,
               value: _selectedBrand,
               items: _brands,
               onChanged: (value) => setState(() => _selectedBrand = value),
               fillColor: Colors.grey.shade50,
             ),
             authField(
-              title: 'Model *',
+              title: '${selectedLang[AppLangAssets.model]} *',
               inputTitle: 'e.g., Camry',
               inputStyle: const TextStyle(fontSize: 16),
               fillColor: Colors.grey.shade50,
@@ -196,23 +198,23 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
               controller: _modelController,
             ),
             customDropdown(
-              title: 'Year *',
-              hint: 'Select year',
+              title: '${selectedLang[AppLangAssets.year]} *',
+              hint: selectedLang[AppLangAssets.selectYear]!,
               value: _selectedYear,
               items: _years,
               onChanged: (value) => setState(() => _selectedYear = value),
               fillColor: Colors.grey.shade50,
             ),
             customDropdown(
-              title: 'Condition *',
-              hint: 'Select condition',
+              title: '${selectedLang[AppLangAssets.condition]} *',
+              hint: selectedLang[AppLangAssets.selectCondition]!,
               value: _selectedCondition,
               items: _conditions,
               onChanged: (value) => setState(() => _selectedCondition = value),
               fillColor: Colors.grey.shade50,
             ),
             authField(
-              title: 'Mileage (km) *',
+              title: 'KiloMeters (km) *',
               inputTitle: 'e.g., 50000',
               inputStyle: const TextStyle(fontSize: 16),
               fillColor: Colors.grey.shade50,
@@ -222,15 +224,15 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
               controller: _mileageController,
             ),
             customDropdown(
-              title: 'Body Type *',
-              hint: 'Select body type',
+              title: '${selectedLang[AppLangAssets.bodyType]} *',
+              hint: selectedLang[AppLangAssets.selectBodyType]!,
               value: _selectedBodyType,
               items: _bodyTypes,
               onChanged: (value) => setState(() => _selectedBodyType = value),
               fillColor: Colors.grey.shade50,
             ),
             authField(
-              title: 'Color *',
+              title: '${selectedLang[AppLangAssets.color]} *',
               inputTitle: 'e.g., Black',
               inputStyle: const TextStyle(fontSize: 16),
               fillColor: Colors.grey.shade50,
@@ -243,7 +245,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
         ),
       ),
       StepData(
-        title: 'Upload Images',
+        title: selectedLang[AppLangAssets.uploadImg]!,
         content: Column(
           children: [
             Container(
@@ -268,7 +270,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   ElevatedButton.icon(
                     onPressed: _pickImages,
                     icon: Icon(Icons.add_photo_alternate, color: AppColors.primaryColor),
-                    label: Text('Choose Images', style: TextStyle(color: AppColors.primaryColor),),
+                    label: Text(selectedLang[AppLangAssets.chooseImage]!, style: TextStyle(color: AppColors.primaryColor),),
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
                       backgroundColor: AppColors.primaryColor.withOpacity(0.2),
@@ -277,10 +279,9 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text('or drag and drop', style: TextStyle(color: Colors.grey, fontSize: 14)),
                   const SizedBox(height: 8),
                   Text(
-                    'PNG, JPG up to 10MB each (Max 20 images)',
+                    'PNG, JPG up to 10MB (20 ${selectedLang[AppLangAssets.maxImgs]})',
                     style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                   ),
                 ],
@@ -300,7 +301,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                     Icon(Icons.check_circle, color: Colors.green.shade700),
                     const SizedBox(width: 12),
                     Text(
-                      '${_images.length} image(s) uploaded successfully',
+                      '${_images.length} ${selectedLang[AppLangAssets.imgsUploadedSuccess]}',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Colors.green.shade900,
@@ -368,7 +369,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
         ),
       ),
       StepData(
-        title: 'Upload Video',
+        title: selectedLang[AppLangAssets.uploadVideo]!,
         content: Column(
           children: [
             Container(
@@ -384,7 +385,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Upload one video showcasing your car (optional)',
+                      '${selectedLang[AppLangAssets.uploadVideoDescription]} (${selectedLang[AppLangAssets.optional]})',
                       style: TextStyle(color: Colors.blue.shade900, fontSize: 13),
                     ),
                   ),
@@ -414,7 +415,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   ElevatedButton.icon(
                     onPressed: _pickVideo,
                     icon: Icon(Icons.video_library, color: AppColors.primaryColor),
-                    label: Text('Choose Video', style: TextStyle(color: AppColors.primaryColor),),
+                    label: Text(selectedLang[AppLangAssets.chooseVideo]!, style: TextStyle(color: AppColors.primaryColor),),
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -422,11 +423,9 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                       backgroundColor: AppColors.primaryColor.withOpacity(0.2)
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text('or drag and drop', style: TextStyle(color: Colors.grey, fontSize: 14)),
                   const SizedBox(height: 8),
                   Text(
-                    'MP4, MOV, AVI up to 100MB',
+                    'MP4 up to 100MB',
                     style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                   ),
                 ],
@@ -463,8 +462,8 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Video uploaded',
+                          Text(
+                            selectedLang[AppLangAssets.videoUploaded]!,
                             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                           ),
                           const SizedBox(height: 4),
@@ -489,84 +488,48 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
         ),
       ),
       StepData(
-        title: 'Specifications',
+        title: selectedLang[AppLangAssets.specs]!,
         content: Column(
           children: [
             customDropdown(
-              title: 'Engine Size *',
-              hint: 'Select engine size',
+              title: '${selectedLang[AppLangAssets.engine]} *',
+              hint: selectedLang[AppLangAssets.selectEngineSize]!,
               value: _selectedEngineSize,
               items: _engineSizes,
               onChanged: (value) => setState(() => _selectedEngineSize = value),
               fillColor: Colors.grey.shade50,
             ),
             customDropdown(
-              title: 'Transmission *',
-              hint: 'Select transmission',
+              title: '${selectedLang[AppLangAssets.transmission]} *',
+              hint: selectedLang[AppLangAssets.selectTransimission]!,
               value: _selectedTransmission,
               items: _transmissions,
               onChanged: (value) => setState(() => _selectedTransmission = value),
               fillColor: Colors.grey.shade50,
             ),
             customDropdown(
-              title: 'Fuel Type *',
-              hint: 'Select fuel type',
+              title: '${selectedLang[AppLangAssets.fuelType]} *',
+              hint: selectedLang[AppLangAssets.selectFuelType]!,
               value: _selectedFuelType,
               items: _fuelTypes,
               onChanged: (value) => setState(() => _selectedFuelType = value),
               fillColor: Colors.grey.shade50,
             ),
-            customDropdown(
-              title: 'Number of Doors *',
-              hint: 'Select doors',
-              value: _selectedDoors,
-              items: _doorOptions,
-              onChanged: (value) => setState(() => _selectedDoors = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            customDropdown(
-              title: 'Number of Seats *',
-              hint: 'Select seats',
-              value: _selectedSeats,
-              items: _seatOptions,
-              onChanged: (value) => setState(() => _selectedSeats = value),
-              fillColor: Colors.grey.shade50,
-            ),
             authField(
-              title: 'Horsepower (optional)',
-              inputTitle: 'e.g., 200 HP',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.next,
-              keyBoardType: TextInputType.number,
-              formaters: [FilteringTextInputFormatter.digitsOnly],
-              controller: _horsepowerController,
-            ),
-            authField(
-              title: 'Torque (optional)',
-              inputTitle: 'e.g., 250 Nm',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.next,
-              keyBoardType: TextInputType.number,
-              formaters: [FilteringTextInputFormatter.digitsOnly],
-              controller: _torqueController,
-            ),
-            authField(
-              title: '0-100 km/h (optional)',
+              title: '0-100 km/h',
               inputTitle: 'e.g., 7.5s',
               inputStyle: const TextStyle(fontSize: 16),
               fillColor: Colors.grey.shade50,
               textInputAction: TextInputAction.done,
               keyBoardType: const TextInputType.numberWithOptions(decimal: true),
-              formaters: [],
+              formaters: [FilteringTextInputFormatter.digitsOnly],
               controller: _accelerationController,
             ),
           ],
         ),
       ),
       StepData(
-        title: 'Description',
+        title: selectedLang[AppLangAssets.description]!,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -583,7 +546,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Provide a detailed description to attract buyers',
+                      selectedLang[AppLangAssets.adDescriptionToAttract]!,
                       style: TextStyle(color: Colors.orange.shade900, fontSize: 13),
                     ),
                   ),
@@ -596,8 +559,8 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Description *',
+                  Text(
+                    '${selectedLang[AppLangAssets.description]} *',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -611,7 +574,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                     maxLength: 1000,
                     style: const TextStyle(fontSize: 16),
                     decoration: InputDecoration(
-                      hintText: 'Provide a detailed description of your car, including its condition, maintenance history, any modifications, and why you\'re selling...',
+                      hintText: selectedLang[AppLangAssets.adCarDescription],
                       filled: true,
                       fillColor: Colors.grey.shade50,
                       contentPadding: const EdgeInsets.all(16),
@@ -639,7 +602,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Minimum 50 characters (${_descriptionController.text.length}/50)',
+                        '${selectedLang[AppLangAssets.minimumCharacter]} (${_descriptionController.text.length}/50)',
                         style: TextStyle(
                           color: _descriptionController.text.length >= 50 ? Colors.green : Colors.orange,
                           fontSize: 12,
@@ -655,11 +618,11 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
         ),
       ),
       StepData(
-        title: 'Pricing & Location',
+        title: selectedLang[AppLangAssets.pricingAndLocation]!,
         content: Column(
           children: [
             authField(
-              title: 'Price *',
+              title: '${selectedLang[AppLangAssets.pricing]} *',
               inputTitle: 'e.g., 25000',
               inputStyle: const TextStyle(fontSize: 16),
               fillColor: Colors.grey.shade50,
@@ -669,13 +632,13 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
               controller: _priceController,
               suffix: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Text('AED', style: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600)),
+                child: Text('EGP', style: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600)),
               ),
             ),
             const SizedBox(height: 8),
             customDropdown(
-              title: 'City *',
-              hint: 'Select city',
+              title: '${selectedLang[AppLangAssets.city]} *',
+              hint: selectedLang[AppLangAssets.selectCity]!,
               value: _selectedCity,
               items: _citiesWithAreas.keys.toList(),
               onChanged: (value) {
@@ -689,8 +652,8 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
             ),
             if (_selectedCity != null)
               customDropdown(
-                title: 'Area *',
-                hint: 'Select area',
+                title: '${selectedLang[AppLangAssets.area]} *',
+                hint: selectedLang[AppLangAssets.selectArea]!,
                 value: _selectedArea,
                 items: _areas,
                 onChanged: (value) => setState(() => _selectedArea = value),
@@ -700,7 +663,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
         ),
       ),
       StepData(
-        title: 'Review & Confirm',
+        title: selectedLang[AppLangAssets.reviewAndConfirm]!,
         content: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(20),
@@ -731,7 +694,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Review your listing before publishing',
+                        selectedLang[AppLangAssets.reviewYourListing]!,
                         style: TextStyle(color: Colors.blue.shade900, fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -739,26 +702,26 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              _buildSectionHeader('Basic Information', Icons.info_outline),
+              _buildSectionHeader('${selectedLang[AppLangAssets.basicInformation]!}:', Icons.info_outline),
               const SizedBox(height: 12),
-              _buildInfoRow('Brand:', _selectedBrand ?? 'N/A'),
-              _buildInfoRow('Model:', _modelController.text),
-              _buildInfoRow('Year:', _selectedYear ?? 'N/A'),
-              _buildInfoRow('Condition:', _selectedCondition ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.brand]!}:', _selectedBrand ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.model]!}:', _modelController.text),
+              _buildInfoRow('${selectedLang[AppLangAssets.year]!}:', _selectedYear ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.condition]!}:', _selectedCondition ?? 'N/A'),
               _buildInfoRow('Mileage:', _mileageController.text.isNotEmpty ? '${_mileageController.text} km' : 'N/A'),
-              _buildInfoRow('Body Type:', _selectedBodyType ?? 'N/A'),
-              _buildInfoRow('Color:', _colorController.text),
+              _buildInfoRow('${selectedLang[AppLangAssets.bodyType]!}:', _selectedBodyType ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.color]!}:', _colorController.text),
               const SizedBox(height: 24),
-              _buildSectionHeader('Media', Icons.photo_library_outlined),
+              _buildSectionHeader(selectedLang[AppLangAssets.media]!, Icons.photo_library_outlined),
               const SizedBox(height: 12),
-              _buildInfoRow('Images:', '${_images.length} uploaded'),
-              _buildInfoRow('Video:', _video != null ? 'Uploaded' : 'None'),
+              _buildInfoRow('${selectedLang[AppLangAssets.images]!}:', '${_images.length} uploaded'),
+              _buildInfoRow('${selectedLang[AppLangAssets.video]!}:', _video != null ? 'Uploaded' : 'None'),
               const SizedBox(height: 24),
-              _buildSectionHeader('Specifications', Icons.settings_outlined),
+              _buildSectionHeader(selectedLang[AppLangAssets.specs]!, Icons.settings_outlined),
               const SizedBox(height: 12),
-              _buildInfoRow('Engine:', _selectedEngineSize ?? 'N/A'),
-              _buildInfoRow('Transmission:', _selectedTransmission ?? 'N/A'),
-              _buildInfoRow('Fuel Type:', _selectedFuelType ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.engine]!}:', _selectedEngineSize ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.transmission]!}:', _selectedTransmission ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.fuelType]!}:', _selectedFuelType ?? 'N/A'),
               _buildInfoRow('Doors:', _selectedDoors ?? 'N/A'),
               _buildInfoRow('Seats:', _selectedSeats ?? 'N/A'),
               if (_horsepowerController.text.isNotEmpty)
@@ -768,7 +731,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
               if (_accelerationController.text.isNotEmpty)
                 _buildInfoRow('0-100 km/h:', '${_accelerationController.text}s'),
               const SizedBox(height: 24),
-              _buildSectionHeader('Description', Icons.description_outlined),
+              _buildSectionHeader(selectedLang[AppLangAssets.description]!, Icons.description_outlined),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -777,12 +740,12 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  _descriptionController.text.isEmpty ? 'No description provided' : _descriptionController.text,
+                  _descriptionController.text.isEmpty ? selectedLang[AppLangAssets.noDescription]! : _descriptionController.text,
                   style: TextStyle(color: Colors.grey.shade800, height: 1.5),
                 ),
               ),
               const SizedBox(height: 24),
-              _buildSectionHeader('Pricing & Location', Icons.location_on_outlined),
+              _buildSectionHeader(selectedLang[AppLangAssets.pricingAndLocation]!, Icons.location_on_outlined),
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -804,8 +767,8 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                 ],
               ),
               const SizedBox(height: 12),
-              _buildInfoRow('City:', _selectedCity ?? 'N/A'),
-              _buildInfoRow('Area:', _selectedArea ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.city]}:', _selectedCity ?? 'N/A'),
+              _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea ?? 'N/A'),
             ],
           ),
         ),
@@ -937,13 +900,13 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
 
   Widget _buildHorizontalStepper() {
     final steps = [
-      'Basic Details',
-      'Images',
-      'Video',
-      'Specs',
-      'Description',
-      'Pricing',
-      'Review'
+      selectedLang[AppLangAssets.basicDetails],
+      selectedLang[AppLangAssets.images],
+      selectedLang[AppLangAssets.video],
+      selectedLang[AppLangAssets.specs],
+      selectedLang[AppLangAssets.description],
+      selectedLang[AppLangAssets.pricing],
+      selectedLang[AppLangAssets.review],
     ];
 
     return Container(
@@ -1016,7 +979,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   SizedBox(
                     width: 75,
                     child: Text(
-                      steps[stepIndex],
+                      steps[stepIndex]!,
                       style: TextStyle(
                         fontSize: 11,
                         color: isActive ? AppColors.primaryColor : Colors.grey[600],
@@ -1042,7 +1005,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: const Text('Create Car Ad', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(selectedLang[AppLangAssets.createCarAd]!, style: TextStyle(fontWeight: FontWeight.w600)),
         elevation: 0,
         backgroundColor: Colors.white,
       ),
@@ -1064,7 +1027,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'Step ${_currentStep + 1}/${steps.length}',
+                          '${selectedLang[AppLangAssets.step]} ${_currentStep + 1}/${steps.length}',
                           style: TextStyle(
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w600,
@@ -1095,7 +1058,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                               setState(() => _currentStep--);
                             },
                             icon: Icon(Icons.arrow_back, color: AppColors.greyColor,),
-                            label: Text('Back', style: TextStyle(color: AppColors.greyColor)),
+                            label: Text(selectedLang[AppLangAssets.back]!, style: TextStyle(color: AppColors.greyColor)),
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               side: BorderSide(color: Colors.grey.shade300, width: 2),
@@ -1145,7 +1108,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  _currentStep == steps.length - 1 ? 'Publish Ad' : 'Continue',
+                                  _currentStep == steps.length - 1 ? selectedLang[AppLangAssets.publishAd]! : selectedLang[AppLangAssets.continueStep]!,
                                   style: TextStyle(fontSize: 16, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(width: 8),
