@@ -1,6 +1,9 @@
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -115,79 +118,6 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
     });
   }
 
-  Widget authField({
-    required String title,
-    required String inputTitle,
-    required TextStyle inputStyle,
-    required Color fillColor,
-    bool enabled = true,
-    required TextInputAction textInputAction,
-    required TextInputType keyBoardType,
-    required List<TextInputFormatter> formaters,
-    bool obsecure = false,
-    required TextEditingController controller,
-    Widget suffix = const SizedBox(),
-    bool border = true,
-    Function? validatorMethod,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(top: 15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 8),
-          TextFormField(
-            controller: controller,
-            enabled: enabled,
-            obscureText: obsecure,
-            keyboardType: keyBoardType,
-            textInputAction: textInputAction,
-            inputFormatters: formaters,
-            style: inputStyle,
-            validator: (value) => validatorMethod?.call(value) as String?,
-            decoration: InputDecoration(
-              hintText: inputTitle,
-              filled: true,
-              fillColor: fillColor,
-              suffixIcon: suffix,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              border: border
-                  ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                    )
-                  : OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-              enabledBorder: border
-                  ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                    )
-                  : OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget customDropdown({
     required String title,
     required String hint,
@@ -211,6 +141,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
+            dropdownColor: AppColors.whiteColor,
             value: value,
             decoration: InputDecoration(
               hintText: hint,
@@ -336,9 +267,11 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: _pickImages,
-                    icon: const Icon(Icons.add_photo_alternate),
-                    label: const Text('Choose Images'),
+                    icon: Icon(Icons.add_photo_alternate, color: AppColors.primaryColor),
+                    label: Text('Choose Images', style: TextStyle(color: AppColors.primaryColor),),
                     style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: AppColors.primaryColor.withOpacity(0.2),
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
@@ -347,7 +280,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   const Text('or drag and drop', style: TextStyle(color: Colors.grey, fontSize: 14)),
                   const SizedBox(height: 8),
                   Text(
-                    'PNG, JPG, WEBP up to 10MB each (Max 20 images)',
+                    'PNG, JPG up to 10MB each (Max 20 images)',
                     style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                   ),
                 ],
@@ -480,11 +413,13 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: _pickVideo,
-                    icon: const Icon(Icons.video_library),
-                    label: const Text('Choose Video'),
+                    icon: Icon(Icons.video_library, color: AppColors.primaryColor),
+                    label: Text('Choose Video', style: TextStyle(color: AppColors.primaryColor),),
                     style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      backgroundColor: AppColors.primaryColor.withOpacity(0.2)
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -878,6 +813,79 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
     ];
   }
 
+  Widget authField({
+    required String title,
+    required String inputTitle,
+    required TextStyle inputStyle,
+    required Color fillColor,
+    bool enabled = true,
+    required TextInputAction textInputAction,
+    required TextInputType keyBoardType,
+    required List<TextInputFormatter> formaters,
+    bool obsecure = false,
+    required TextEditingController controller,
+    Widget suffix = const SizedBox(),
+    bool border = true,
+    Function? validatorMethod,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: controller,
+            enabled: enabled,
+            obscureText: obsecure,
+            keyboardType: keyBoardType,
+            textInputAction: textInputAction,
+            inputFormatters: formaters,
+            style: inputStyle,
+            validator: (value) => validatorMethod?.call(value) as String?,
+            decoration: InputDecoration(
+              hintText: inputTitle,
+              filled: true,
+              fillColor: fillColor,
+              suffixIcon: suffix,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: border
+                  ? OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    )
+                  : OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+              enabledBorder: border
+                  ? OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    )
+                  : OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSectionHeader(String title, IconData icon) {
     return Row(
       children: [
@@ -1086,8 +1094,8 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                             onPressed: () {
                               setState(() => _currentStep--);
                             },
-                            icon: const Icon(Icons.arrow_back),
-                            label: const Text('Back'),
+                            icon: Icon(Icons.arrow_back, color: AppColors.greyColor,),
+                            label: Text('Back', style: TextStyle(color: AppColors.greyColor)),
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               side: BorderSide(color: Colors.grey.shade300, width: 2),
@@ -1100,46 +1108,50 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
                       if (_currentStep > 0) const SizedBox(width: 12),
                       Expanded(
                         flex: 2,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_currentStep < steps.length - 1) {
-                              setState(() => _currentStep++);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Row(
-                                    children: [
-                                      Icon(Icons.check_circle, color: Colors.white),
-                                      SizedBox(width: 12),
-                                      Text('Car ad created successfully!'),
-                                    ],
+                        child: BlocConsumer<CarCubit, CarStates>(
+                          listener: (context, state) {},
+                          builder: (context, state) => ElevatedButton(
+                            onPressed: () {
+                              if (_currentStep < steps.length - 1) {
+                                setState(() => _currentStep++);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Row(
+                                      children: [
+                                        Icon(Icons.check_circle, color: Colors.white),
+                                        SizedBox(width: 12),
+                                        Text('Car ad created successfully!'),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                   ),
-                                  backgroundColor: Colors.green,
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 2,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                _currentStep == steps.length - 1 ? 'Publish Ad' : 'Continue',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              const SizedBox(width: 8),
-                              Icon(_currentStep == steps.length - 1 ? Icons.publish : Icons.arrow_forward),
-                            ],
+                              backgroundColor: AppColors.primaryColor,
+                              elevation: 2,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _currentStep == steps.length - 1 ? 'Publish Ad' : 'Continue',
+                                  style: TextStyle(fontSize: 16, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(width: 8),
+                                Icon(_currentStep == steps.length - 1 ? Icons.publish : Icons.arrow_forward, color: AppColors.whiteColor,),
+                              ],
+                            ),
                           ),
                         ),
                       ),

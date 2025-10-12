@@ -99,3 +99,15 @@ class LandingCarAdsErrorState extends CarStates {
 }
 
 class LandingCarAdsSomeThingWentWrongState extends CarStates {}
+
+class CreateCarAdsLoadingState extends CarStates {}
+
+class CreateCarAdsSuccessState extends CarStates {}
+
+class CreateCarAdsErrorState extends CarStates {
+
+  String errorMsg;
+  CreateCarAdsErrorState(this.errorMsg);
+}
+
+class CreateCarAdsSomeThingWentWrongState extends CarStates {}

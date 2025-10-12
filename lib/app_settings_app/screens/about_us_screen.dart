@@ -1,4 +1,8 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({Key? key}) : super(key: key);
@@ -27,7 +31,7 @@ class AboutUsScreen extends StatelessWidget {
           const SizedBox(height: 24),
           _buildMissionSection(),
           const SizedBox(height: 16),
-          _buildStatsSection(),
+          _buildStatsSection(context),
           const SizedBox(height: 16),
           _buildValuesSection(),
           const SizedBox(height: 16),
@@ -149,7 +153,7 @@ class AboutUsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsSection() {
+  Widget _buildStatsSection(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -177,9 +181,9 @@ class AboutUsScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildStatItem('500K+', 'Active Users', Icons.people),
-              _buildStatItem('100K+', 'Cars Sold', Icons.check_circle),
-              _buildStatItem('4.8/5', 'User Rating', Icons.star),
+              _buildStatItem('${BlocProvider.of<CarCubit>(context).usersCount}+', selectedLang[AppLangAssets.users]!, Icons.people),
+              _buildStatItem('${BlocProvider.of<CarCubit>(context).carAdsCount}+', selectedLang[AppLangAssets.ads]!, Icons.check_circle),
+              _buildStatItem('4.8/5', selectedLang[AppLangAssets.usersReviews]!, Icons.star),
             ],
           ),
         ],

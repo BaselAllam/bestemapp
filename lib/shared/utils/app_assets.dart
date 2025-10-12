@@ -46,6 +46,7 @@ class AppAssets {
   static String onBoarding1 = 'assets/imgs/onBoarding1.png';
   static String onBoarding2 = 'assets/imgs/onBoarding2.png';
   static String onBoarding3 = 'assets/imgs/onBoarding3.png';
+  static String termsConditionsIcon = 'assets/imgs/termsAndConditions.png';
   // txts
   static String appLang = 'AppLang';
 }

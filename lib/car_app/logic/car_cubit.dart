@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
@@ -239,6 +241,63 @@ class CarCubit extends Cubit<CarStates> {
       }
     } catch (e) {
       emit(LandingCarAdsSomeThingWentWrongState());
+    }
+  }
+
+  void createCarAd({ required String adTitle, required String adDescription, required String carModel, required String carColor, required String carShape, required String adArea,
+    required String carCondition, required String fuelType, required String transmissionType, required int engineCapacity, required int carYear, required int kiloMeters,
+    required String price, required bool isNegotioable, required File video, required List<File> imgs, required int distanceRange, required List<Map<String, dynamic>> specsValues,
+    }) async {
+    emit(CreateCarAdsLoadingState());
+    try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
+      Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
+      var uri = Uri.parse('${AppApi.ipAddress}/cars/user_car_ads/');
+      var request = http.MultipartRequest('POST', uri)
+        ..headers.addAll(headers);
+
+      request.fields['ad_title'] = adTitle;
+      request.fields['ad_description'] = adDescription;
+      request.fields['car_model'] = carModel;
+      request.fields['car_color'] = carColor;
+      request.fields['car_shape'] = carShape;
+      request.fields['ad_area'] = adArea;
+      request.fields['car_condition'] = carCondition;
+      request.fields['fuel_type'] = fuelType;
+      request.fields['transmission_type'] = transmissionType;
+      request.fields['engine_capacity'] = engineCapacity.toString();
+      request.fields['car_year'] = carYear.toString();
+      request.fields['kilometers'] = kiloMeters.toString();
+      request.fields['price'] = price;
+      request.fields['is_negotiable'] = isNegotioable.toString();
+      request.fields['distance_range'] = distanceRange.toString();
+      request.fields['specs_value'] = json.encode(specsValues);
+      var videoFile = await http.MultipartFile.fromPath(
+        'ad_video',
+        video.path,
+      );
+      request.files.add(videoFile);
+      for (int i = 0; i < imgs.length; i++) {
+        var imgFile = await http.MultipartFile.fromPath(
+          'images',
+          imgs[i].path,
+        );
+        request.files.add(imgFile);
+      }
+
+      http.StreamedResponse response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+      var data = json.decode(responseBody);
+
+      if (response.statusCode == 200) {
+        _userCarAds.insert(0, CarAdModel.fromJson(data['data']));
+        emit(CreateCarAdsSuccessState());
+      } else {
+        emit(CreateCarAdsErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(CreateCarAdsSomeThingWentWrongState());
     }
   }
 }
