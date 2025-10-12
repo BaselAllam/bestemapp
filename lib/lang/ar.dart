@@ -1,125 +1,173 @@
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 
 final Map<String, String> arData = {
-  AppLangAssets.login: 'تسجيل الدخول',
-  AppLangAssets.phoneNumber: 'رقم الهاتف',
-  AppLangAssets.email: 'البريد الالكتروني',
-  AppLangAssets.enterUrPhoneNumber: 'أدخل رقم هاتفك',
-  AppLangAssets.password: 'كلمة المرور',
-  AppLangAssets.enterUrPassword: 'أدخل كلمة المرور',
-  AppLangAssets.confirmPassword: 'تأكيد كلمة المرور',
-  AppLangAssets.forgetPassword: 'نسيت كلمة المرور ؟',
-  AppLangAssets.dontHaveAccount: 'ليس لديك حساب؟',
-  AppLangAssets.register: 'تسجيل',
-  AppLangAssets.fullName: 'الاسم الكامل',
-  AppLangAssets.firstName: 'الاسم الاول',
-  AppLangAssets.lastName: 'اسم العائله',
-  AppLangAssets.enterFullName: 'أدخل اسمك الكامل',
-  AppLangAssets.passwordNotMatch: 'كلمة المرور غير متطابقة',
-  AppLangAssets.passwordLegnthError: 'يجب أن تكون كلمة المرور 8 أحرف على الأقل',
-  AppLangAssets.fieldsRequired: 'بعض الحقول مطلوبة',
+  AppLangAssets.login: 'تسجيل دخول',
+  AppLangAssets.phoneNumber: 'رقم التليفون',
+  AppLangAssets.email: 'البريد الإلكتروني',
+  AppLangAssets.enterUrPhoneNumber: 'دخل رقم تليفونك',
+  AppLangAssets.password: 'الرقم السري',
+  AppLangAssets.enterUrPassword: 'دخل الرقم السري بتاعك',
+  AppLangAssets.confirmPassword: 'تأكيد الرقم السري',
+  AppLangAssets.forgetPassword: 'نسيت الرقم السري؟',
+  AppLangAssets.dontHaveAccount: 'معندكش حساب؟',
+  AppLangAssets.register: 'تسجيل حساب جديد',
+  AppLangAssets.fullName: 'الاسم كامل',
+  AppLangAssets.firstName: 'الاسم الأول',
+  AppLangAssets.lastName: 'الاسم الأخير',
+  AppLangAssets.enterFullName: 'دخل اسمك بالكامل',
+  AppLangAssets.passwordNotMatch: 'الرقم السري مش متطابق',
+  AppLangAssets.passwordLegnthError: 'الرقم السري لازم يكون ٨ حروف أو أكتر',
+  AppLangAssets.fieldsRequired: 'فيه بيانات مطلوبة لسه مدخلتهاش',
   AppLangAssets.navBarMore: 'المزيد',
-  AppLangAssets.navBarWishlist: 'قائمة الرغبات',
+  AppLangAssets.navBarWishlist: 'قائمة المفضله',
   AppLangAssets.navBarHome: 'الرئيسية',
   AppLangAssets.navBarBooking: 'الحجوزات',
-  AppLangAssets.homeWlcTitle: 'مرحبًا،',
-  AppLangAssets.cars: 'السيارات',
-  AppLangAssets.motorBikes: 'الدراجات النارية',
-  AppLangAssets.bikes: 'الدراجات',
-  AppLangAssets.iLike: 'أنا أحب',
-  AppLangAssets.popular: 'الأكثر شهرة',
-  AppLangAssets.recentlyAdded: 'أضيف مؤخرًا',
-  AppLangAssets.seeMore: 'عرض المزيد',
-  AppLangAssets.sort: 'الفرز',
-  AppLangAssets.filter: 'التصفية',
+  AppLangAssets.homeWlcTitle: 'أهلاً،',
+  AppLangAssets.cars: 'عربيات',
+  AppLangAssets.motorBikes: 'موتوسيكلات',
+  AppLangAssets.bikes: 'عجل',
+  AppLangAssets.iLike: 'تعجبني',
+  AppLangAssets.popular: 'الأشهر',
+  AppLangAssets.recentlyAdded: 'تمت إضافتها مؤخراً',
+  AppLangAssets.seeMore: 'شوف أكتر',
+  AppLangAssets.sort: 'ترتيب',
+  AppLangAssets.filter: 'فلترة',
   AppLangAssets.newFilter: 'جديد',
   AppLangAssets.usedFilter: 'مستعمل',
   AppLangAssets.allFilter: 'الكل',
   AppLangAssets.vechileCondition: 'الحالة',
   AppLangAssets.notification: 'الإشعارات',
   AppLangAssets.newNotification: 'جديد',
-  AppLangAssets.todayNotification: 'اليوم',
-  AppLangAssets.yesterDataNotification: 'أمس',
-  AppLangAssets.earlerNotification: 'قبل ذلك',
-  AppLangAssets.booking: 'الحجوزات',
+  AppLangAssets.todayNotification: 'النهاردة',
+  AppLangAssets.yesterDataNotification: 'امبارح',
+  AppLangAssets.earlerNotification: 'قبل كده',
+  AppLangAssets.booking: 'حجوزاتي',
   AppLangAssets.profileData: 'بيانات الملف الشخصي',
   AppLangAssets.settingsSection: 'الإعدادات',
   AppLangAssets.appSection: 'المزيد',
-  AppLangAssets.logout: 'تسجيل الخروج',
+  AppLangAssets.logout: 'تسجيل خروج',
   AppLangAssets.changeLang: 'تغيير اللغة',
   AppLangAssets.acceptNotification: 'قبول الإشعارات',
   AppLangAssets.appVersion: 'إصدار التطبيق',
-  AppLangAssets.aboutUs: 'معلومات عنا',
+  AppLangAssets.aboutUs: 'عنا',
   AppLangAssets.followUs: 'تابعنا',
-  AppLangAssets.contactUs: 'اتصل بنا',
-  AppLangAssets.areUSureLogout: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
-  AppLangAssets.yes: 'نعم',
-  AppLangAssets.no: 'لا',
-  AppLangAssets.accept: 'قبول',
+  AppLangAssets.contactUs: 'كلمنا',
+  AppLangAssets.areUSureLogout: 'متأكد إنك عايز تخرج من الحساب؟',
+  AppLangAssets.yes: 'أيوه',
+  AppLangAssets.no: 'لأ',
+  AppLangAssets.accept: 'موافق',
   AppLangAssets.reject: 'رفض',
   AppLangAssets.bookedAt: 'تم الحجز في',
   AppLangAssets.adsTitle: 'عنوان الإعلان',
-  AppLangAssets.toViewOn: 'يريد الزيارة في',
-  AppLangAssets.requested: 'تم الطلب',
-  AppLangAssets.otherRequest: 'طلبات أخرى',
+  AppLangAssets.toViewOn: 'عايز يزور في',
+  AppLangAssets.requested: 'مطلوب',
+  AppLangAssets.otherRequest: 'طلبات تانية',
   AppLangAssets.requestStatus: 'الحالة',
   AppLangAssets.myProfile: 'ملفي الشخصي',
-  AppLangAssets.getSupport: 'الحصول على الدعم',
+  AppLangAssets.getSupport: 'الدعم والمساعدة',
   AppLangAssets.privacyPolicy: 'سياسة الخصوصية',
-  AppLangAssets.privacyPolicy: 'الاسئله الاكثر شيوعا',
+  AppLangAssets.faq: 'الأسئلة المتكررة',
   AppLangAssets.myAds: 'إعلاناتي',
   AppLangAssets.myReviews: 'تقييماتي',
   AppLangAssets.usersReviews: 'تقييمات المستخدمين',
   AppLangAssets.navBarSearch: 'بحث',
   AppLangAssets.navBarStore: 'المتجر',
-  AppLangAssets.gender: 'الجنس',
+  AppLangAssets.gender: 'النوع',
   AppLangAssets.male: 'ذكر',
   AppLangAssets.female: 'أنثى',
   AppLangAssets.ar: 'العربية',
   AppLangAssets.en: 'الإنجليزية',
-  AppLangAssets.areUSureLang: 'هل أنت متأكد أنك تريد تغيير لغة التطبيق؟',
+  AppLangAssets.areUSureLang: 'متأكد إنك عايز تغير لغة التطبيق؟',
   AppLangAssets.termAndConditions: 'الشروط والأحكام',
   AppLangAssets.visionAndMission: 'الرؤية والرسالة',
   AppLangAssets.adViews: 'المشاهدات',
   AppLangAssets.save: 'حفظ',
   AppLangAssets.edit: 'تعديل',
-  AppLangAssets.blogs: 'المدونات',
-  AppLangAssets.blogsDetails: 'اقرأها',
+  AppLangAssets.blogs: 'المدونة',
+  AppLangAssets.blogsDetails: 'اقرا التفاصيل',
   AppLangAssets.sourceBy: 'المصدر',
-  AppLangAssets.adChart: 'تقدم الإعلان',
-  AppLangAssets.search: 'ابحث عن المفضل لديك',
+  AppLangAssets.adChart: 'تطور الإعلان',
+  AppLangAssets.search: 'اكتشف اللي بتحبه',
   AppLangAssets.myAddresses: 'عناويني',
-  AppLangAssets.bestemStore: 'متجر بيستيم',
-  AppLangAssets.myWalletTransactions: 'معاملات محفظتي',
+  AppLangAssets.bestemStore: 'متجر بيستم',
+  AppLangAssets.myWalletTransactions: 'سجل معاملاتي',
   AppLangAssets.ticketDetails: 'تفاصيل التذكرة',
-  AppLangAssets.createNewTicket: 'إنشاء تذكرة',
+  AppLangAssets.createNewTicket: 'إنشاء تذكرة جديدة',
   AppLangAssets.ticketTitle: 'عنوان التذكرة',
   AppLangAssets.ticketDate: 'تاريخ الإصدار',
-  AppLangAssets.ticketResponse: 'الرد على التذكرة',
+  AppLangAssets.ticketResponse: 'رد التذكرة',
   AppLangAssets.ticketDescription: 'وصف التذكرة',
   AppLangAssets.ticketStatus: 'حالة التذكرة',
   AppLangAssets.submitTicket: 'إرسال التذكرة',
   AppLangAssets.ticketType: 'نوع التذكرة',
-  AppLangAssets.technical: 'فني',
-  AppLangAssets.payment: 'الدفع',
+  AppLangAssets.technical: 'تقنية',
+  AppLangAssets.payment: 'مدفوعات',
   AppLangAssets.other: 'أخرى',
   AppLangAssets.lastTransactions: 'آخر المعاملات',
-  AppLangAssets.egp: 'ج.م',
+  AppLangAssets.egp: 'جنيه مصري',
   AppLangAssets.availableBalance: 'الرصيد المتاح',
-  AppLangAssets.addToYourWallet: 'أضف إلى محفظتك',
+  AppLangAssets.addToYourWallet: 'إضافة لرصيدك',
   AppLangAssets.cardNumber: 'رقم البطاقة',
-  AppLangAssets.cardHolderName: 'اسم حامل البطاقة',
-  AppLangAssets.cvv: 'CVV',
+  AppLangAssets.cardHolderName: 'اسم صاحب البطاقة',
+  AppLangAssets.cvv: 'رمز CVV',
   AppLangAssets.expirationDate: 'تاريخ الانتهاء',
-  AppLangAssets.addToWallet: 'أضف إلى المحفظة',
+  AppLangAssets.addToWallet: 'إضافة للرصيد',
   AppLangAssets.amount: 'المبلغ',
   AppLangAssets.addAddress: 'إضافة عنوان',
-  AppLangAssets.addressTitle: 'عنوان العنوان',
+  AppLangAssets.addressTitle: 'عنوان المكان',
   AppLangAssets.apartmentNumber: 'رقم الشقة',
-  AppLangAssets.flatNumber: 'رقم الطابق',
+  AppLangAssets.flatNumber: 'رقم الشقة', // تم تكرارها
   AppLangAssets.streetName: 'اسم الشارع',
   AppLangAssets.landMark: 'علامة مميزة',
   AppLangAssets.newCondition: 'جديد',
   AppLangAssets.usedCondition: 'مستعمل',
-  AppLangAssets.someThingWentWrong: 'حدث خطأ برجاء المحاوله لاحقا',
+  AppLangAssets.someThingWentWrong: 'للأسف، حصلت مشكلة',
+  AppLangAssets.weAreSorry: 'نعتذر',
+  AppLangAssets.tryAgain: 'حاول تاني',
+  AppLangAssets.contactSupport: 'تواصل مع الدعم',
+  AppLangAssets.searchFaq: 'ابحث في الأسئلة المتكررة...',
+  AppLangAssets.noResultFound: 'مالقيناش أي نتائج',
+  AppLangAssets.tryDifferentKeyWord: 'جرب كلمات تانية',
+  AppLangAssets.stillHaveAQuestion: 'لسه عندك سؤال؟',
+  AppLangAssets.onBoardingTitle1: 'تصفح العربيات',
+  AppLangAssets.onBoarding1SubTitle: 'اكتشف تشكيلة كبيرة من العربيات اللي تناسب احتياجاتك',
+  AppLangAssets.onBoardingTitle2: 'اتواصل مع المعرض',
+  AppLangAssets.onBoarding2SubTitle: 'اتكلم مع وكلاء ومعارض موثوق فيهم لأفضل تجربة شراء',
+  AppLangAssets.onBoardingTitle3: 'امتلك عربيتك الخاصة',
+  AppLangAssets.onBoarding3SubTitle: 'روح بعربيتك اللي بتحلم بيها مع تسهيلات في السداد وعروض واضحة',
+  AppLangAssets.skip: 'تخطي',
+  AppLangAssets.createAccount: 'إنشاء حساب جديد',
+  AppLangAssets.next: 'التالي',
+  AppLangAssets.alreadyHaveAccount: 'عندك حساب بالفعل؟',
+  AppLangAssets.selectCountry: 'اختار الدولة',
+  AppLangAssets.pleaseEnterPhoneNumber: 'لو سمحت دخل رقم التليفون',
+  AppLangAssets.plzEnterOnlyPhoneNumber: 'رقم التليفون قصير أوي',
+  AppLangAssets.phoneNumberIsTooShort: 'لو سمحت دخل أرقام بس',
+  AppLangAssets.enterFirstName: "دخل اسمك الأول",
+  AppLangAssets.enterLastName: "دخل اسمك الأخير",
+  AppLangAssets.verifyYourPhone: "تأكيد رقم تليفونك",
+  AppLangAssets.verifyYourPhoneSubTitle: "اكد رقم تليفونك عشان تستمتع بأحسن تجربة. بعتنا لك كود تأكيد (OTP) على الرقم اللي سجلته.",
+  AppLangAssets.enterOTP: "دخل كود التأكيد (OTP)",
+  AppLangAssets.enter6DigitsOTP: "دخل كود التأكيد المكون من ٦ أرقام",
+  AppLangAssets.verifyOTP: "تأكيد كود الـ OTP",
+  AppLangAssets.backToLogin: "الرجوع لصفحة الدخول",
+  AppLangAssets.markNotificationRead: 'علم على الكل إنه اتقرا',
+  AppLangAssets.loading: 'جار التحميل',
+  AppLangAssets.success: 'نجاح',
+  AppLangAssets.noWishlist: 'مفيش أي حاجة هنا، تصفح وضيف عربياتك المفضلة لقائمة الأمنيات',
+  AppLangAssets.chooseProfilePic: 'اختار صورة شخصية',
+  AppLangAssets.camera: 'الكاميرا',
+  AppLangAssets.gallery: 'الاستوديو',
+  AppLangAssets.errorPickImg: 'فيه مشكلة في اختيار الصورة',
+  AppLangAssets.imgSelectedSuccess: 'تم اختيار الصورة بنجاح',
+  AppLangAssets.profileUpdatedSuccess: 'تم تحديث الملف الشخصي بنجاح',
+  AppLangAssets.featured: 'مميز',
+  AppLangAssets.viewDetails: 'شوف التفاصيل',
+  AppLangAssets.registerSuccess: 'مبروك 🥳 تم إنشاء الحساب بنجاح، يلا نسجل دخول',
+  AppLangAssets.ads: 'إعلانات',
+  AppLangAssets.users: 'مستخدمين',
+  AppLangAssets.findUrDreamCar: 'اكتشف عربية أحلامك',
+  AppLangAssets.searchFromThousands : 'ابحث من بين آلاف الإعلانات الموثوقة',
+  AppLangAssets.viewOffer: 'شوف العرض',
+  AppLangAssets.verified: 'موثّق',
 };

@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
+import 'package:bestemapp/lang/ar.dart';
 import 'package:bestemapp/lang/en.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_assets.dart';
@@ -70,11 +69,11 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
     _selectedLangOption = newLang;
     if (newLang == LanguageOption.ar) {
       _selectedLocale = Locale('ar');
-      // selectedLang = arData;
+      selectedLang = arData;
       saveStringToLocal(AppAssets.appLang, LanguageOption.ar.name);
     } else if (newLang == LanguageOption.en) {
       _selectedLocale = Locale('en');
-      // selectedLang = enData;
+      selectedLang = enData;
       saveStringToLocal(AppAssets.appLang, 'en');
     }
     emit(ChangeLanguageState());
@@ -85,12 +84,12 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
     if (lang == LanguageOption.ar.name) {
       _selectedLangOption = LanguageOption.ar;
       _selectedLocale = Locale('ar');
-      // selectedLang = arData;
+      selectedLang = arData;
       saveStringToLocal(AppAssets.appLang, 'ar');
     } else if (lang == LanguageOption.en.name || lang.isEmpty) {
       _selectedLangOption = LanguageOption.en;
       _selectedLocale = Locale('en');
-      // selectedLang = enData;
+      selectedLang = enData;
       saveStringToLocal(AppAssets.appLang, LanguageOption.en.name);
     }
     emit(ChangeLanguageState());
@@ -109,7 +108,6 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
         emit(GetFaqErrorState(data['data']));
       }
     } catch (e) {
-      log(e.toString());
       emit(GetFaqSomeThingWentWrongState());
     }
   }
