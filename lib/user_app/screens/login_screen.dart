@@ -6,6 +6,7 @@ import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
 import 'package:bestemapp/shared/shared_widgets/phone_input_field.dart';
 import 'package:bestemapp/shared/shared_widgets/toaster.dart';
+import 'package:bestemapp/shared/shared_widgets/view_password_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/shared/utils/init_data.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
@@ -27,7 +28,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  bool isSecure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,10 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 8),
                 TextField(
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: isSecure,
                   decoration: InputDecoration(
                     hintText: selectedLang[AppLangAssets.password]!,
                     hintStyle: AppFonts.subFontGreyColor,
+                    suffix: buildPasswordToggle(isSecure, () {setState(() {
+                      isSecure = !isSecure;
+                    });})
                   ),
                 ),
                 const SizedBox(height: 16),

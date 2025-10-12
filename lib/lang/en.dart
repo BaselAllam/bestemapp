@@ -162,5 +162,6 @@ final Map<String, String> enData = {
   AppLangAssets.imgSelectedSuccess: 'Image selected successfully',
   AppLangAssets.profileUpdatedSuccess: 'Profile updated successfully',
   AppLangAssets.featured: 'FEATURED',
-  AppLangAssets.viewDetails: 'View Details'
+  AppLangAssets.viewDetails: 'View Details',
+  AppLangAssets.registerSuccess: 'Congrats 🥳 accounts created successfully, Lets Login'
 };

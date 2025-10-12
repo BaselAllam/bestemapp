@@ -1,3 +1,4 @@
+import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
 
 class UserModel {
@@ -9,7 +10,7 @@ class UserModel {
   String phone;
   bool isMale;
   bool isAcceptNotification;
-  String country;
+  CountryModel country;
 
   UserModel({
     required this.id, required this.firstName, required this.lastName, required this.profilePic, required this.email, required this.phone, required this.isMale, required this.isAcceptNotification, required this.country
@@ -25,7 +26,7 @@ class UserModel {
       phone: userData['phone'] ?? '',
       isAcceptNotification: userData['is_accept_notification'] ?? '',
       isMale: userData['is_male'] ?? '',
-      country: userData['country'] ?? ''
+      country: CountryModel.fromJson(userData['country'])
     );
   }
 }

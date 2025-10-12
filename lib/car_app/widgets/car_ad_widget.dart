@@ -89,34 +89,34 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                       ),
                     ),
                   ),
-                Positioned(
-                  top: 12,
-                  right: 12,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: widget.isAdminView ? Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      shape: BoxShape.circle
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.edit),
-                      color: AppColors.greyColor,
-                      iconSize: 15.0,
-                      onPressed: () {},
-                    ),
-                  ) : FavButton(carAdModel: widget.carAdModel, wishlistId: widget.carAdWishlistModel!, wishlistIndex: widget.wishlistIndex)
-                  ),
-                ),
+                // Positioned(
+                //   top: 12,
+                //   right: 12,
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       shape: BoxShape.circle,
+                //       boxShadow: [
+                //         BoxShadow(
+                //           color: Colors.black.withOpacity(0.1),
+                //           blurRadius: 8,
+                //         ),
+                //       ],
+                //     ),
+                //     child: widget.isAdminView ? Container(
+                //     decoration: BoxDecoration(
+                //       color: AppColors.whiteColor,
+                //       shape: BoxShape.circle
+                //     ),
+                //     child: IconButton(
+                //       icon: Icon(Icons.edit),
+                //       color: AppColors.greyColor,
+                //       iconSize: 15.0,
+                //       onPressed: () {},
+                //     ),
+                //   ) : FavButton(carAdModel: widget.carAdModel, wishlistId: widget.carAdWishlistModel!, wishlistIndex: widget.wishlistIndex)
+                //   ),
+                // ),
               ],
             ),
             Padding(

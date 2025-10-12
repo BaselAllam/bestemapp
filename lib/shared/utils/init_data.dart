@@ -8,11 +8,11 @@ Future<void> initData(BuildContext context) async {
   await BlocProvider.of<AppSettingsCubit>(context).checkLang();
   BlocProvider.of<AppSettingsCubit>(context).getFaq();
   // BlocProvider.of<AppSettingsCubit>(context).getColors();
-  // BlocProvider.of<AppSettingsCubit>(context).getCountries();
+  BlocProvider.of<AppSettingsCubit>(context).getCountries();
   // BlocProvider.of<CarCubit>(context).getCarMakes();
   // BlocProvider.of<CarCubit>(context).getCarShapes();
   // BlocProvider.of<CarCubit>(context).getCarSpecs();
-  // BlocProvider.of<CarCubit>(context).getCarsLanding();
+  BlocProvider.of<CarCubit>(context).getCarsLanding();
 }
 
 Future<void> initAuthData(BuildContext context) async {

@@ -163,4 +163,5 @@ class AppLangAssets {
   static String profileUpdatedSuccess = 'profileUpdatedSuccess';
   static String featured = 'featured';
   static String viewDetails = 'viewDetails';
+  static String registerSuccess = 'registerSuccess';
 }

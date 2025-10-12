@@ -121,7 +121,7 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/core/countries/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _countries.add(CountryModel.fromJson(i));
         }
         emit(GetCountriesSuccessState());
