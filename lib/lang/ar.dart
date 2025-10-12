@@ -199,5 +199,6 @@ final Map<String, String> arData = {
   AppLangAssets.benefitPricingDescription: 'هتاخد توصيات لأسعار مدعومة بالذكاء الاصطناعي ومبنيه على اتجاهات السوق.',
   AppLangAssets.benefitSupportTitle: 'دعم على مدار الساعة (٢٤/٧)',
   AppLangAssets.benefitSupportDescription: 'فريقنا مخصص إنه يكون موجود دايماً عشان يساعدك تبيع بنجاح.',
-  AppLangAssets.acceptTermsConditions: 'من فضلك إقرء ووافق علي سياسه الخصوصيه والشروط والاحكام'
+  AppLangAssets.acceptTermsConditions: 'من فضلك إقرء ووافق علي سياسه الخصوصيه والشروط والاحكام',
+  AppLangAssets.upgrade: 'تحديثس'
 };

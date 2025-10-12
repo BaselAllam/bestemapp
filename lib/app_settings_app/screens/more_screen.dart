@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bestemapp/app_settings_app/screens/faq_screen.dart';
 import 'package:bestemapp/car_app/screens/my_ads_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
@@ -23,6 +25,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class MoreScreen extends StatefulWidget {
@@ -170,6 +173,34 @@ class _MoreScreenState extends State<MoreScreen> {
                 title: Text(selectedLang[AppLangAssets.appVersion]!, style: AppFonts.primaryFontBlackColor),
                 subtitle: Text(versionNumber, style: AppFonts.subFontGreyColor),
                 leading: Image.asset(AppAssets.appVersionIcon, height: 25, width: 25.0),
+                trailing: ElevatedButton.icon(
+                  onPressed: () async {
+                    final packageInfo = await PackageInfo.fromPlatform();
+                    final packageName = packageInfo.packageName;
+                    
+                    if (Platform.isAndroid) {
+                      final playStoreUrl = Uri.parse('https://play.google.com/store/apps/details?id=$packageName');
+                      if (await canLaunchUrl(playStoreUrl)) {
+                        await launchUrl(playStoreUrl, mode: LaunchMode.externalApplication);
+                      }
+                    } else if (Platform.isIOS) {
+                      final appStoreUrl = Uri.parse('https://apps.apple.com/app/id/YOUR_APP_ID');
+                      if (await canLaunchUrl(appStoreUrl)) {
+                        await launchUrl(appStoreUrl, mode: LaunchMode.externalApplication);
+                      }
+                    }
+                  },
+                  icon: Icon(Icons.upgrade, size: 18),
+                  label: Text(selectedLang[AppLangAssets.upgrade]!, style: AppFonts.miniFontWhiteColor,),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
               ),
             ),
             buildLogoutBtn()

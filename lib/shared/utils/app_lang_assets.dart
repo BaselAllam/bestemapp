@@ -200,4 +200,5 @@ class AppLangAssets {
   static String benefitSupportTitle = 'benefitSupportTitle';
   static String benefitSupportDescription = 'benefitSupportDescription';
   static String acceptTermsConditions = 'acceptTermsConditions';
+  static String upgrade = 'upgrade';
 }
