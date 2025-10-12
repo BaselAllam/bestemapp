@@ -22,11 +22,11 @@ class _WalletTransactionsScreenState extends State<WalletTransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         leading: BackBtn(),
         elevation: 0.0,
-        backgroundColor: AppColors.ofWhiteColor,
+        backgroundColor: AppColors.whiteColor,
         title: Text(selectedLang[AppLangAssets.myWalletTransactions]!, style: AppFonts.primaryFontBlackColor),
       ),
       body: Container(
@@ -38,7 +38,14 @@ class _WalletTransactionsScreenState extends State<WalletTransactionsScreen> {
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColors.whiteColor
+                color: AppColors.whiteColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,
@@ -74,6 +81,13 @@ class _WalletTransactionsScreenState extends State<WalletTransactionsScreen> {
               decoration: BoxDecoration(
                 color: AppColors.whiteColor,
                 borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: ListTile(
                 title: Text('500 ${selectedLang[AppLangAssets.egp]}', style: AppFonts.primaryFontBlackColor),

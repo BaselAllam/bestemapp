@@ -95,7 +95,7 @@ dynamic bottomSheet({required BuildContext context, required Widget child, requi
         height: MediaQuery.of(context).viewInsets.bottom > 0 ? maxHeight : minHeight,
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-          color: AppColors.ofWhiteColor,
+          color: AppColors.whiteColor,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0))
         ),
         child: child

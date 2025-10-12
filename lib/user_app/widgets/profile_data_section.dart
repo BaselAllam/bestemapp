@@ -23,7 +23,7 @@ class _ProfileDataSecreenState extends State<ProfileDataSecreen> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.ofWhiteColor,
+        color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(20.0)
       ),
       margin: EdgeInsets.all(10.0),

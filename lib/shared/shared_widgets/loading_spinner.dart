@@ -28,7 +28,7 @@ class _CustomLoadingSpinnerState extends State<CustomLoadingSpinner> with Ticker
   @override
   Widget build(BuildContext context) {
     return CircularProgressIndicator(
-      valueColor: _animationController!.drive(ColorTween(begin: AppColors.primaryColor, end: AppColors.ofWhiteColor)),
+      valueColor: _animationController!.drive(ColorTween(begin: AppColors.primaryColor, end: AppColors.greyColor.withOpacity(0.2))),
     );
   }
 }

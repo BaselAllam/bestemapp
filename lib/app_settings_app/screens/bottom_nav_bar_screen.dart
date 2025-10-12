@@ -19,7 +19,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       builder: (context, state) => Scaffold(
         backgroundColor: AppColors.whiteColor,
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: AppColors.ofWhiteColor,
+          backgroundColor: AppColors.whiteColor,
           currentIndex: BlocProvider.of<AppSettingsCubit>(context).selectedNavIndex,
           elevation: 0.0,
           type: BottomNavigationBarType.fixed,

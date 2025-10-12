@@ -25,9 +25,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
-        backgroundColor: AppColors.ofWhiteColor,
+        backgroundColor: AppColors.whiteColor,
         elevation: 0.0,
         title: Text(selectedLang[AppLangAssets.notification]!, style: AppFonts.primaryFontBlackColor),
         leading: BackBtn(),
@@ -103,7 +103,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Column(
       children: [
         Container(
-          color: Colors.transparent,
+          decoration: BoxDecoration(
+            color: AppColors.whiteColor,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
           child: ListTile(
             leading: Container(
               padding: EdgeInsets.all(10.0),

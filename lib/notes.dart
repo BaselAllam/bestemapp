@@ -4,14 +4,11 @@
   VerifyOTP
   ResetPassword
 
-  CreateAd
-  UpdateAd
-
+  1- CreateAd
+  2- UpdateAd
+  3- SearchAd
+  
   Landing Offers
-
-# Need Implementation
-
-  SearchAd
 
 
 */

@@ -24,10 +24,10 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.ofWhiteColor,
+        backgroundColor: AppColors.whiteColor,
         title: Text(selectedLang[AppLangAssets.myAds]!, style: AppFonts.primaryFontBlackColor),
         leading: BackBtn(),
       ),

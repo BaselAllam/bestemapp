@@ -29,11 +29,11 @@ class _AddToWalletScreenState extends State<AddToWalletScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         leading: BackBtn(),
         elevation: 0.0,
-        backgroundColor: AppColors.ofWhiteColor,
+        backgroundColor: AppColors.whiteColor,
         title: Text(selectedLang[AppLangAssets.addToYourWallet]!, style: AppFonts.primaryFontBlackColor),
       ),
       body: Container(

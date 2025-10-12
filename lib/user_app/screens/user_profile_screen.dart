@@ -183,7 +183,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -238,7 +238,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with SingleTicker
                           end: Alignment.bottomCenter,
                           colors: [
                             AppColors.primaryColor.withOpacity(0.1),
-                            AppColors.ofWhiteColor,
+                            AppColors.whiteColor,
                           ],
                         ),
                       ),

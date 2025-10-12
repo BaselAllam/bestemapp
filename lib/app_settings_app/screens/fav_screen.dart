@@ -24,10 +24,10 @@ class _FavScreenState extends State<FavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.ofWhiteColor,
+        backgroundColor: AppColors.whiteColor,
         title: Text(selectedLang[AppLangAssets.navBarWishlist]!, style: AppFonts.primaryFontBlackColor),
         actions: [SellBtn(), NotificationButton()],
       ),

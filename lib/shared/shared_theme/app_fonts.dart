@@ -13,9 +13,6 @@ class AppFonts {
   static TextStyle primaryFontWhiteColor = TextStyle(fontSize: 20.0, color: AppColors.whiteColor, fontWeight: FontWeight.bold);
   static TextStyle subFontWhiteColor = TextStyle(fontSize: 17, color: AppColors.whiteColor);
   static TextStyle miniFontWhiteColor = TextStyle(fontSize: 13, color: AppColors.whiteColor);
-  static TextStyle primaryFontOfWhiteColor = TextStyle(fontSize: 20.0, color: AppColors.ofWhiteColor, fontWeight: FontWeight.bold);
-  static TextStyle subFontOfWhiteColor = TextStyle(fontSize: 17, color: AppColors.ofWhiteColor);
-  static TextStyle miniFontOfWhiteColor = TextStyle(fontSize: 13, color: AppColors.ofWhiteColor);
   static TextStyle primaryFontRedColor = TextStyle(fontSize: 20.0, color: AppColors.redColor, fontWeight: FontWeight.bold);
   static TextStyle subFontRedColor = TextStyle(fontSize: 17, color: AppColors.redColor);
   static TextStyle miniFontRedColor = TextStyle(fontSize: 13, color: AppColors.redColor);

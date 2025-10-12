@@ -47,10 +47,10 @@ class _MoreScreenState extends State<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.ofWhiteColor,
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.ofWhiteColor,
+        backgroundColor: AppColors.whiteColor,
         title: Text(selectedLang[AppLangAssets.navBarMore]!, style: AppFonts.primaryFontBlackColor),
         actions: [SellBtn(), NotificationButton()],
       ),
@@ -199,7 +199,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   CustomBtn(
                     widget: Text(selectedLang[AppLangAssets.no]!, style: AppFonts.miniFontGreenColor),
                     size: Size(100.0, 30.0),
-                    color: AppColors.ofWhiteColor,
+                    color: AppColors.whiteColor,
                     radius: 15.0,
                     onPress: () {
                       Navigator.pop(context);
@@ -248,6 +248,13 @@ class _MoreScreenState extends State<MoreScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         color: AppColors.whiteColor,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: widget,
     );
@@ -286,7 +293,7 @@ class _MoreScreenState extends State<MoreScreen> {
               CustomBtn(
                 widget: Text(selectedLang[AppLangAssets.no]!, style: AppFonts.miniFontGreenColor),
                 size: Size(100.0, 30.0),
-                color: AppColors.ofWhiteColor,
+                color: AppColors.whiteColor,
                 radius: 15.0,
                 onPress: () {
                   Navigator.pop(context);
