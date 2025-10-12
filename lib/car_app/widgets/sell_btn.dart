@@ -1,4 +1,4 @@
-import 'package:bestemapp/car_app/screens/create_car_ad_screen.dart';
+import 'package:bestemapp/car_app/screens/ad_benefits_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _SellBtnState extends State<SellBtn> {
         color: AppColors.primaryColor,
         iconSize: 30.0,
         onPressed: () {
-          Navigator.push(context, CupertinoPageRoute(builder: (_) => CarAdCreationPage()));
+          Navigator.push(context, CupertinoPageRoute(builder: (_) => CarAdBenefitsScreen()));
         },
       ),
     );
