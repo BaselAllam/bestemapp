@@ -1,4 +1,6 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/screens/privacy_policy_screen.dart';
+import 'package:bestemapp/app_settings_app/screens/terms_conditions_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/logo_container.dart';
@@ -8,6 +10,7 @@ import 'package:bestemapp/shared/shared_widgets/view_password_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:bestemapp/user_app/logic/user_states.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/gestures.dart';
@@ -356,7 +359,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 TextSpan(text: 'I agree to the '),
                 TextSpan(
-                  text: 'Terms & Conditions',
+                  text: selectedLang[AppLangAssets.termAndConditions],
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.w600,
@@ -364,13 +367,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      // Navigate to Terms & Conditions page
-                      // Navigator.push(context, MaterialPageRoute(builder: (_) => TermsPage()));
+                      Navigator.push(context, CupertinoPageRoute(builder: (_) => TermsAndConditionsScreen()));
                     },
                 ),
-                TextSpan(text: ' and '),
+                TextSpan(text: ' & '),
                 TextSpan(
-                  text: 'Privacy Policy',
+                  text: selectedLang[AppLangAssets.privacyPolicy],
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.w600,
@@ -378,8 +380,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      // Navigate to Privacy Policy page
-                      // Navigator.push(context, MaterialPageRoute(builder: (_) => PrivacyPolicyPage()));
+                      Navigator.push(context, CupertinoPageRoute(builder: (_) => PrivacyPolicyScreen()));
                     },
                 ),
               ],
