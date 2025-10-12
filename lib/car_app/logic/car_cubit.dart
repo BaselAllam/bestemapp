@@ -31,6 +31,12 @@ class CarCubit extends Cubit<CarStates> {
   List<CarAdModel> _searchCarAdsResult = [];
   List<CarAdModel> get searchCarAdsResult => _searchCarAdsResult;
 
+  int _carAdsCount = 0;
+  int get carAdsCount => _carAdsCount;
+
+  int _usersCount = 0;
+  int get usersCount => _usersCount;
+
   Map<String, List<CarAdModel>> _landingCarAdsResult = {
     'popular': <CarAdModel>[],
     'recently_added': <CarAdModel>[]
@@ -152,7 +158,9 @@ class CarCubit extends Cubit<CarStates> {
   Future<void> getUserCarAds() async {
     emit(GetUserCarAdsLoadingState());
     try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
       Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/user_car_ads/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -194,6 +202,8 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/landing_car_ads/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
+        _carAdsCount = data['cars_count'];
+        _usersCount = data['users_count'];
         for (var i in data['popular']) {
           _landingCarAdsResult['popular']!.add(CarAdModel.fromJson(i));
         }
