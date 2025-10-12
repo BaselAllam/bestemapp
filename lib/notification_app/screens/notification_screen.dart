@@ -6,6 +6,7 @@ import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/back_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
+import 'package:bestemapp/shared/shared_widgets/no_result_found.dart';
 import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
               return Center(child: CustomLoadingSpinner());
             } else if (state is GetUserNotificationErrorState || state is GetUserNotificationSomeThingWentWrongState) {
               return Center(child: CustomErrorWidget());
+            } else if (BlocProvider.of<NotificationCubit>(context).notifications.isEmpty) {
+              return Center(child: NoResultFoundWidget());
             } else {
               return ListView(
                 children: [
