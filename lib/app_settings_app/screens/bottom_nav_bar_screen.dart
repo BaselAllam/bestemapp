@@ -18,26 +18,31 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     return BlocBuilder<AppSettingsCubit, AppSettingsStates>(
       builder: (context, state) => Scaffold(
         backgroundColor: AppColors.whiteColor,
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: AppColors.whiteColor,
-          currentIndex: BlocProvider.of<AppSettingsCubit>(context).selectedNavIndex,
-          elevation: 0.0,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppColors.blackColor,
-          unselectedItemColor: AppColors.blackColor,
-          selectedLabelStyle: AppFonts.miniFontBlackColor,
-          unselectedLabelStyle: AppFonts.miniFontBlackColor,
-          items: [
-            for (var i in BlocProvider.of<AppSettingsCubit>(context).bottomScreens)
-            BottomNavigationBarItem(
-              activeIcon: i['activeIcon'],
-              icon: i['icon'],
-              label: i['title']
-            )
-          ],
-          onTap: (index) {
-            BlocProvider.of<AppSettingsCubit>(context).changeNav(index);
+        bottomNavigationBar: WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
           },
+          child: BottomNavigationBar(
+            backgroundColor: AppColors.whiteColor,
+            currentIndex: BlocProvider.of<AppSettingsCubit>(context).selectedNavIndex,
+            elevation: 0.0,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: AppColors.blackColor,
+            unselectedItemColor: AppColors.blackColor,
+            selectedLabelStyle: AppFonts.miniFontBlackColor,
+            unselectedLabelStyle: AppFonts.miniFontBlackColor,
+            items: [
+              for (var i in BlocProvider.of<AppSettingsCubit>(context).bottomScreens)
+              BottomNavigationBarItem(
+                activeIcon: i['activeIcon'],
+                icon: i['icon'],
+                label: i['title']
+              )
+            ],
+            onTap: (index) {
+              BlocProvider.of<AppSettingsCubit>(context).changeNav(index);
+            },
+          ),
         ),
         body: BlocProvider.of<AppSettingsCubit>(context).bottomScreens[BlocProvider.of<AppSettingsCubit>(context).selectedNavIndex]['screen'],
       ),
