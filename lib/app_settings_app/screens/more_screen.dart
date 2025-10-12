@@ -8,8 +8,6 @@ import 'package:bestemapp/app_settings_app/screens/about_us_screen.dart';
 import 'package:bestemapp/app_settings_app/screens/privacy_policy_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
-import 'package:bestemapp/shared/shared_widgets/custom_btn.dart';
-import 'package:bestemapp/shared/shared_widgets/custom_dialog.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/car_app/widgets/sell_btn.dart';
 import 'package:bestemapp/shared/shared_widgets/toaster.dart';
@@ -678,30 +676,112 @@ class _MoreScreenState extends State<MoreScreen> with SingleTickerProviderStateM
   }
 
   void _showLanguageDialog(LanguageOption value) {
-    showCustomDialog(
-      context,
-      dialogTitle: selectedLang[AppLangAssets.changeLang]!,
-      dialogBody: Text(selectedLang[AppLangAssets.areUSureLang]!, style: AppFonts.subFontGreyColor),
-      dialogSize: Size(200, 300),
-      dialogActions: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomBtn(
-            widget: Text(selectedLang[AppLangAssets.no]!, style: AppFonts.miniFontGreenColor),
-            size: Size(100.0, 30.0),
-            color: AppColors.whiteColor,
-            radius: 15.0,
-            onPress: () => Navigator.pop(context),
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
           ),
-          CustomBtn(
-            widget: Text(selectedLang[AppLangAssets.yes]!, style: AppFonts.miniFontWhiteColor),
-            size: Size(100.0, 30.0),
-            color: AppColors.redColor,
-            radius: 15.0,
-            onPress: () async {
-              await BlocProvider.of<AppSettingsCubit>(context).changeLanguage(value);
-              Navigator.pop(context);
-            },
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: _buildLanguageDialogContent(value),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageDialogContent(LanguageOption value) {
+    return Container(
+      padding: EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: AppColors.whiteColor,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 30,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.amber.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.language,
+              size: 50,
+              color: Colors.amber[700],
+            ),
+          ),
+          SizedBox(height: 20),
+          Text(
+            selectedLang[AppLangAssets.changeLang]!,
+            style: AppFonts.primaryFontBlackColor.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            selectedLang[AppLangAssets.areUSureLang]!,
+            style: AppFonts.subFontGreyColor.copyWith(fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 30),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    side: BorderSide(color: AppColors.greyColor.withOpacity(0.3)),
+                  ),
+                  child: Text(
+                    selectedLang[AppLangAssets.no]!,
+                    style: AppFonts.primaryFontBlackColor.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 15),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await BlocProvider.of<AppSettingsCubit>(context).changeLanguage(value);
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber[700],
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: Text(
+                    selectedLang[AppLangAssets.yes]!,
+                    style: AppFonts.miniFontWhiteColor.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -709,24 +789,70 @@ class _MoreScreenState extends State<MoreScreen> with SingleTickerProviderStateM
   }
 
   void _showLogoutDialog() {
-    showCustomDialog(
-      context,
-      dialogTitle: selectedLang[AppLangAssets.logout]!,
-      dialogBody: Text(selectedLang[AppLangAssets.areUSureLogout]!, style: AppFonts.subFontGreyColor),
-      dialogSize: Size(200, 300),
-      dialogActions: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomBtn(
-            widget: Text(selectedLang[AppLangAssets.no]!, style: AppFonts.miniFontGreenColor),
-            size: Size(100.0, 30.0),
-            color: AppColors.whiteColor,
-            radius: 15.0,
-            onPress: () => Navigator.pop(context),
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
           ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: _buildLogoutDialogContent(),
+        );
+      },
+    );
+  }
+
+  Widget _buildLogoutDialogContent() {
+    return Container(
+      padding: EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: AppColors.whiteColor,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 30,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: AppColors.redColor.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.logout_rounded,
+              size: 50,
+              color: AppColors.redColor,
+            ),
+          ),
+          SizedBox(height: 20),
+          Text(
+            selectedLang[AppLangAssets.logout]!,
+            style: AppFonts.primaryFontBlackColor.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            selectedLang[AppLangAssets.areUSureLogout]!,
+            style: AppFonts.subFontGreyColor.copyWith(fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 30),
           BlocConsumer<UserCubit, UserStates>(
             listener: (context, state) {
               if (state is LogoutErrorState || state is LogoutSomeThingWentWrongState) {
+                Navigator.pop(context);
                 Toaster.show(
                   context,
                   message: selectedLang[AppLangAssets.someThingWentWrong]!,
@@ -735,18 +861,65 @@ class _MoreScreenState extends State<MoreScreen> with SingleTickerProviderStateM
                 );
               }
             },
-            builder: (context, state) => CustomBtn(
-              widget: Text(
-                state is LogoutLoadingState ? selectedLang[AppLangAssets.loading]! : selectedLang[AppLangAssets.yes]!,
-                style: AppFonts.miniFontWhiteColor,
-              ),
-              size: Size(100.0, 30.0),
-              color: AppColors.redColor,
-              radius: 15.0,
-              onPress: state is LogoutLoadingState ? () {} : () {
-                BlocProvider.of<UserCubit>(context).logout();
-              },
-            ),
+            builder: (context, state) {
+              bool isLoading = state is LogoutLoadingState;
+              return Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: isLoading ? null : () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        side: BorderSide(color: AppColors.greyColor.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        selectedLang[AppLangAssets.no]!,
+                        style: AppFonts.primaryFontBlackColor.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: isLoading ? null : () {
+                        BlocProvider.of<UserCubit>(context).logout();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.redColor,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        disabledBackgroundColor: AppColors.redColor.withOpacity(0.6),
+                      ),
+                      child: isLoading
+                          ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          : Text(
+                              selectedLang[AppLangAssets.yes]!,
+                              style: AppFonts.miniFontWhiteColor.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
