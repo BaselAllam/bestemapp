@@ -170,4 +170,5 @@ class AppLangAssets {
   static String searchFromThousands = 'searchFromThousands';
   static String viewOffer = 'viewOffer';
   static String verified = 'verified';
+  static String popularBrands = 'popularBrands';
 }

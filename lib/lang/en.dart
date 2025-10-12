@@ -170,4 +170,5 @@ final Map<String, String> enData = {
   AppLangAssets.searchFromThousands : 'Search from thousands of verified listings',
   AppLangAssets.viewOffer: 'View offer',
   AppLangAssets.verified: 'Verified',
+  AppLangAssets.popularBrands: 'Popular Brands',
 };

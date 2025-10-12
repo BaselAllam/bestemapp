@@ -1,9 +1,11 @@
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/screens/car_search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/car_app/widgets/sell_btn.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
@@ -109,11 +111,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       const SizedBox(height: 24),
                       _buildQuickStats(BlocProvider.of<CarCubit>(context).carAdsCount, BlocProvider.of<CarCubit>(context).usersCount),
                       const SizedBox(height: 32),
+                      _buildPopularBrands(),
+                      const SizedBox(height: 24),
                       _buildPopularSection(),
                       const SizedBox(height: 24),
                       _buildRecentlyAddedSection(),
-                      const SizedBox(height: 24),
-                      _buildFeaturedCategories(),
                       const SizedBox(height: 32),
                     ],
                   ),
@@ -639,101 +641,95 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildFeaturedCategories() {
-    final categories = [
-      {'icon': Icons.electric_car, 'label': 'Electric', 'color': const Color(0xFF10B981)},
-      {'icon': Icons.local_shipping, 'label': 'SUVs', 'color': const Color(0xFF3B82F6)},
-      {'icon': Icons.sports_motorsports, 'label': 'Sports', 'color': const Color(0xFFEF4444)},
-      {'icon': Icons.business_center, 'label': 'Luxury', 'color': const Color(0xFFF59E0B)},
-    ];
+  Widget _buildPopularBrands() {
+  final List<CarMakeModel> brands = [];
+  for (CarMakeModel i in BlocProvider.of<CarCubit>(context).carMakes) {
+    if (i.isPopular) {
+      brands.add(i);
+    }
+  }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            'Browse by Category',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1F2937),
-            ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Text(
+          selectedLang[AppLangAssets.popularBrands]!,
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1F2937),
           ),
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 110,
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              return Container(
-                width: 140,
-                margin: const EdgeInsets.only(right: 12),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      category['color'] as Color,
-                      (category['color'] as Color).withOpacity(0.7),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (category['color'] as Color).withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
+      ),
+      const SizedBox(height: 12),
+      SizedBox(
+        height: 120,
+        child: BlocBuilder<CarCubit, CarStates>(
+          builder: (context, state) {
+            if (state is GetCarMakesLoadingState) {
+              return Center(child: CustomLoadingSpinner());
+            } else {
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                scrollDirection: Axis.horizontal,
+                itemCount: brands.length,
+                itemBuilder: (context, index) {
+                  final brand = brands[index];
+                  return Container(
+                    width: 120,
+                    margin: const EdgeInsets.only(right: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFFE5E7EB),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              category['icon'] as IconData,
-                              color: Colors.white,
-                              size: 24,
-                            ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(brand.makeLogo, height: 50, width: 100,),
+                              const SizedBox(height: 8),
+                              Text(
+                                brand.makeName,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1F2937),
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            category['label'] as String,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               );
-            },
-          ),
+            }
+          }
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
   Widget _buildTab(String label, int index) {
     final isSelected = _selectedTab == index;

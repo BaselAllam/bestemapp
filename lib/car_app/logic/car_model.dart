@@ -128,23 +128,26 @@ class CarMakeModel {
   final String makeName;
   final String makeLogo;
   final List<CarMakeModelModel> models;
+  final bool isPopular;
 
   CarMakeModel({
     required this.id,
     required this.makeName,
     required this.makeLogo,
     required this.models,
+    required this.isPopular
   });
 
   factory CarMakeModel.fromJson(Map<String, dynamic> json) {
     return CarMakeModel(
       id: json['id'] ?? '',
       makeName: json['make_name'] ?? '',
-      makeLogo: json['make_logo'] ?? '',
+      makeLogo: '${AppApi.imgIp}${json['make_logo']}',
       models: (json['models'] as List<dynamic>?)
               ?.map((m) => CarMakeModelModel.fromJson(m))
               .toList() ??
           [],
+      isPopular: json['is_popular']
     );
   }
 }

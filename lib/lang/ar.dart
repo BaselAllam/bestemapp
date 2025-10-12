@@ -170,4 +170,5 @@ final Map<String, String> arData = {
   AppLangAssets.searchFromThousands : 'ابحث من بين آلاف الإعلانات الموثوقة',
   AppLangAssets.viewOffer: 'شوف العرض',
   AppLangAssets.verified: 'موثّق',
+  AppLangAssets.popularBrands: 'اشهر الماركات',
 };
