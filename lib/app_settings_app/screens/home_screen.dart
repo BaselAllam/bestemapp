@@ -2,9 +2,6 @@ import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/screens/car_search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
-import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
-import 'package:bestemapp/shared/shared_theme/app_colors.dart';
-import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
@@ -62,8 +59,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       curve: Curves.easeInOut,
     );
     _animationController.forward();
-    
-    // Auto-scroll carousel
     Future.delayed(const Duration(seconds: 3), _autoScrollCarousel);
   }
 

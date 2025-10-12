@@ -11,8 +11,6 @@
 
 # Need Implementation
 
-  HandleWishlist
-  GetUserAds
   SearchAd
   GetLandingAds
 

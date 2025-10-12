@@ -12,7 +12,7 @@ Future<void> initData(BuildContext context) async {
   // BlocProvider.of<CarCubit>(context).getCarMakes();
   // BlocProvider.of<CarCubit>(context).getCarShapes();
   // BlocProvider.of<CarCubit>(context).getCarSpecs();
-  BlocProvider.of<CarCubit>(context).getCarsLanding();
+  // BlocProvider.of<CarCubit>(context).getCarsLanding();
 }
 
 Future<void> initAuthData(BuildContext context) async {

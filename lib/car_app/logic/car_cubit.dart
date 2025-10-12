@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
@@ -43,9 +41,6 @@ class CarCubit extends Cubit<CarStates> {
   };
   Map<String, List<CarAdModel>> get landingCarAdsResult => _landingCarAdsResult;
 
-  List<CarAdModel> _favUserCarAds = [];
-  List<CarAdModel> get favUserCarAds => _favUserCarAds;
-
   Future<void> getCarShapes() async {
     emit(GetCarShapesLoadingState());
     try {
@@ -53,7 +48,7 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/car_shapes/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _carShapes.add(CarShapeModel.fromJson(i));
         }
         emit(GetCarShapesSuccessState());
@@ -72,7 +67,7 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/car_specs/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _carSpecs.add(CarSpecsModel.fromJson(i));
         }
         emit(GetCarSpecsSuccessState());
@@ -91,7 +86,7 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/car_makes/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _carMakes.add(CarMakeModel.fromJson(i));
         }
         emit(GetCarMakesSuccessState());
@@ -118,9 +113,10 @@ class CarCubit extends Cubit<CarStates> {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         if (!wihslistId.carAdModel.isFav) {
-          _favUserCarAds.insert(0, wihslistId.carAdModel);
+          CarAdWishlistModel newModel = CarAdWishlistModel(carAdModel: CarAdModel.fromJson(data['data']['car_ad']), id: data['data']['id']);
+          _userWishlistCarAds.insert(0, newModel);
         } else {
-          _favUserCarAds.removeAt(favListIndex);
+          _userWishlistCarAds.removeAt(favListIndex);
         }
         emit(GetCarMakesSuccessState());
       } else {
@@ -150,7 +146,6 @@ class CarCubit extends Cubit<CarStates> {
         emit(GetUserCarWishlistAdsErrorState(data['data']));
       }
     } catch (e) {
-      log(e.toString());
       emit(GetUserCarWishlistAdsSomeThingWentWrongState());
     }
   }
@@ -164,7 +159,7 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/user_car_ads/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _userCarAds.add(CarAdModel.fromJson(i));
         }
         emit(GetUserCarAdsSuccessState());
@@ -183,7 +178,7 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _searchCarAdsResult.add(CarAdModel.fromJson(i));
         }
         emit(SearchCarAdsSuccessState());
@@ -202,12 +197,12 @@ class CarCubit extends Cubit<CarStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/landing_car_ads/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        _carAdsCount = data['cars_count'];
-        _usersCount = data['users_count'];
-        for (var i in data['popular']) {
+        _carAdsCount = data['data']['cars_count'];
+        _usersCount = data['data']['users_count'];
+        for (var i in data['data']['popular']) {
           _landingCarAdsResult['popular']!.add(CarAdModel.fromJson(i));
         }
-        for (var i in data['recently_added']) {
+        for (var i in data['data']['recently_added']) {
           _landingCarAdsResult['recently_added']!.add(CarAdModel.fromJson(i));
         }
         emit(LandingCarAdsSuccessState());

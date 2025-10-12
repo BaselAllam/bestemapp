@@ -1,14 +1,18 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
+import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CarAdWidget extends StatefulWidget {
+  final bool isAdminView;
+  final int wishlistIndex;
   CarAdModel carAdModel;
-  CarAdWidget({required this.carAdModel});
+  CarAdWishlistModel? carAdWishlistModel;
+  CarAdWidget({required this.carAdModel, this.isAdminView = false, this.wishlistIndex = 0, this.carAdWishlistModel});
 
   @override
   State<CarAdWidget> createState() => _CarAdWidgetState();
@@ -99,7 +103,18 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                         ),
                       ],
                     ),
-                    child: FavButton()
+                    child: widget.isAdminView ? Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.whiteColor,
+                      shape: BoxShape.circle
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.edit),
+                      color: AppColors.greyColor,
+                      iconSize: 15.0,
+                      onPressed: () {},
+                    ),
+                  ) : FavButton(carAdModel: widget.carAdModel, wishlistId: widget.carAdWishlistModel!, wishlistIndex: widget.wishlistIndex)
                   ),
                 ),
               ],
@@ -194,11 +209,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                             Icons.person_outline,
-                          size: 16,
-                          color: Colors.grey[600],
-                        ),
+                        _buildSellerAvatar(),
                         // Icon(
                         //   widget.car['seller'] == 'Private Seller' 
                         //       ? Icons.person_outline 
@@ -236,6 +247,93 @@ class _CarAdWidgetState extends State<CarAdWidget> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSellerAvatar() {
+    final String? sellerLogo = widget.carAdModel.seller.profilePicture;
+    final bool hasLogo = sellerLogo != null && sellerLogo.isNotEmpty;
+
+    if (hasLogo) {
+      return Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey[300]!, width: 1),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            sellerLogo,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return _buildInitialsAvatar();
+            },
+          ),
+        ),
+      );
+    } else {
+      return _buildInitialsAvatar();
+    }
+  }
+
+  Widget _buildInitialsAvatar() {
+    final String firstName = widget.carAdModel.seller.firstName;
+    final String lastName = widget.carAdModel.seller.lastName;
+    
+    String initials = '';
+    if (firstName.isNotEmpty) {
+      initials += firstName[0].toUpperCase();
+    }
+    if (lastName.isNotEmpty) {
+      initials += lastName[0].toUpperCase();
+    }
+    if (initials.length < 2 && firstName.length >= 2) {
+      initials = firstName.substring(0, 2).toUpperCase();
+    }
+    final int colorIndex = (firstName.codeUnitAt(0) + lastName.codeUnitAt(0)) % 5;
+    final List<Color> avatarColors = [
+      const Color(0xFF3B82F6),
+      const Color(0xFF10B981),
+      const Color(0xFFF59E0B),
+      const Color(0xFFEF4444),
+      const Color(0xFF8B5CF6),
+    ];
+
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            avatarColors[colorIndex],
+            avatarColors[colorIndex].withOpacity(0.8),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: avatarColors[colorIndex].withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
         ),
       ),
     );

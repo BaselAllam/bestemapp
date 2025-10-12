@@ -38,35 +38,33 @@ class _FavScreenState extends State<FavScreen> {
           } else if (state is GetUserCarWishlistAdsErrorState || state is GetUserCarWishlistAdsSomeThingWentWrongState) {
             return Center(child: CustomErrorWidget());
           } else if (BlocProvider.of<CarCubit>(context).userWishlistCarAds.isEmpty) {
-            return Center(child: Text(
-              selectedLang[AppLangAssets.noWishlist]!,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
+                  Text(
+                    selectedLang[AppLangAssets.noWishlist]!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
               ),
-              textAlign: TextAlign.center,
-            ));
+            );
           } else {
-            return SizedBox();
-            // return ListView.builder(
-            //   itemCount: BlocProvider.of<CarCubit>(context).userWishlistCarAds.length,
-            //   itemBuilder: (context, state) => CarAdWidget(car: {
-            // 'id': '1',
-            // 'title': '2023 Toyota Camry SE',
-            // 'price': 28500,
-            // 'year': 2023,
-            // 'mileage': 12500,
-            // 'location': 'Los Angeles, CA',
-            // 'transmission': 'Automatic',
-            // 'fuelType': 'Hybrid',
-            // 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
-            // 'condition': 'Like New',
-            // 'seller': 'Premium Dealer',
-            // 'isFeatured': true,
-            // 'isVerified': true,
-            //     }),
-            // );
+            return ListView.builder(
+              itemCount: BlocProvider.of<CarCubit>(context).userWishlistCarAds.length,
+              itemBuilder: (context, index) => CarAdWidget(
+                carAdModel: BlocProvider.of<CarCubit>(context).userWishlistCarAds[index].carAdModel,
+                carAdWishlistModel: BlocProvider.of<CarCubit>(context).userWishlistCarAds[index],
+                wishlistIndex: index
+              )
+            );
           }
         }
       ),

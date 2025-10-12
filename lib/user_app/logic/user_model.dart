@@ -39,6 +39,6 @@ class SellerModel {
   SellerModel({required this.profilePicture, required this.firstName, required this.lastName});
 
   factory SellerModel.fromJson(Map<String, dynamic> data) {
-    return SellerModel(profilePicture: data['profile_pic'], firstName: data['first_name'], lastName: data['last_name']);
+    return SellerModel(profilePicture: '${AppApi.imgIp}${data['profile_pic']}', firstName: data['first_name'], lastName: data['last_name']);
   }
 }

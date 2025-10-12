@@ -44,7 +44,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
           } else {
             return ListView.builder(
               itemCount: BlocProvider.of<CarCubit>(context).userCarAds.length,
-              itemBuilder: (context, index) => CarAdWidget(carAdModel: BlocProvider.of<CarCubit>(context).userCarAds[index]),
+              itemBuilder: (context, index) => CarAdWidget(carAdModel: BlocProvider.of<CarCubit>(context).userCarAds[index], isAdminView: true),
             );
           }
         }
