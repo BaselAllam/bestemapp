@@ -19,6 +19,15 @@ class CarAdWidget extends StatefulWidget {
 }
 
 class _CarAdWidgetState extends State<CarAdWidget> {
+  final PageController _pageController = PageController();
+  int _currentImageIndex = 0;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,73 +59,116 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
                   ),
-                  child: Container(
+                  child: SizedBox(
                     height: 200,
                     width: double.infinity,
-                    color: Colors.grey[300],
-                    child: Image.network(
-                      widget.carAdModel.adImgs[0].image,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
+                    child: PageView.builder(
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentImageIndex = index;
+                        });
+                      },
+                      itemCount: widget.carAdModel.adImgs.length,
+                      itemBuilder: (context, index) {
                         return Container(
                           color: Colors.grey[300],
-                          child: const Center(
-                            child: Icon(Icons.directions_car, size: 64, color: Colors.grey),
+                          child: Image.network(
+                            widget.carAdModel.adImgs[index].image,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[300],
+                                child: const Center(
+                                  child: Icon(Icons.directions_car, size: 64, color: Colors.grey),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },
                     ),
                   ),
                 ),
-                // if (widget.car['isFeatured'])
-                  Positioned(
-                    top: 12,
-                    left: 12,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.orange[600],
-                        borderRadius: BorderRadius.circular(6),
+                Positioned(
+                  top: 12,
+                  left: 12,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.orange[600],
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      selectedLang[AppLangAssets.featured]!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
                       ),
-                      child: Text(
-                        selectedLang[AppLangAssets.featured]!,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                // Favorite button
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                    child: widget.isAdminView ? Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteColor,
+                        shape: BoxShape.circle
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.edit),
+                        color: AppColors.greyColor,
+                        iconSize: 15.0,
+                        onPressed: () {},
+                      ),
+                    ) : FavButton(carAdModel: widget.carAdModel)
+                  ),
+                ),
+                // Image indicators
+                if (widget.carAdModel.adImgs.length > 1)
+                  Positioned(
+                    bottom: 12,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        widget.carAdModel.adImgs.length,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentImageIndex == index
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                // Positioned(
-                //   top: 12,
-                //   right: 12,
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       shape: BoxShape.circle,
-                //       boxShadow: [
-                //         BoxShadow(
-                //           color: Colors.black.withOpacity(0.1),
-                //           blurRadius: 8,
-                //         ),
-                //       ],
-                //     ),
-                //     child: widget.isAdminView ? Container(
-                //     decoration: BoxDecoration(
-                //       color: AppColors.whiteColor,
-                //       shape: BoxShape.circle
-                //     ),
-                //     child: IconButton(
-                //       icon: Icon(Icons.edit),
-                //       color: AppColors.greyColor,
-                //       iconSize: 15.0,
-                //       onPressed: () {},
-                //     ),
-                //   ) : FavButton(carAdModel: widget.carAdModel, wishlistId: widget.carAdWishlistModel!, wishlistIndex: widget.wishlistIndex)
-                //   ),
-                // ),
               ],
             ),
             Padding(
@@ -152,7 +204,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '\$${widget.carAdModel.price.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}EGP',
+                    '${widget.carAdModel.price.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}EGP',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -210,13 +262,6 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     child: Row(
                       children: [
                         _buildSellerAvatar(),
-                        // Icon(
-                        //   widget.car['seller'] == 'Private Seller' 
-                        //       ? Icons.person_outline 
-                        //       : Icons.store_outlined,
-                        //   size: 16,
-                        //   color: Colors.grey[600],
-                        // ),
                         const SizedBox(width: 6),
                         Text(
                           '${widget.carAdModel.seller.firstName} ${widget.carAdModel.seller.lastName}',

@@ -163,5 +163,11 @@ final Map<String, String> enData = {
   AppLangAssets.profileUpdatedSuccess: 'Profile updated successfully',
   AppLangAssets.featured: 'FEATURED',
   AppLangAssets.viewDetails: 'View Details',
-  AppLangAssets.registerSuccess: 'Congrats 🥳 accounts created successfully, Lets Login'
+  AppLangAssets.registerSuccess: 'Congrats 🥳 accounts created successfully, Lets Login',
+  AppLangAssets.ads: 'Ads',
+  AppLangAssets.users: 'Users',
+  AppLangAssets.findUrDreamCar: 'Find Your Dream Car',
+  AppLangAssets.searchFromThousands : 'Search from thousands of verified listings',
+  AppLangAssets.viewOffer: 'View offer',
+  AppLangAssets.verified: 'Verified',
 };

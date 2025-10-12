@@ -89,29 +89,39 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      body: CustomScrollView(
-        slivers: [
-          _buildAppBar(),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                _buildOffersCarousel(),
-                const SizedBox(height: 24),
-                _buildHeroSearchSection(),
-                const SizedBox(height: 24),
-                _buildQuickStats(),
-                const SizedBox(height: 32),
-                _buildPopularSection(),
-                const SizedBox(height: 24),
-                _buildRecentlyAddedSection(),
-                const SizedBox(height: 24),
-                _buildFeaturedCategories(),
-                const SizedBox(height: 32),
+      body: BlocBuilder<CarCubit, CarStates>(
+        builder: (context, state) {
+          if (state is LandingCarAdsErrorState) {
+            return Center(child: CustomErrorWidget(errorMessage: state.errorMsg, onRetry: () => BlocProvider.of<CarCubit>(context).getCarsLanding()));
+          } else if (state is LandingCarAdsSomeThingWentWrongState) {
+            return Center(child: CustomErrorWidget(errorMessage: selectedLang[AppLangAssets.someThingWentWrong], onRetry: () => BlocProvider.of<CarCubit>(context).getCarsLanding()));
+          } else {
+            return CustomScrollView(
+              slivers: [
+                _buildAppBar(),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      _buildOffersCarousel(),
+                      const SizedBox(height: 24),
+                      _buildHeroSearchSection(),
+                      const SizedBox(height: 24),
+                      _buildQuickStats(BlocProvider.of<CarCubit>(context).carAdsCount, BlocProvider.of<CarCubit>(context).usersCount),
+                      const SizedBox(height: 32),
+                      _buildPopularSection(),
+                      const SizedBox(height: 24),
+                      _buildRecentlyAddedSection(),
+                      const SizedBox(height: 24),
+                      _buildFeaturedCategories(),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ),
-        ],
+            );
+          }
+        }
       ),
     );
   }
@@ -289,11 +299,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
                                 elevation: 0,
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    'View Offer',
+                                    selectedLang[AppLangAssets.viewOffer]!,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -373,8 +383,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Find Your Dream Car',
+                    Text(
+                      selectedLang[AppLangAssets.findUrDreamCar]!,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -383,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Search from thousands of verified listings',
+                      selectedLang[AppLangAssets.searchFromThousands]!,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -419,13 +429,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           elevation: 0,
                           shadowColor: const Color(0xFF3B82F6).withOpacity(0.4),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.search, color: Colors.white, size: 24),
                             SizedBox(width: 12),
                             Text(
-                              'Search Cars',
+                              selectedLang[AppLangAssets.search]!,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -447,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildQuickStats() {
+  Widget _buildQuickStats(int carCount, int userCount) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -455,8 +465,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           Expanded(
             child: _buildStatCard(
               icon: Icons.directions_car,
-              count: '2,500+',
-              label: 'Total Cars',
+              count: '${carCount}+',
+              label: selectedLang[AppLangAssets.ads]!,
               color: const Color(0xFF3B82F6),
             ),
           ),
@@ -465,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             child: _buildStatCard(
               icon: Icons.verified,
               count: '100%',
-              label: 'Verified',
+              label: selectedLang[AppLangAssets.verified]!,
               color: const Color(0xFF10B981),
             ),
           ),
@@ -473,8 +483,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           Expanded(
             child: _buildStatCard(
               icon: Icons.people,
-              count: '10K+',
-              label: 'Users',
+              count: '${userCount}+',
+              label: selectedLang[AppLangAssets.users]!,
               color: const Color(0xFFF59E0B),
             ),
           ),

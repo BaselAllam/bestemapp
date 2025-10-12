@@ -164,4 +164,10 @@ class AppLangAssets {
   static String featured = 'featured';
   static String viewDetails = 'viewDetails';
   static String registerSuccess = 'registerSuccess';
+  static String ads = 'ads';
+  static String users = 'users';
+  static String findUrDreamCar = 'findUrDreamCar';
+  static String searchFromThousands = 'searchFromThousands';
+  static String viewOffer = 'viewOffer';
+  static String verified = 'verified';
 }

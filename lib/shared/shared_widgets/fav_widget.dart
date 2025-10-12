@@ -9,10 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavButton extends StatefulWidget {
-  final int wishlistIndex;
-  final CarAdWishlistModel wishlistId;
   CarAdModel carAdModel;
-  FavButton({required this.wishlistId, required this.wishlistIndex, required this.carAdModel});
+  FavButton({required this.carAdModel});
 
   @override
   State<FavButton> createState() => _FavButtonState();
@@ -30,6 +28,13 @@ class _FavButtonState extends State<FavButton> {
             type: ToasterType.error,
             position: ToasterPosition.top,
           );
+        } else if (state is HandleCardAdWishlistSuccessState) {
+          Toaster.show(
+            context,
+            message: selectedLang[AppLangAssets.success]!,
+            type: ToasterType.success,
+            position: ToasterPosition.top,
+          );
         }
       },
       builder: (context, state) => Container(
@@ -43,19 +48,19 @@ class _FavButtonState extends State<FavButton> {
         child: IconButton(
           padding: EdgeInsets.zero,
           constraints: BoxConstraints(),
-          onPressed: () {
-            BlocProvider.of<CarCubit>(context).handleCarAdWishlist(carAd: widget.carAdModel, wihslistId: widget.wishlistId, favListIndex: widget.wishlistIndex);
+          onPressed: state is HandleCardAdWishlistLoadingState ? () {} : () {
+            BlocProvider.of<CarCubit>(context).handleCarAdWishlist(carAd: widget.carAdModel);
           },
           icon: TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0.0, end: widget.carAdModel.isFav ? 1.0 : 0.0),
-            duration: Duration(milliseconds: 400),
+            tween: Tween<double>(begin: widget.carAdModel.isFav ? 0.0 : 1.0, end: widget.carAdModel.isFav ? 1.0 : 0.0),
+            duration: Duration(seconds: 1),
             curve: Curves.easeInOut,
             builder: (context, value, child) {
               return Stack(
                 alignment: Alignment.center,
                 children: [
                   Icon(
-                    Icons.favorite_border,
+                    widget.carAdModel.isFav ? Icons.favorite : Icons.favorite_border,
                     color: AppColors.redColor,
                     size: 20.0,
                   ),
