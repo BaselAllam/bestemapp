@@ -251,4 +251,8 @@ class AppLangAssets {
   static String selectCondition = 'selectCondition';
   static String selectYear = 'selectYear';
   static String selectBrand = 'selectBrand';
+  static String adtitle = 'adtitle';
+  static String realPricing = 'realPricing';
+  static String carData = 'carData';
+  static String selectModel = 'selectModel';
 }

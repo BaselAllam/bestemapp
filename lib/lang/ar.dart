@@ -251,4 +251,8 @@ final Map<String, String> arData = {
   AppLangAssets.selectCondition: 'اختر حاله العربيه',
   AppLangAssets.selectYear: 'اختر  سنه الصنع',
   AppLangAssets.selectBrand: 'اختر البراند',
+  AppLangAssets.adtitle: 'عنوان الاعلان',
+  AppLangAssets.realPricing: 'السعر الحقيقي للاعلان بيخليه يتوافق عليه من خلالنا وبيكون اكثر مصداقيه للمشتريين',
+  AppLangAssets.carData: 'بيانات السياره',
+  AppLangAssets.selectModel: 'اختار موديل العربيه',
 };

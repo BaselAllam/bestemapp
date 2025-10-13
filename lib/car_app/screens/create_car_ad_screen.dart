@@ -29,9 +29,9 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   final ImagePicker _picker = ImagePicker();
 
   // Form data
+  final TextEditingController _adTitleController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
   final TextEditingController _mileageController = TextEditingController();
-  final TextEditingController _colorController = TextEditingController();
   final TextEditingController _horsepowerController = TextEditingController();
   final TextEditingController _torqueController = TextEditingController();
   final TextEditingController _accelerationController = TextEditingController();
@@ -39,6 +39,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   final TextEditingController _priceController = TextEditingController();
 
   String? _selectedBrand;
+  String? selectedColor;
   String? _selectedYear;
   String? _selectedCondition;
   String? _selectedBodyType;
@@ -54,6 +55,48 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   File? _video;
 
   // Dropdown options
+  final List<BodyTypeItem> _bodyTypeItems = [
+    BodyTypeItem(
+      value: 'Sedan',
+      label: 'Sedan',
+      icon: Icons.directions_car,
+    ),
+    BodyTypeItem(
+      value: 'SUV',
+      label: 'SUV',
+      icon: Icons.airport_shuttle,
+    ),
+    BodyTypeItem(
+      value: 'Coupe',
+      label: 'Coupe',
+      icon: Icons.sports_motorsports,
+    ),
+    BodyTypeItem(
+      value: 'Convertible',
+      label: 'Convertible',
+      icon: Icons.car_rental,
+    ),
+    BodyTypeItem(
+      value: 'Truck',
+      label: 'Truck',
+      icon: Icons.local_shipping,
+    ),
+    BodyTypeItem(
+      value: 'Van',
+      label: 'Van',
+      icon: Icons.airport_shuttle_outlined,
+    ),
+    BodyTypeItem(
+      value: 'Hatchback',
+      label: 'Hatchback',
+      icon: Icons.directions_car_filled,
+    ),
+    BodyTypeItem(
+      value: 'Wagon',
+      label: 'Wagon',
+      icon: Icons.commute,
+    ),
+  ];
   final List<String> _brands = ['Toyota', 'Honda', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Chevrolet', 'Nissan', 'Hyundai', 'Kia'];
   final List<String> _years = List.generate(50, (index) => (DateTime.now().year - index).toString());
   final List<String> _conditions = ['New', 'Used', 'Certified'];
@@ -173,608 +216,639 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
     );
   }
 
-  List<StepData> _getSteps() {
-    return [
-      StepData(
-        title: selectedLang[AppLangAssets.basicDetails]!,
-        content: Column(
-          children: [
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.brand]} *',
-              hint: selectedLang[AppLangAssets.selectBrand]!,
-              value: _selectedBrand,
-              items: _brands,
-              onChanged: (value) => setState(() => _selectedBrand = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            authField(
-              title: '${selectedLang[AppLangAssets.model]} *',
-              inputTitle: 'e.g., Camry',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.next,
-              keyBoardType: TextInputType.text,
-              formaters: [],
-              controller: _modelController,
-            ),
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.year]} *',
-              hint: selectedLang[AppLangAssets.selectYear]!,
-              value: _selectedYear,
-              items: _years,
-              onChanged: (value) => setState(() => _selectedYear = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.condition]} *',
-              hint: selectedLang[AppLangAssets.selectCondition]!,
-              value: _selectedCondition,
-              items: _conditions,
-              onChanged: (value) => setState(() => _selectedCondition = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            authField(
-              title: 'KiloMeters (km) *',
-              inputTitle: 'e.g., 50000',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.next,
-              keyBoardType: TextInputType.number,
-              formaters: [FilteringTextInputFormatter.digitsOnly],
-              controller: _mileageController,
-            ),
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.bodyType]} *',
-              hint: selectedLang[AppLangAssets.selectBodyType]!,
-              value: _selectedBodyType,
-              items: _bodyTypes,
-              onChanged: (value) => setState(() => _selectedBodyType = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            authField(
-              title: '${selectedLang[AppLangAssets.color]} *',
-              inputTitle: 'e.g., Black',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.done,
-              keyBoardType: TextInputType.text,
-              formaters: [],
-              controller: _colorController,
-            ),
-          ],
-        ),
-      ),
-      StepData(
-        title: selectedLang[AppLangAssets.uploadImg]!,
-        content: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 2),
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.primaryColor.withOpacity(0.05),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.cloud_upload_outlined, size: 60, color: AppColors.primaryColor),
+List<StepData> _getSteps() {
+  return [
+    // Step 1: Basic Details (adTitle, adDescription, pricing, city, area)
+    StepData(
+      title: selectedLang[AppLangAssets.basicDetails]!,
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${selectedLang[AppLangAssets.adtitle]} *',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: _pickImages,
-                    icon: Icon(Icons.add_photo_alternate, color: AppColors.primaryColor),
-                    label: Text(selectedLang[AppLangAssets.chooseImage]!, style: TextStyle(color: AppColors.primaryColor),),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: AppColors.primaryColor.withOpacity(0.2),
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const SizedBox(height: 8),
-                  Text(
-                    'PNG, JPG up to 10MB (20 ${selectedLang[AppLangAssets.maxImgs]})',
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            if (_images.isNotEmpty) ...[
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.green.shade200),
                 ),
-                child: Row(
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _adTitleController,
+                  maxLength: 75,
+                  style: const TextStyle(fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.adtitle],
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: const EdgeInsets.all(16),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${selectedLang[AppLangAssets.description]} *',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _descriptionController,
+                  maxLines: 8,
+                  maxLength: 1000,
+                  style: const TextStyle(fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.adCarDescription],
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: const EdgeInsets.all(16),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green.shade700),
-                    const SizedBox(width: 12),
+                    Icon(
+                      _descriptionController.text.length >= 50 ? Icons.check_circle : Icons.info_outline,
+                      size: 16,
+                      color: _descriptionController.text.length >= 50 ? Colors.green : Colors.orange,
+                    ),
+                    const SizedBox(width: 6),
                     Text(
-                      '${_images.length} ${selectedLang[AppLangAssets.imgsUploadedSuccess]}',
+                      '${selectedLang[AppLangAssets.minimumCharacter]} (${_descriptionController.text.length}/50)',
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green.shade900,
+                        color: _descriptionController.text.length >= 50 ? Colors.green : Colors.orange,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
+              ],
+            ),
+          ),
+          authField(
+            title: '${selectedLang[AppLangAssets.pricing]} *',
+            inputTitle: 'e.g., 25000',
+            inputStyle: const TextStyle(fontSize: 16),
+            fillColor: Colors.grey.shade50,
+            textInputAction: TextInputAction.done,
+            keyBoardType: TextInputType.number,
+            formaters: [FilteringTextInputFormatter.digitsOnly],
+            controller: _priceController,
+            suffix: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text('EGP', style: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600)),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(
+                _descriptionController.text.length >= 50 ? Icons.check_circle : Icons.info_outline,
+                size: 16,
+                color: _descriptionController.text.length >= 50 ? Colors.green : Colors.orange,
               ),
-              const SizedBox(height: 16),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  '${selectedLang[AppLangAssets.realPricing]}',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: Colors.orange,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                itemCount: _images.length,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                            image: FileImage(_images[index]),
-                            fit: BoxFit.cover,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: 6,
-                        right: 6,
-                        child: GestureDetector(
-                          onTap: () => _removeImage(index),
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: Colors.red.shade600,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 4,
-                                ),
-                              ],
-                            ),
-                            child: const Icon(Icons.close, size: 18, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
               ),
             ],
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.city]} *',
+            hint: selectedLang[AppLangAssets.selectCity]!,
+            value: _selectedCity,
+            items: _citiesWithAreas.keys.toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedCity = value;
+                _selectedArea = null;
+                _areas = value != null ? _citiesWithAreas[value]! : [];
+              });
+            },
+            fillColor: Colors.grey.shade50,
+          ),
+          if (_selectedCity != null)
+            customDropdown(
+              title: '${selectedLang[AppLangAssets.area]} *',
+              hint: selectedLang[AppLangAssets.selectArea]!,
+              value: _selectedArea,
+              items: _areas,
+              onChanged: (value) => setState(() => _selectedArea = value),
+              fillColor: Colors.grey.shade50,
+            ),
+        ],
       ),
-      StepData(
-        title: selectedLang[AppLangAssets.uploadVideo]!,
-        content: Column(
-          children: [
+    ),
+    
+    // Step 2: Car Data (condition, model, brand, year, body type, color, kilometers, engine, transmission, fuel type)
+    StepData(
+      title: selectedLang[AppLangAssets.carData]!,
+      content: Column(
+        children: [
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.condition]} *',
+            hint: selectedLang[AppLangAssets.selectCondition]!,
+            value: _selectedCondition,
+            items: _conditions,
+            onChanged: (value) => setState(() => _selectedCondition = value),
+            fillColor: Colors.grey.shade50,
+          ),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.brand]} *',
+            hint: selectedLang[AppLangAssets.selectBrand]!,
+            value: _selectedBrand,
+            items: _brands,
+            onChanged: (value) => setState(() => _selectedBrand = value),
+            fillColor: Colors.grey.shade50,
+          ),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.model]} *',
+            hint: selectedLang[AppLangAssets.selectModel]!,
+            value: _selectedBrand,
+            items: _brands,
+            onChanged: (value) => setState(() => _selectedBrand = value),
+            fillColor: Colors.grey.shade50,
+          ),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.year]} *',
+            hint: selectedLang[AppLangAssets.selectYear]!,
+            value: _selectedYear,
+            items: _years,
+            onChanged: (value) => setState(() => _selectedYear = value),
+            fillColor: Colors.grey.shade50,
+          ),
+          bodyTypeGridSelector(
+            title: '${selectedLang[AppLangAssets.bodyType]} *',
+            selectedValue: _selectedBodyType,
+            items: _bodyTypeItems,
+            onChanged: (value) => setState(() => _selectedBodyType = value),
+          ),
+          SizedBox(height: 8),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              '${selectedLang[AppLangAssets.color]!} *',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        const SizedBox(height: 12),
+          _buildColorGrid(),
+          authField(
+            title: 'KiloMeters (km) *',
+            inputTitle: 'e.g., 50000',
+            inputStyle: const TextStyle(fontSize: 16),
+            fillColor: Colors.grey.shade50,
+            textInputAction: TextInputAction.next,
+            keyBoardType: TextInputType.number,
+            formaters: [FilteringTextInputFormatter.digitsOnly],
+            controller: _mileageController,
+          ),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.engine]} *',
+            hint: selectedLang[AppLangAssets.selectEngineSize]!,
+            value: _selectedEngineSize,
+            items: _engineSizes,
+            onChanged: (value) => setState(() => _selectedEngineSize = value),
+            fillColor: Colors.grey.shade50,
+          ),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.transmission]} *',
+            hint: selectedLang[AppLangAssets.selectTransimission]!,
+            value: _selectedTransmission,
+            items: _transmissions,
+            onChanged: (value) => setState(() => _selectedTransmission = value),
+            fillColor: Colors.grey.shade50,
+          ),
+          customDropdown(
+            title: '${selectedLang[AppLangAssets.fuelType]} *',
+            hint: selectedLang[AppLangAssets.selectFuelType]!,
+            value: _selectedFuelType,
+            items: _fuelTypes,
+            onChanged: (value) => setState(() => _selectedFuelType = value),
+            fillColor: Colors.grey.shade50,
+          ),
+        ],
+      ),
+    ),
+    
+    // Step 3: Car Specs
+    StepData(
+      title: selectedLang[AppLangAssets.specs]!,
+      content: Column(
+        children: [
+          authField(
+            title: '0-100 km/h',
+            inputTitle: 'e.g., 7.5s',
+            inputStyle: const TextStyle(fontSize: 16),
+            fillColor: Colors.grey.shade50,
+            textInputAction: TextInputAction.done,
+            keyBoardType: const TextInputType.numberWithOptions(decimal: true),
+            formaters: [FilteringTextInputFormatter.digitsOnly],
+            controller: _accelerationController,
+          ),
+        ],
+      ),
+    ),
+    
+    // Step 4: Car Media (Video & Images)
+    StepData(
+      title: selectedLang[AppLangAssets.media]!,
+      content: Column(
+        children: [
+          // Images Section
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(40),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 2),
+              borderRadius: BorderRadius.circular(16),
+              color: AppColors.primaryColor.withOpacity(0.05),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.cloud_upload_outlined, size: 60, color: AppColors.primaryColor),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: _pickImages,
+                  icon: Icon(Icons.add_photo_alternate, color: AppColors.primaryColor),
+                  label: Text(selectedLang[AppLangAssets.chooseImage]!, style: TextStyle(color: AppColors.primaryColor),),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: AppColors.primaryColor.withOpacity(0.2),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'PNG, JPG up to 10MB (20 ${selectedLang[AppLangAssets.maxImgs]})',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          if (_images.isNotEmpty) ...[
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue.shade50,
+                color: Colors.green.shade50,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue.shade200),
+                border: Border.all(color: Colors.green.shade200),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
+                  Icon(Icons.check_circle, color: Colors.green.shade700),
                   const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      '${selectedLang[AppLangAssets.uploadVideoDescription]} (${selectedLang[AppLangAssets.optional]})',
-                      style: TextStyle(color: Colors.blue.shade900, fontSize: 13),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 2),
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.primaryColor.withOpacity(0.05),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.videocam_outlined, size: 60, color: AppColors.primaryColor),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: _pickVideo,
-                    icon: Icon(Icons.video_library, color: AppColors.primaryColor),
-                    label: Text(selectedLang[AppLangAssets.chooseVideo]!, style: TextStyle(color: AppColors.primaryColor),),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      backgroundColor: AppColors.primaryColor.withOpacity(0.2)
-                    ),
-                  ),
-                  const SizedBox(height: 8),
                   Text(
-                    'MP4 up to 100MB',
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                    '${_images.length} ${selectedLang[AppLangAssets.imgsUploadedSuccess]}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.green.shade900,
+                    ),
                   ),
                 ],
               ),
             ),
-            if (_video != null) ...[
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
+            const SizedBox(height: 16),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              itemCount: _images.length,
+              itemBuilder: (context, index) {
+                return Stack(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(Icons.video_library, color: AppColors.primaryColor, size: 28),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            selectedLang[AppLangAssets.videoUploaded]!,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _video!.path.split('/').last,
-                            style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                          image: FileImage(_images[index]),
+                          fit: BoxFit.cover,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red),
-                      onPressed: () => setState(() => _video = null),
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: GestureDetector(
+                        onTap: () => _removeImage(index),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.red.shade600,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(Icons.close, size: 18, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ],
+                );
+              },
+            ),
+          ],
+          const SizedBox(height: 32),
+          // Video Section
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade50,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.blue.shade200),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    '${selectedLang[AppLangAssets.uploadVideoDescription]} (${selectedLang[AppLangAssets.optional]})',
+                    style: TextStyle(color: Colors.blue.shade900, fontSize: 13),
+                  ),
                 ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(40),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 2),
+              borderRadius: BorderRadius.circular(16),
+              color: AppColors.primaryColor.withOpacity(0.05),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.videocam_outlined, size: 60, color: AppColors.primaryColor),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: _pickVideo,
+                  icon: Icon(Icons.video_library, color: AppColors.primaryColor),
+                  label: Text(selectedLang[AppLangAssets.chooseVideo]!, style: TextStyle(color: AppColors.primaryColor),),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    backgroundColor: AppColors.primaryColor.withOpacity(0.2)
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'MP4 up to 100MB',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          if (_video != null) ...[
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-            ],
-          ],
-        ),
-      ),
-      StepData(
-        title: selectedLang[AppLangAssets.specs]!,
-        content: Column(
-          children: [
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.engine]} *',
-              hint: selectedLang[AppLangAssets.selectEngineSize]!,
-              value: _selectedEngineSize,
-              items: _engineSizes,
-              onChanged: (value) => setState(() => _selectedEngineSize = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.transmission]} *',
-              hint: selectedLang[AppLangAssets.selectTransimission]!,
-              value: _selectedTransmission,
-              items: _transmissions,
-              onChanged: (value) => setState(() => _selectedTransmission = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.fuelType]} *',
-              hint: selectedLang[AppLangAssets.selectFuelType]!,
-              value: _selectedFuelType,
-              items: _fuelTypes,
-              onChanged: (value) => setState(() => _selectedFuelType = value),
-              fillColor: Colors.grey.shade50,
-            ),
-            authField(
-              title: '0-100 km/h',
-              inputTitle: 'e.g., 7.5s',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.done,
-              keyBoardType: const TextInputType.numberWithOptions(decimal: true),
-              formaters: [FilteringTextInputFormatter.digitsOnly],
-              controller: _accelerationController,
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.video_library, color: AppColors.primaryColor, size: 28),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          selectedLang[AppLangAssets.videoUploaded]!,
+                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _video!.path.split('/').last,
+                          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline, color: Colors.red),
+                    onPressed: () => setState(() => _video = null),
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
+        ],
       ),
-      StepData(
-        title: selectedLang[AppLangAssets.description]!,
-        content: Column(
+    ),
+    
+    // Step 5: Review
+    StepData(
+      title: selectedLang[AppLangAssets.reviewAndConfirm]!,
+      content: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.orange.shade50,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.orange.shade200),
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.lightbulb_outline, color: Colors.orange.shade700, size: 20),
+                  Icon(Icons.visibility_outlined, color: Colors.blue.shade700),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      selectedLang[AppLangAssets.adDescriptionToAttract]!,
-                      style: TextStyle(color: Colors.orange.shade900, fontSize: 13),
+                      selectedLang[AppLangAssets.reviewYourListing]!,
+                      style: TextStyle(color: Colors.blue.shade900, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
+            _buildSectionHeader('${selectedLang[AppLangAssets.basicInformation]!}:', Icons.info_outline),
+            const SizedBox(height: 12),
+            _buildInfoRow('${selectedLang[AppLangAssets.brand]!}:', _selectedBrand ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.model]!}:', _modelController.text),
+            _buildInfoRow('${selectedLang[AppLangAssets.year]!}:', _selectedYear ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.condition]!}:', _selectedCondition ?? 'N/A'),
+            _buildInfoRow('Mileage:', _mileageController.text.isNotEmpty ? '${_mileageController.text} km' : 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.bodyType]!}:', _selectedBodyType ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.color]!}:', selectedColor ?? ''),
+            const SizedBox(height: 24),
+            _buildSectionHeader(selectedLang[AppLangAssets.media]!, Icons.photo_library_outlined),
+            const SizedBox(height: 12),
+            _buildInfoRow('${selectedLang[AppLangAssets.images]!}:', '${_images.length} uploaded'),
+            _buildInfoRow('${selectedLang[AppLangAssets.video]!}:', _video != null ? 'Uploaded' : 'None'),
+            const SizedBox(height: 24),
+            _buildSectionHeader(selectedLang[AppLangAssets.specs]!, Icons.settings_outlined),
+            const SizedBox(height: 12),
+            _buildInfoRow('${selectedLang[AppLangAssets.engine]!}:', _selectedEngineSize ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.transmission]!}:', _selectedTransmission ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.fuelType]!}:', _selectedFuelType ?? 'N/A'),
+            _buildInfoRow('Doors:', _selectedDoors ?? 'N/A'),
+            _buildInfoRow('Seats:', _selectedSeats ?? 'N/A'),
+            if (_horsepowerController.text.isNotEmpty)
+              _buildInfoRow('Horsepower:', '${_horsepowerController.text} HP'),
+            if (_torqueController.text.isNotEmpty)
+              _buildInfoRow('Torque:', '${_torqueController.text} Nm'),
+            if (_accelerationController.text.isNotEmpty)
+              _buildInfoRow('0-100 km/h:', '${_accelerationController.text}s'),
+            const SizedBox(height: 24),
+            _buildSectionHeader(selectedLang[AppLangAssets.description]!, Icons.description_outlined),
+            const SizedBox(height: 12),
             Container(
-              margin: const EdgeInsets.only(top: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${selectedLang[AppLangAssets.description]} *',
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                _descriptionController.text.isEmpty ? selectedLang[AppLangAssets.noDescription]! : _descriptionController.text,
+                style: TextStyle(color: Colors.grey.shade800, height: 1.5),
+              ),
+            ),
+            const SizedBox(height: 24),
+            _buildSectionHeader(selectedLang[AppLangAssets.pricingAndLocation]!, Icons.location_on_outlined),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    _priceController.text.isNotEmpty ? '${_priceController.text} EGP' : 'N/A',
                     style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _descriptionController,
-                    maxLines: 8,
-                    maxLength: 1000,
-                    style: const TextStyle(fontSize: 16),
-                    decoration: InputDecoration(
-                      hintText: selectedLang[AppLangAssets.adCarDescription],
-                      filled: true,
-                      fillColor: Colors.grey.shade50,
-                      contentPadding: const EdgeInsets.all(16),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(
-                        _descriptionController.text.length >= 50 ? Icons.check_circle : Icons.info_outline,
-                        size: 16,
-                        color: _descriptionController.text.length >= 50 ? Colors.green : Colors.orange,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '${selectedLang[AppLangAssets.minimumCharacter]} (${_descriptionController.text.length}/50)',
-                        style: TextStyle(
-                          color: _descriptionController.text.length >= 50 ? Colors.green : Colors.orange,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+            const SizedBox(height: 12),
+            _buildInfoRow('${selectedLang[AppLangAssets.city]}:', _selectedCity ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea ?? 'N/A'),
           ],
         ),
       ),
-      StepData(
-        title: selectedLang[AppLangAssets.pricingAndLocation]!,
-        content: Column(
-          children: [
-            authField(
-              title: '${selectedLang[AppLangAssets.pricing]} *',
-              inputTitle: 'e.g., 25000',
-              inputStyle: const TextStyle(fontSize: 16),
-              fillColor: Colors.grey.shade50,
-              textInputAction: TextInputAction.done,
-              keyBoardType: TextInputType.number,
-              formaters: [FilteringTextInputFormatter.digitsOnly],
-              controller: _priceController,
-              suffix: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text('EGP', style: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600)),
-              ),
-            ),
-            const SizedBox(height: 8),
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.city]} *',
-              hint: selectedLang[AppLangAssets.selectCity]!,
-              value: _selectedCity,
-              items: _citiesWithAreas.keys.toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCity = value;
-                  _selectedArea = null;
-                  _areas = value != null ? _citiesWithAreas[value]! : [];
-                });
-              },
-              fillColor: Colors.grey.shade50,
-            ),
-            if (_selectedCity != null)
-              customDropdown(
-                title: '${selectedLang[AppLangAssets.area]} *',
-                hint: selectedLang[AppLangAssets.selectArea]!,
-                value: _selectedArea,
-                items: _areas,
-                onChanged: (value) => setState(() => _selectedArea = value),
-                fillColor: Colors.grey.shade50,
-              ),
-          ],
-        ),
-      ),
-      StepData(
-        title: selectedLang[AppLangAssets.reviewAndConfirm]!,
-        content: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey.shade200),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.visibility_outlined, color: Colors.blue.shade700),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        selectedLang[AppLangAssets.reviewYourListing]!,
-                        style: TextStyle(color: Colors.blue.shade900, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              _buildSectionHeader('${selectedLang[AppLangAssets.basicInformation]!}:', Icons.info_outline),
-              const SizedBox(height: 12),
-              _buildInfoRow('${selectedLang[AppLangAssets.brand]!}:', _selectedBrand ?? 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.model]!}:', _modelController.text),
-              _buildInfoRow('${selectedLang[AppLangAssets.year]!}:', _selectedYear ?? 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.condition]!}:', _selectedCondition ?? 'N/A'),
-              _buildInfoRow('Mileage:', _mileageController.text.isNotEmpty ? '${_mileageController.text} km' : 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.bodyType]!}:', _selectedBodyType ?? 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.color]!}:', _colorController.text),
-              const SizedBox(height: 24),
-              _buildSectionHeader(selectedLang[AppLangAssets.media]!, Icons.photo_library_outlined),
-              const SizedBox(height: 12),
-              _buildInfoRow('${selectedLang[AppLangAssets.images]!}:', '${_images.length} uploaded'),
-              _buildInfoRow('${selectedLang[AppLangAssets.video]!}:', _video != null ? 'Uploaded' : 'None'),
-              const SizedBox(height: 24),
-              _buildSectionHeader(selectedLang[AppLangAssets.specs]!, Icons.settings_outlined),
-              const SizedBox(height: 12),
-              _buildInfoRow('${selectedLang[AppLangAssets.engine]!}:', _selectedEngineSize ?? 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.transmission]!}:', _selectedTransmission ?? 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.fuelType]!}:', _selectedFuelType ?? 'N/A'),
-              _buildInfoRow('Doors:', _selectedDoors ?? 'N/A'),
-              _buildInfoRow('Seats:', _selectedSeats ?? 'N/A'),
-              if (_horsepowerController.text.isNotEmpty)
-                _buildInfoRow('Horsepower:', '${_horsepowerController.text} HP'),
-              if (_torqueController.text.isNotEmpty)
-                _buildInfoRow('Torque:', '${_torqueController.text} Nm'),
-              if (_accelerationController.text.isNotEmpty)
-                _buildInfoRow('0-100 km/h:', '${_accelerationController.text}s'),
-              const SizedBox(height: 24),
-              _buildSectionHeader(selectedLang[AppLangAssets.description]!, Icons.description_outlined),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  _descriptionController.text.isEmpty ? selectedLang[AppLangAssets.noDescription]! : _descriptionController.text,
-                  style: TextStyle(color: Colors.grey.shade800, height: 1.5),
-                ),
-              ),
-              const SizedBox(height: 24),
-              _buildSectionHeader(selectedLang[AppLangAssets.pricingAndLocation]!, Icons.location_on_outlined),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _priceController.text.isNotEmpty ? '${_priceController.text} AED' : 'N/A',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              _buildInfoRow('${selectedLang[AppLangAssets.city]}:', _selectedCity ?? 'N/A'),
-              _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea ?? 'N/A'),
-            ],
-          ),
-        ),
-      ),
-    ];
-  }
+    ),
+  ];
+}
 
   Widget authField({
     required String title,
@@ -901,11 +975,9 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   Widget _buildHorizontalStepper() {
     final steps = [
       selectedLang[AppLangAssets.basicDetails],
-      selectedLang[AppLangAssets.images],
-      selectedLang[AppLangAssets.video],
+      selectedLang[AppLangAssets.carData],
+      selectedLang[AppLangAssets.media],
       selectedLang[AppLangAssets.specs],
-      selectedLang[AppLangAssets.description],
-      selectedLang[AppLangAssets.pricing],
       selectedLang[AppLangAssets.review],
     ];
 
@@ -1129,16 +1201,154 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
     );
   }
 
+  Widget bodyTypeGridSelector({
+  required String title,
+  required String? selectedValue,
+  required List<BodyTypeItem> items,
+  required Function(String?) onChanged,
+}) {
+  return Container(
+    margin: const EdgeInsets.only(top: 15.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 12),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 0.85,
+          ),
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            final isSelected = selectedValue == item.value;
+
+            return GestureDetector(
+              onTap: () => onChanged(item.value),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isSelected 
+                      ? AppColors.primaryColor.withOpacity(0.1) 
+                      : Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isSelected 
+                        ? AppColors.primaryColor 
+                        : Colors.grey.shade300,
+                    width: isSelected ? 2 : 1,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      item.icon,
+                      size: 36,
+                      color: isSelected 
+                          ? AppColors.primaryColor 
+                          : Colors.grey.shade600,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      item.label,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                        color: isSelected 
+                            ? AppColors.primaryColor 
+                            : Colors.grey.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+  Widget _buildColorGrid() {
+    final colorMap = {
+      'Black': Colors.black,
+      'White': Colors.white,
+      'Silver': Colors.grey.shade400,
+      'Gray': Colors.grey.shade700,
+      'Red': Colors.red,
+      'Blue': Colors.blue,
+      'Green': Colors.green,
+      'Yellow': Colors.yellow.shade700,
+      'Orange': Colors.orange,
+      'Brown': Colors.brown,
+      'Gold': Colors.amber.shade700,
+      'Beige': Colors.brown.shade200,
+    };
+
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: colorMap.entries.map((entry) {
+        final isSelected = selectedColor == entry.key;
+        return InkWell(
+          onTap: () => setState(() => selectedColor = entry.key),
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: entry.value,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
+                width: isSelected ? 3 : 1,
+              ),
+            ),
+            child: isSelected
+                    ? Icon(Icons.check, color: Colors.white)
+                    : null,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   @override
   void dispose() {
     _modelController.dispose();
     _mileageController.dispose();
-    _colorController.dispose();
     _horsepowerController.dispose();
     _torqueController.dispose();
     _accelerationController.dispose();
     _descriptionController.dispose();
+    _adTitleController.dispose();
     _priceController.dispose();
     super.dispose();
   }
+}
+
+class BodyTypeItem {
+  final String value;
+  final String label;
+  final IconData icon;
+
+  const BodyTypeItem({
+    required this.value,
+    required this.label,
+    required this.icon,
+  });
 }

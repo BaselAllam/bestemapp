@@ -251,4 +251,8 @@ final Map<String, String> enData = {
   AppLangAssets.selectCondition: 'Select Condition',
   AppLangAssets.selectYear: 'Select Year',
   AppLangAssets.selectBrand: 'Select Brand',
+  AppLangAssets.adtitle: 'Ad Title',
+  AppLangAssets.realPricing: 'Real Pricing Makes your ad Approved & Trusted for buyers',
+  AppLangAssets.carData: 'Car Data',
+  AppLangAssets.selectModel: 'Select Car Model',
 };
