@@ -1,5 +1,8 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/logic/color_model.dart';
+import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
@@ -25,99 +28,39 @@ class CarAdCreationPage extends StatefulWidget {
 
 class _CarAdCreationPageState extends State<CarAdCreationPage> {
   int _currentStep = 0;
-  final _formKey = GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
+  var _formKey = GlobalKey<FormState>();
+  ImagePicker _picker = ImagePicker();
 
   // Form data
-  final TextEditingController _adTitleController = TextEditingController();
-  final TextEditingController _modelController = TextEditingController();
-  final TextEditingController _mileageController = TextEditingController();
-  final TextEditingController _horsepowerController = TextEditingController();
-  final TextEditingController _torqueController = TextEditingController();
-  final TextEditingController _accelerationController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+  TextEditingController _adTitleController = TextEditingController();
+  TextEditingController _yearController= TextEditingController();
+  TextEditingController _mileageController = TextEditingController();
+  TextEditingController _horsepowerController = TextEditingController();
+  TextEditingController _torqueController = TextEditingController();
+  TextEditingController _accelerationController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
+  TextEditingController _engineSizeController = TextEditingController();
 
-  String? _selectedBrand;
-  String? selectedColor;
-  String? _selectedYear;
+
+  CarMakeModel? _selectedBrand;
+  CarMakeModelModel? _selectedModel;
+  ColorModel? selectedColor;
   String? _selectedCondition;
-  String? _selectedBodyType;
+  CarShapeModel? _selectedBodyType;
   String? _selectedTransmission;
   String? _selectedFuelType;
   String? _selectedDoors;
   String? _selectedSeats;
-  String? _selectedEngineSize;
-  String? _selectedCity;
-  String? _selectedArea;
+  CityModel? _selectedCity;
+  AreaModel? _selectedArea;
 
   List<File> _images = [];
   File? _video;
 
-  // Dropdown options
-  final List<BodyTypeItem> _bodyTypeItems = [
-    BodyTypeItem(
-      value: 'Sedan',
-      label: 'Sedan',
-      icon: Icons.directions_car,
-    ),
-    BodyTypeItem(
-      value: 'SUV',
-      label: 'SUV',
-      icon: Icons.airport_shuttle,
-    ),
-    BodyTypeItem(
-      value: 'Coupe',
-      label: 'Coupe',
-      icon: Icons.sports_motorsports,
-    ),
-    BodyTypeItem(
-      value: 'Convertible',
-      label: 'Convertible',
-      icon: Icons.car_rental,
-    ),
-    BodyTypeItem(
-      value: 'Truck',
-      label: 'Truck',
-      icon: Icons.local_shipping,
-    ),
-    BodyTypeItem(
-      value: 'Van',
-      label: 'Van',
-      icon: Icons.airport_shuttle_outlined,
-    ),
-    BodyTypeItem(
-      value: 'Hatchback',
-      label: 'Hatchback',
-      icon: Icons.directions_car_filled,
-    ),
-    BodyTypeItem(
-      value: 'Wagon',
-      label: 'Wagon',
-      icon: Icons.commute,
-    ),
-  ];
-  final List<String> _brands = ['Toyota', 'Honda', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Chevrolet', 'Nissan', 'Hyundai', 'Kia'];
-  final List<String> _years = List.generate(50, (index) => (DateTime.now().year - index).toString());
-  final List<String> _conditions = ['New', 'Used', 'Certified'];
-  final List<String> _bodyTypes = ['Sedan', 'SUV', 'Coupe', 'Convertible', 'Truck', 'Van', 'Hatchback', 'Wagon'];
-  final List<String> _transmissions = ['Automatic', 'Manual', 'CVT'];
-  final List<String> _fuelTypes = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
-  final List<String> _doorOptions = ['2', '3', '4', '5'];
-  final List<String> _seatOptions = ['2', '4', '5', '7', '8'];
-  final List<String> _engineSizes = ['1.0L', '1.2L', '1.4L', '1.5L', '1.6L', '1.8L', '2.0L', '2.5L', '3.0L', '3.5L', '4.0L', '5.0L'];
-  
-  final Map<String, List<String>> _citiesWithAreas = {
-    'Dubai': ['Downtown Dubai', 'Dubai Marina', 'Jumeirah', 'Business Bay', 'Deira', 'Bur Dubai', 'Al Barsha'],
-    'Abu Dhabi': ['Al Reem Island', 'Yas Island', 'Saadiyat Island', 'Al Raha Beach', 'Khalifa City', 'Al Reef'],
-    'Sharjah': ['Al Majaz', 'Al Nahda', 'Al Khan', 'Al Qasimia', 'Muwailih', 'Al Taawun'],
-    'Ajman': ['Al Nuaimiya', 'Al Rashidiya', 'Al Rawda', 'Al Jurf', 'Al Bustan'],
-    'Ras Al Khaimah': ['Al Nakheel', 'Al Hamra', 'Mina Al Arab', 'Al Qusaidat', 'Dafan Al Nakheel'],
-    'Fujairah': ['Al Faseel', 'Al Gurfa', 'Sakamkam', 'Dibba Al Fujairah'],
-    'Umm Al Quwain': ['Old Town', 'Al Raas', 'Al Salamah', 'Falaj Al Mualla'],
-  };
-
-  List<String> _areas = [];
+  final List<String> _conditions = ['new', 'used'];
+  final List<String> _transmissions = ['manual', 'automatic',];
+  final List<String> _fuelTypes = ['gas', 'diesel', 'natural gas', 'hybird', 'electric'];
 
   @override
   void initState() {
@@ -354,28 +297,101 @@ List<StepData> _getSteps() {
             ],
           ),
           const SizedBox(height: 8),
-          customDropdown(
-            title: '${selectedLang[AppLangAssets.city]} *',
-            hint: selectedLang[AppLangAssets.selectCity]!,
-            value: _selectedCity,
-            items: _citiesWithAreas.keys.toList(),
-            onChanged: (value) {
-              setState(() {
-                _selectedCity = value;
-                _selectedArea = null;
-                _areas = value != null ? _citiesWithAreas[value]! : [];
-              });
-            },
-            fillColor: Colors.grey.shade50,
+          Container(
+            margin: const EdgeInsets.only(top: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${selectedLang[AppLangAssets.city]} *',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<CityModel>(
+                  dropdownColor: AppColors.whiteColor,
+                  value: _selectedCity,
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.selectCity]!,
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                    ),
+                  ),
+                  items: BlocProvider.of<AppSettingsCubit>(context).countries[0].cities.map((item) {
+                    return DropdownMenuItem(value: item, child: Text(item.cityName));
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCity = value;
+                      _selectedArea = null;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
           if (_selectedCity != null)
-            customDropdown(
-              title: '${selectedLang[AppLangAssets.area]} *',
-              hint: selectedLang[AppLangAssets.selectArea]!,
-              value: _selectedArea,
-              items: _areas,
-              onChanged: (value) => setState(() => _selectedArea = value),
-              fillColor: Colors.grey.shade50,
+            Container(
+              margin: const EdgeInsets.only(top: 15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${selectedLang[AppLangAssets.area]} *',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<AreaModel>(
+                    dropdownColor: AppColors.whiteColor,
+                    value: _selectedArea,
+                    decoration: InputDecoration(
+                      hintText: selectedLang[AppLangAssets.selectCity]!,
+                      filled: true,
+                      fillColor: Colors.grey.shade50,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                      ),
+                    ),
+                    items: _selectedCity!.areas.map((item) {
+                      return DropdownMenuItem(value: item, child: Text(item.areaName));
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedArea = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
         ],
       ),
@@ -394,34 +410,122 @@ List<StepData> _getSteps() {
             onChanged: (value) => setState(() => _selectedCondition = value),
             fillColor: Colors.grey.shade50,
           ),
-          customDropdown(
-            title: '${selectedLang[AppLangAssets.brand]} *',
-            hint: selectedLang[AppLangAssets.selectBrand]!,
-            value: _selectedBrand,
-            items: _brands,
-            onChanged: (value) => setState(() => _selectedBrand = value),
-            fillColor: Colors.grey.shade50,
+          Container(
+            margin: const EdgeInsets.only(top: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${selectedLang[AppLangAssets.brand]} *',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<CarMakeModel>(
+                  dropdownColor: AppColors.whiteColor,
+                  value: _selectedBrand,
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.selectBrand]!,
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                    ),
+                  ),
+                  items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
+                    return DropdownMenuItem(value: item, child: Row(
+                      children: [
+                        Image.network(item.makeLogo, height: 20, width: 20),
+                        SizedBox(width: 10),
+                        Text(item.makeName),
+                      ],
+                    ));
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedBrand = value;
+                      _selectedModel = null;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
-          customDropdown(
-            title: '${selectedLang[AppLangAssets.model]} *',
-            hint: selectedLang[AppLangAssets.selectModel]!,
-            value: _selectedBrand,
-            items: _brands,
-            onChanged: (value) => setState(() => _selectedBrand = value),
-            fillColor: Colors.grey.shade50,
+          if (_selectedBrand != null)
+          Container(
+            margin: const EdgeInsets.only(top: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${selectedLang[AppLangAssets.model]} *',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<CarMakeModelModel>(
+                  dropdownColor: AppColors.whiteColor,
+                  value: _selectedModel,
+                  decoration: InputDecoration(
+                    hintText: selectedLang[AppLangAssets.selectModel]!,
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                    ),
+                  ),
+                  items: _selectedBrand!.models.map((item) {
+                    return DropdownMenuItem(value: item, child: Text(item.modelName));
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedModel = value;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
-          customDropdown(
+          authField(
             title: '${selectedLang[AppLangAssets.year]} *',
-            hint: selectedLang[AppLangAssets.selectYear]!,
-            value: _selectedYear,
-            items: _years,
-            onChanged: (value) => setState(() => _selectedYear = value),
+            inputTitle: selectedLang[AppLangAssets.selectYear]!,
+            inputStyle: const TextStyle(fontSize: 16),
             fillColor: Colors.grey.shade50,
+            textInputAction: TextInputAction.next,
+            keyBoardType: TextInputType.number,
+            formaters: [FilteringTextInputFormatter.digitsOnly],
+            controller: _yearController,
           ),
           bodyTypeGridSelector(
             title: '${selectedLang[AppLangAssets.bodyType]} *',
-            selectedValue: _selectedBodyType,
-            items: _bodyTypeItems,
+            selectedShape: _selectedBodyType,
+            items: BlocProvider.of<CarCubit>(context).carShapes,
             onChanged: (value) => setState(() => _selectedBodyType = value),
           ),
           SizedBox(height: 8),
@@ -448,13 +552,15 @@ List<StepData> _getSteps() {
             formaters: [FilteringTextInputFormatter.digitsOnly],
             controller: _mileageController,
           ),
-          customDropdown(
+          authField(
             title: '${selectedLang[AppLangAssets.engine]} *',
-            hint: selectedLang[AppLangAssets.selectEngineSize]!,
-            value: _selectedEngineSize,
-            items: _engineSizes,
-            onChanged: (value) => setState(() => _selectedEngineSize = value),
+            inputTitle: selectedLang[AppLangAssets.selectEngineSize]!,
+            inputStyle: const TextStyle(fontSize: 16),
             fillColor: Colors.grey.shade50,
+            textInputAction: TextInputAction.next,
+            keyBoardType: TextInputType.number,
+            formaters: [FilteringTextInputFormatter.digitsOnly],
+            controller: _engineSizeController,
           ),
           customDropdown(
             title: '${selectedLang[AppLangAssets.transmission]} *',
@@ -481,16 +587,8 @@ List<StepData> _getSteps() {
       title: selectedLang[AppLangAssets.specs]!,
       content: Column(
         children: [
-          authField(
-            title: '0-100 km/h',
-            inputTitle: 'e.g., 7.5s',
-            inputStyle: const TextStyle(fontSize: 16),
-            fillColor: Colors.grey.shade50,
-            textInputAction: TextInputAction.done,
-            keyBoardType: const TextInputType.numberWithOptions(decimal: true),
-            formaters: [FilteringTextInputFormatter.digitsOnly],
-            controller: _accelerationController,
-          ),
+          for (CarSpecsModel i in BlocProvider.of<CarCubit>(context).carSpecs)
+            _buildSpecField(i),
         ],
       ),
     ),
@@ -778,13 +876,13 @@ List<StepData> _getSteps() {
             const SizedBox(height: 24),
             _buildSectionHeader('${selectedLang[AppLangAssets.basicInformation]!}:', Icons.info_outline),
             const SizedBox(height: 12),
-            _buildInfoRow('${selectedLang[AppLangAssets.brand]!}:', _selectedBrand ?? 'N/A'),
-            _buildInfoRow('${selectedLang[AppLangAssets.model]!}:', _modelController.text),
-            _buildInfoRow('${selectedLang[AppLangAssets.year]!}:', _selectedYear ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.brand]!}:', _selectedBrand == null ? 'N/A' : _selectedBrand!.makeName),
+            _buildInfoRow('${selectedLang[AppLangAssets.model]!}:', _selectedModel == null ? 'N/A' : _selectedModel!.modelName),
+            _buildInfoRow('${selectedLang[AppLangAssets.year]!}:', _yearController.text),
             _buildInfoRow('${selectedLang[AppLangAssets.condition]!}:', _selectedCondition ?? 'N/A'),
-            _buildInfoRow('Mileage:', _mileageController.text.isNotEmpty ? '${_mileageController.text} km' : 'N/A'),
-            _buildInfoRow('${selectedLang[AppLangAssets.bodyType]!}:', _selectedBodyType ?? 'N/A'),
-            _buildInfoRow('${selectedLang[AppLangAssets.color]!}:', selectedColor ?? ''),
+            _buildInfoRow('KM:', _mileageController.text.isNotEmpty ? '${_mileageController.text} km' : 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.bodyType]!}:', _selectedBodyType == null ? 'N/A' : _selectedBodyType!.shapeName),
+            _buildInfoRow('${selectedLang[AppLangAssets.color]!}:', selectedColor == null ? 'N/A' : selectedColor!.colorName),
             const SizedBox(height: 24),
             _buildSectionHeader(selectedLang[AppLangAssets.media]!, Icons.photo_library_outlined),
             const SizedBox(height: 12),
@@ -793,17 +891,9 @@ List<StepData> _getSteps() {
             const SizedBox(height: 24),
             _buildSectionHeader(selectedLang[AppLangAssets.specs]!, Icons.settings_outlined),
             const SizedBox(height: 12),
-            _buildInfoRow('${selectedLang[AppLangAssets.engine]!}:', _selectedEngineSize ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.engine]!}:', _engineSizeController.text),
             _buildInfoRow('${selectedLang[AppLangAssets.transmission]!}:', _selectedTransmission ?? 'N/A'),
             _buildInfoRow('${selectedLang[AppLangAssets.fuelType]!}:', _selectedFuelType ?? 'N/A'),
-            _buildInfoRow('Doors:', _selectedDoors ?? 'N/A'),
-            _buildInfoRow('Seats:', _selectedSeats ?? 'N/A'),
-            if (_horsepowerController.text.isNotEmpty)
-              _buildInfoRow('Horsepower:', '${_horsepowerController.text} HP'),
-            if (_torqueController.text.isNotEmpty)
-              _buildInfoRow('Torque:', '${_torqueController.text} Nm'),
-            if (_accelerationController.text.isNotEmpty)
-              _buildInfoRow('0-100 km/h:', '${_accelerationController.text}s'),
             const SizedBox(height: 24),
             _buildSectionHeader(selectedLang[AppLangAssets.description]!, Icons.description_outlined),
             const SizedBox(height: 12),
@@ -841,13 +931,86 @@ List<StepData> _getSteps() {
               ],
             ),
             const SizedBox(height: 12),
-            _buildInfoRow('${selectedLang[AppLangAssets.city]}:', _selectedCity ?? 'N/A'),
-            _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea ?? 'N/A'),
+            _buildInfoRow('${selectedLang[AppLangAssets.city]}:', _selectedCity == null ? 'N/A' : _selectedCity!.cityName),
+            _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea == null ? 'N/A' : _selectedArea!.areaNameAr),
           ],
         ),
       ),
     ),
   ];
+}
+
+Widget _buildSpecField(CarSpecsModel spec) {
+  TextInputType keyboardType;
+  List<TextInputFormatter> formatters = [];
+  
+  switch (spec.specType.toLowerCase()) {
+    case 'number':
+      keyboardType = const TextInputType.numberWithOptions(decimal: true);
+      formatters = [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))];
+      break;
+    case 'boolean':
+      return _buildBooleanField(spec);
+    case 'text':
+    default:
+      keyboardType = TextInputType.text;
+      formatters = [];
+  }
+
+  return authField(
+    title: spec.spec,
+    inputTitle: spec.specType,
+    inputStyle: const TextStyle(fontSize: 16),
+    fillColor: Colors.grey.shade50,
+    textInputAction: TextInputAction.done,
+    keyBoardType: keyboardType,
+    formaters: formatters,
+    controller: _getController(spec.spec),
+  );
+}
+
+Widget _buildBooleanField(CarSpecsModel spec) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          spec.spec,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        Switch(
+          value: _getBoolValue(spec.spec),
+          activeColor: AppColors.primaryColor,
+          focusColor: AppColors.primaryColor,
+          inactiveThumbColor: AppColors.whiteColor,
+          inactiveTrackColor: AppColors.greyColor,
+          onChanged: (value) => _setBoolValue(spec.spec, value),
+        ),
+      ],
+    ),
+  );
+}
+
+final Map<String, TextEditingController> _controllers = {};
+
+TextEditingController _getController(String specName) {
+  if (!_controllers.containsKey(specName)) {
+    _controllers[specName] = TextEditingController();
+  }
+  return _controllers[specName]!;
+}
+
+final Map<String, bool> _boolValues = {};
+
+bool _getBoolValue(String specName) {
+  return _boolValues[specName] ?? false;
+}
+
+void _setBoolValue(String specName, bool value) {
+  setState(() {
+    _boolValues[specName] = value;
+  });
 }
 
   Widget authField({
@@ -1203,9 +1366,9 @@ List<StepData> _getSteps() {
 
   Widget bodyTypeGridSelector({
   required String title,
-  required String? selectedValue,
-  required List<BodyTypeItem> items,
-  required Function(String?) onChanged,
+  required CarShapeModel? selectedShape,
+  required List<CarShapeModel> items,
+  required Function(CarShapeModel?) onChanged,
 }) {
   return Container(
     margin: const EdgeInsets.only(top: 15.0),
@@ -1233,10 +1396,10 @@ List<StepData> _getSteps() {
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            final isSelected = selectedValue == item.value;
+            final isSelected = selectedShape == item;
 
             return GestureDetector(
-              onTap: () => onChanged(item.value),
+              onTap: () => onChanged(item),
               child: Container(
                 decoration: BoxDecoration(
                   color: isSelected 
@@ -1253,16 +1416,10 @@ List<StepData> _getSteps() {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      item.icon,
-                      size: 36,
-                      color: isSelected 
-                          ? AppColors.primaryColor 
-                          : Colors.grey.shade600,
-                    ),
+                    Image.network(item.shapeIcon, height: 50, width: 50,),
                     const SizedBox(height: 8),
                     Text(
-                      item.label,
+                      item.shapeName,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 12,
@@ -1284,34 +1441,19 @@ List<StepData> _getSteps() {
 }
 
   Widget _buildColorGrid() {
-    final colorMap = {
-      'Black': Colors.black,
-      'White': Colors.white,
-      'Silver': Colors.grey.shade400,
-      'Gray': Colors.grey.shade700,
-      'Red': Colors.red,
-      'Blue': Colors.blue,
-      'Green': Colors.green,
-      'Yellow': Colors.yellow.shade700,
-      'Orange': Colors.orange,
-      'Brown': Colors.brown,
-      'Gold': Colors.amber.shade700,
-      'Beige': Colors.brown.shade200,
-    };
-
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: colorMap.entries.map((entry) {
-        final isSelected = selectedColor == entry.key;
+      children: BlocProvider.of<AppSettingsCubit>(context).colors.map((entry) {
+        final isSelected = selectedColor == null ? false : selectedColor!.id == entry.id;
         return InkWell(
-          onTap: () => setState(() => selectedColor = entry.key),
+          onTap: () => setState(() => selectedColor = entry),
           borderRadius: BorderRadius.circular(8),
           child: Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: entry.value,
+              color: entry.colorCode,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
@@ -1329,7 +1471,6 @@ List<StepData> _getSteps() {
 
   @override
   void dispose() {
-    _modelController.dispose();
     _mileageController.dispose();
     _horsepowerController.dispose();
     _torqueController.dispose();

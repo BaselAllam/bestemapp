@@ -138,7 +138,7 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/core/colors/'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data) {
+        for (var i in data['data']) {
           _colors.add(ColorModel.fromJson(i));
         }
         emit(GetColorsSuccessState());

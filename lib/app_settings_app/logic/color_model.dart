@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 class ColorModel {
   final String id;
-  final int colorCode;
+  final Color colorCode;
   final String colorName;
 
   ColorModel({
@@ -12,7 +14,7 @@ class ColorModel {
   factory ColorModel.fromJson(Map<String, dynamic> json) {
     return ColorModel(
       id: json['id'] ?? '',
-      colorCode: json['color_code'] ?? 0,
+      colorCode: Color(int.parse('0xff${json['color_code']}')),
       colorName: json['color_name'] ?? '',
     );
   }

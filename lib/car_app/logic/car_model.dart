@@ -2,6 +2,7 @@ import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/user_app/logic/user_model.dart';
+import 'package:flutter/material.dart';
 
 class CarAdWishlistModel {
   final String id;
@@ -64,7 +65,7 @@ class CarAdModel {
       adDescription: json['ad_description'] ?? '',
       carModel: json['car_model'] != null ? CarMakeModelModel.fromJson(json['car_model']) : CarMakeModelModel(id: '', modelName: ''),
       carYear: json['car_year'] ?? 0,
-      carColor: json['car_color'] != null ? ColorModel.fromJson(json['car_color']) : ColorModel(id: '', colorCode: 0, colorName: ''),
+      carColor: json['car_color'] != null ? ColorModel.fromJson(json['car_color']) : ColorModel(id: '', colorCode: Colors.black, colorName: ''),
       price: json['price'].toString(),
       isNegotiable: json['is_negotiable'] ?? false,
       adArea: json['ad_area'] != null ? AreaModel.fromJson(json['ad_area']) : AreaModel(id: '', areaName: '', areaNameAr: ''),
@@ -118,7 +119,7 @@ class CarShapeModel {
     return CarShapeModel(
       id: json['id'] ?? '',
       shapeName: json['shape_name'] ?? '',
-      shapeIcon: json['shape_icon'] ?? '',
+      shapeIcon: '${AppApi.imgIp}${json['shape_icon']}',
     );
   }
 }
