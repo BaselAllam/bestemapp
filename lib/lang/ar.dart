@@ -255,4 +255,9 @@ final Map<String, String> arData = {
   AppLangAssets.realPricing: 'السعر الحقيقي للاعلان بيخليه يتوافق عليه من خلالنا وبيكون اكثر مصداقيه للمشتريين',
   AppLangAssets.carData: 'بيانات السياره',
   AppLangAssets.selectModel: 'اختار موديل العربيه',
+  AppLangAssets.ago: 'منذ',
+  AppLangAssets.justNow: 'دولقتي',
+  AppLangAssets.yesterday: 'امبارح',
+  AppLangAssets.noNotification: 'مفيش اشعارات',
+  AppLangAssets.noNotificationSubTitle: 'إنت كده خلصت كل حاجة! هنبعتلك إشعار أول ما في جديد يوصل.',
 };

@@ -154,7 +154,7 @@ final Map<String, String> enData = {
   AppLangAssets.markNotificationRead: 'Mark all as read',
   AppLangAssets.loading: 'Loading',
   AppLangAssets.success: 'Success',
-  AppLangAssets.noWishlist: 'No Items here, Browse and add your favourit cars to wishlist',
+  AppLangAssets.noWishlist: 'Start adding cars to your favorites\nto see them here',
   AppLangAssets.chooseProfilePic: 'Choose Profile Picture',
   AppLangAssets.camera: 'Camera',
   AppLangAssets.gallery: 'Gallery',
@@ -255,4 +255,9 @@ final Map<String, String> enData = {
   AppLangAssets.realPricing: 'Real Pricing Makes your ad Approved & Trusted for buyers',
   AppLangAssets.carData: 'Car Data',
   AppLangAssets.selectModel: 'Select Car Model',
+  AppLangAssets.ago: 'ago',
+  AppLangAssets.justNow: 'Just now',
+  AppLangAssets.yesterday: 'yesterday',
+  AppLangAssets.noNotification: 'No Notification',
+  AppLangAssets.noNotificationSubTitle: 'You\'re all caught up!\nWe\'ll notify you when something new arrives',
 };

@@ -255,4 +255,9 @@ class AppLangAssets {
   static String realPricing = 'realPricing';
   static String carData = 'carData';
   static String selectModel = 'selectModel';
+  static String ago = 'ago';
+  static String justNow = 'justNow';
+  static String yesterday = 'yesterday';
+  static String noNotification = 'noNotification';
+  static String noNotificationSubTitle = 'noNotificationSubTitle';
 }
