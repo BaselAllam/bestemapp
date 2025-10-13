@@ -932,7 +932,7 @@ List<StepData> _getSteps() {
             ),
             const SizedBox(height: 12),
             _buildInfoRow('${selectedLang[AppLangAssets.city]}:', _selectedCity == null ? 'N/A' : _selectedCity!.cityName),
-            _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea == null ? 'N/A' : _selectedArea!.areaNameAr),
+            _buildInfoRow('${selectedLang[AppLangAssets.area]}:', _selectedArea == null ? 'N/A' : _selectedArea!.areaName),
           ],
         ),
       ),
