@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CarDetailScreen extends StatefulWidget {
-  const CarDetailScreen({Key? key}) : super(key: key);
+  final bool isAdmin; // Pass this from your navigation
+  
+  const CarDetailScreen({
+    Key? key,
+    this.isAdmin = false,
+  }) : super(key: key);
 
   @override
   State<CarDetailScreen> createState() => _CarDetailScreenState();
@@ -11,6 +16,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _currentImageIndex = 0;
+  final ScrollController _thumbnailScrollController = ScrollController();
 
   final List<String> carImages = [
     'https://images.pexels.com/photos/120049/pexels-photo-120049.jpeg?_gl=1*zy2bfu*_ga*MzIyOTQ5MDAxLjE3NDAyMDcxNjQ.*_ga_8JE65Q40S6*czE3NTk3NTk4NDYkbzExJGcxJHQxNzU5NzU5ODU5JGo0NyRsMCRoMA..',
@@ -28,6 +34,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _thumbnailScrollController.dispose();
     super.dispose();
   }
 
@@ -42,6 +49,12 @@ class _CarDetailScreenState extends State<CarDetailScreen>
         );
       },
     );
+  }
+
+  void _selectImage(int index) {
+    setState(() {
+      _currentImageIndex = index;
+    });
   }
 
   @override
@@ -69,26 +82,17 @@ class _CarDetailScreenState extends State<CarDetailScreen>
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
-                  PageView.builder(
-                    itemCount: carImages.length,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentImageIndex = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => _openImagePopup(index),
-                        child: Hero(
-                          tag: 'car_image_$index',
-                          child: Image.network(
-                            carImages[index],
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                        ),
-                      );
-                    },
+                  GestureDetector(
+                    onTap: () => _openImagePopup(_currentImageIndex),
+                    child: Hero(
+                      tag: 'car_image_$_currentImageIndex',
+                      child: Image.network(
+                        carImages[_currentImageIndex],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 300,
+                      ),
+                    ),
                   ),
                   
                   // Image Counter
@@ -111,31 +115,47 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                       ),
                     ),
                   ),
-                  
-                  // Dots Indicator
-                  Positioned(
-                    bottom: 16,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        carImages.length,
-                        (index) => Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: _currentImageIndex == index ? 24 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: _currentImageIndex == index
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Thumbnail Scroll Section
+          SliverToBoxAdapter(
+            child: Container(
+              height: 100,
+              margin: const EdgeInsets.symmetric(vertical: 16),
+              child: ListView.builder(
+                controller: _thumbnailScrollController,
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: carImages.length,
+                itemBuilder: (context, index) {
+                  final isSelected = _currentImageIndex == index;
+                  return GestureDetector(
+                    onTap: () => _selectImage(index),
+                    child: Container(
+                      width: 100,
+                      margin: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isSelected
+                              ? const Color(0xFF3B82F6)
+                              : Colors.grey.shade300,
+                          width: isSelected ? 3 : 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          carImages[index],
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ),
@@ -179,7 +199,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                         children: [
                           _buildIconButton(Icons.share_outlined),
                           const SizedBox(width: 8),
-                          _buildIconButton(Icons.flag_outlined),
+                          _buildIconButton(Icons.favorite_border),
                         ],
                       ),
                     ],
@@ -223,12 +243,27 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                     ],
                   ),
                 ),
-                SellerCard()
+                
+                // Conditional Rendering: Admin Stats or Seller Card
+                widget.isAdmin
+                    ? AdStatisticsCard()
+                    : SellerCard(
+                        onReport: _showReportDialog,
+                      ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showReportDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ReportAdDialog();
+      },
     );
   }
 
@@ -566,7 +601,6 @@ class _ImagePopupState extends State<ImagePopup> {
       insetPadding: EdgeInsets.zero,
       child: Stack(
         children: [
-          // Full Screen Image Gallery
           Center(
             child: PageView.builder(
               controller: _pageController,
@@ -594,7 +628,6 @@ class _ImagePopupState extends State<ImagePopup> {
             ),
           ),
           
-          // Close Button
           Positioned(
             top: 50,
             right: 20,
@@ -610,7 +643,6 @@ class _ImagePopupState extends State<ImagePopup> {
             ),
           ),
           
-          // Image Counter
           Positioned(
             bottom: 40,
             left: 0,
@@ -634,7 +666,6 @@ class _ImagePopupState extends State<ImagePopup> {
             ),
           ),
           
-          // Thumbnail Preview at Bottom
           Positioned(
             bottom: 100,
             left: 0,
@@ -685,9 +716,14 @@ class _ImagePopupState extends State<ImagePopup> {
   }
 }
 
-
+// Enhanced Seller Card with Report Button
 class SellerCard extends StatelessWidget {
-  const SellerCard({super.key});
+  final VoidCallback onReport;
+  
+  const SellerCard({
+    Key? key,
+    required this.onReport,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -709,7 +745,6 @@ class SellerCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Title
           const Text(
             "Seller",
             style: TextStyle(
@@ -717,53 +752,516 @@ class SellerCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 12),
-
-          /// Profile row
           Row(
             children: [
               const CircleAvatar(
                 radius: 28,
-                backgroundImage: NetworkImage("https://avatars.githubusercontent.com/u/44323531?v=4"), // replace with your asset or NetworkImage
+                backgroundImage: NetworkImage(
+                    "https://avatars.githubusercontent.com/u/44323531?v=4"),
               ),
               const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "Ahmed Al-Rashid",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    "Total Ads: 12",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              )
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Ahmed Al-Rashid",
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Total Ads: 12",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.flag_outlined, color: Colors.red),
+                onPressed: onReport,
+                tooltip: 'Report Ad',
+              ),
             ],
           ),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.person_outline),
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.phone),
               label: const Text("Call Seller"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3B82F6),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               onPressed: () {},
             ),
           ),
+          const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
-              icon: const Icon(Icons.chat),
-              label: const Text("WhatsApp"),
+              icon: const Icon(Icons.chat, color: Color(0xFF25D366)),
+              label: const Text(
+                "WhatsApp",
+                style: TextStyle(color: Color(0xFF25D366)),
+              ),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                side: const BorderSide(color: Color(0xFF25D366)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               onPressed: () {},
             ),
           ),
-          const Divider(height: 32),
         ],
       ),
+    );
+  }
+}
+
+// Report Ad Dialog
+class ReportAdDialog extends StatefulWidget {
+  const ReportAdDialog({Key? key}) : super(key: key);
+
+  @override
+  State<ReportAdDialog> createState() => _ReportAdDialogState();
+}
+
+class _ReportAdDialogState extends State<ReportAdDialog> {
+  String? _selectedReason;
+  final TextEditingController _detailsController = TextEditingController();
+  
+  final List<String> _reportReasons = [
+    'Spam or Misleading',
+    'Inappropriate Content',
+    'Fraud or Scam',
+    'Duplicate Listing',
+    'Incorrect Information',
+    'Other',
+  ];
+
+  @override
+  void dispose() {
+    _detailsController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Report Ad',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Help us understand the problem',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Reason',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ..._reportReasons.map((reason) {
+                return RadioListTile<String>(
+                  title: Text(reason),
+                  value: reason,
+                  groupValue: _selectedReason,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedReason = value;
+                    });
+                  },
+                  contentPadding: EdgeInsets.zero,
+                  activeColor: const Color(0xFF3B82F6),
+                );
+              }).toList(),
+              const SizedBox(height: 16),
+              const Text(
+                'Additional Details (Optional)',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _detailsController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  hintText: 'Provide more information about your report...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF3B82F6),
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _selectedReason == null
+                      ? null
+                      : () {
+                          // Handle report submission
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Report submitted successfully'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          Navigator.pop(context);
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3B82F6),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+disabledBackgroundColor: Colors.grey.shade300,
+                  ),
+                  child: const Text(
+                    'Submit Report',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Admin Statistics Card
+class AdStatisticsCard extends StatelessWidget {
+  const AdStatisticsCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Ad Statistics",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.green.shade200),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.check_circle, size: 16, color: Colors.green.shade700),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Active',
+                      style: TextStyle(
+                        color: Colors.green.shade700,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          
+          // Statistics Grid
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  icon: Icons.visibility,
+                  title: 'Views',
+                  value: '2,456',
+                  color: const Color(0xFF3B82F6),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildStatCard(
+                  icon: Icons.favorite,
+                  title: 'Favorites',
+                  value: '87',
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  icon: Icons.phone,
+                  title: 'Calls',
+                  value: '34',
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildStatCard(
+                  icon: Icons.chat,
+                  title: 'Messages',
+                  value: '52',
+                  color: Colors.orange,
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 20),
+          const Divider(),
+          const SizedBox(height: 16),
+          
+          // Ad Information
+          _buildInfoRow('Posted Date', 'Oct 1, 2025'),
+          const SizedBox(height: 12),
+          _buildInfoRow('Last Updated', 'Oct 12, 2025'),
+          const SizedBox(height: 12),
+          _buildInfoRow('Ad ID', '#AD-2025-10234'),
+          const SizedBox(height: 12),
+          _buildInfoRow('Category', 'SUV'),
+          
+          const SizedBox(height: 20),
+          const Divider(),
+          const SizedBox(height: 16),
+          
+          // Performance Metrics
+          const Text(
+            'Performance',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          _buildProgressMetric('View Rate', 0.78, '78%'),
+          const SizedBox(height: 12),
+          _buildProgressMetric('Engagement Rate', 0.42, '42%'),
+          const SizedBox(height: 12),
+          _buildProgressMetric('Response Rate', 0.65, '65%'),
+          
+          const SizedBox(height: 24),
+          
+          // Admin Actions
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.edit),
+                  label: const Text('Edit Ad'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: BorderSide(color: Colors.grey.shade400),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  label: const Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: const BorderSide(color: Colors.red),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard({
+    required IconData icon,
+    required String title,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 12),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProgressMetric(String label, double value, String percentage) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              percentage,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3B82F6),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: value,
+            backgroundColor: Colors.grey.shade200,
+            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3B82F6)),
+            minHeight: 8,
+          ),
+        ),
+      ],
     );
   }
 }
