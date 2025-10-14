@@ -51,8 +51,6 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   CarShapeModel? _selectedBodyType;
   String? _selectedTransmission;
   String? _selectedFuelType;
-  String? _selectedDoors;
-  String? _selectedSeats;
   CityModel? _selectedCity;
   AreaModel? _selectedArea;
 
@@ -852,7 +850,7 @@ List<StepData> _getSteps() {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'We\'ll use this phone number for buyers to contact you',
+                    selectedLang[AppLangAssets.weWillUseUrPhone]!,
                     style: TextStyle(
                       color: Colors.blue.shade900,
                       fontSize: 13,
@@ -865,7 +863,7 @@ List<StepData> _getSteps() {
           ),
           const SizedBox(height: 24),
           Text(
-            'Your Contact Information',
+            selectedLang[AppLangAssets.urContactInfo]!,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -874,7 +872,7 @@ List<StepData> _getSteps() {
           ),
           const SizedBox(height: 8),
           Text(
-            'This information will be visible to interested buyers',
+            selectedLang[AppLangAssets.weWillUseUrPhoneVisible]!,
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey.shade600,
@@ -908,7 +906,7 @@ List<StepData> _getSteps() {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'This is your registered phone number. You can edit it if needed.',
+                    selectedLang[AppLangAssets.thisUrRegisterNumber]!,
                     style: TextStyle(
                       color: Colors.green.shade900,
                       fontSize: 13,
@@ -949,7 +947,7 @@ List<StepData> _getSteps() {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'Privacy & Safety',
+                      selectedLang[AppLangAssets.privacyAndSafety]!,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -959,9 +957,9 @@ List<StepData> _getSteps() {
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildPrivacyPoint('Your phone number will only be visible to serious buyers'),
-                _buildPrivacyPoint('We recommend meeting in public places for viewings'),
-                _buildPrivacyPoint('Never share personal financial information'),
+                _buildPrivacyPoint(selectedLang[AppLangAssets.weWillUseUrPhoneVisible]!),
+                _buildPrivacyPoint(selectedLang[AppLangAssets.weRecommendMeeting]!),
+                _buildPrivacyPoint(selectedLang[AppLangAssets.neverShareFinanceInfo]!),
               ],
             ),
           ),
@@ -1104,6 +1102,7 @@ void _showSuccessDialog(BuildContext context) {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
+        backgroundColor: AppColors.whiteColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),

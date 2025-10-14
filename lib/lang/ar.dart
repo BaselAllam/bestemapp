@@ -261,4 +261,11 @@ final Map<String, String> arData = {
   AppLangAssets.noNotification: 'مفيش اشعارات',
   AppLangAssets.noNotificationSubTitle: 'إنت كده خلصت كل حاجة! هنبعتلك إشعار أول ما في جديد يوصل.',
   AppLangAssets.contactDetails: 'بيانات التواصل',
+  AppLangAssets.weWillUseUrPhone: 'احنا هنستخدم رقمك عشان المشتريين يتواصلوا معاك',
+  AppLangAssets.urContactInfo: 'بيانات التواصل الخاصه بيك',
+  AppLangAssets.weWillUseUrPhoneVisible: 'رقمك هيكون ظاهر للمشتريين المهتمين باعلانك',
+  AppLangAssets.thisUrRegisterNumber: 'ده رقمك المسجل استخدمه في الاعلان او غيره برقم تاني للاعلان ده فقط',
+  AppLangAssets.privacyAndSafety: 'الامان والخصوصيه',
+  AppLangAssets.weRecommendMeeting: 'الافضل انك تقابل المشتريين في مكان عام',
+  AppLangAssets.neverShareFinanceInfo: 'متشاركش ابدا بياناتك الماديه او الشخصيه',
 };

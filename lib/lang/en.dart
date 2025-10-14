@@ -261,4 +261,11 @@ final Map<String, String> enData = {
   AppLangAssets.noNotification: 'No Notification',
   AppLangAssets.noNotificationSubTitle: 'You\'re all caught up!\nWe\'ll notify you when something new arrives',
   AppLangAssets.contactDetails: 'Contact Details',
+  AppLangAssets.weWillUseUrPhone: 'We\'ll use this phone number for buyers to contact you',
+  AppLangAssets.urContactInfo: 'Your Contact Information',
+  AppLangAssets.weWillUseUrPhoneVisible: 'This information will be visible to interested buyers',
+  AppLangAssets.thisUrRegisterNumber: 'This your register number & u can edit it for this ad',
+  AppLangAssets.privacyAndSafety: 'Privacy & Safety',
+  AppLangAssets.weRecommendMeeting: 'We recommend meeting in public places for viewings',
+  AppLangAssets.neverShareFinanceInfo: 'Never share personal financial information',
 };

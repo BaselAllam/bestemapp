@@ -261,4 +261,11 @@ class AppLangAssets {
   static String noNotification = 'noNotification';
   static String noNotificationSubTitle = 'noNotificationSubTitle';
   static String contactDetails = 'contactDetails';
+  static String weWillUseUrPhone = 'weWillUseUrPhone';
+  static String urContactInfo = 'urContactInfo';
+  static String weWillUseUrPhoneVisible = 'weWillUseUrPhoneVisible';
+  static String thisUrRegisterNumber = 'thisUrRegisterNumber';
+  static String privacyAndSafety = 'privacyAndSafety';
+  static String weRecommendMeeting = 'weRecommendMeeting';
+  static String neverShareFinanceInfo = 'neverShareFinanceInfo';
 }
