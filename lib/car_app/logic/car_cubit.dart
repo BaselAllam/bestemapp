@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
@@ -246,7 +245,7 @@ class CarCubit extends Cubit<CarStates> {
 
   void createCarAd({ required String adTitle, required String adDescription, required String carModel, required String carColor, required String carShape, required String adArea,
     required String carCondition, required String fuelType, required String transmissionType, required int engineCapacity, required int carYear, required int kiloMeters,
-    required String price, required bool isNegotioable, required File video, required List<File> imgs, required int distanceRange, required List<Map<String, dynamic>> specsValues,
+    required String price, required bool isNegotioable, File? video, required List<File> imgs, required int distanceRange, required List<Map<String, dynamic>> specsValues,
     }) async {
     emit(CreateCarAdsLoadingState());
     try {
@@ -273,14 +272,16 @@ class CarCubit extends Cubit<CarStates> {
       request.fields['is_negotiable'] = isNegotioable.toString();
       request.fields['distance_range'] = distanceRange.toString();
       request.fields['specs_value'] = json.encode(specsValues);
-      var videoFile = await http.MultipartFile.fromPath(
-        'ad_video',
-        video.path,
-      );
-      request.files.add(videoFile);
+      if (video != null) {
+        var videoFile = await http.MultipartFile.fromPath(
+          'ad_video',
+          video.path,
+        );
+        request.files.add(videoFile);
+      }
       for (int i = 0; i < imgs.length; i++) {
         var imgFile = await http.MultipartFile.fromPath(
-          'images',
+          'imgs',
           imgs[i].path,
         );
         request.files.add(imgFile);
@@ -290,7 +291,7 @@ class CarCubit extends Cubit<CarStates> {
       var responseBody = await response.stream.bytesToString();
       var data = json.decode(responseBody);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         _userCarAds.insert(0, CarAdModel.fromJson(data['data']));
         emit(CreateCarAdsSuccessState());
       } else {

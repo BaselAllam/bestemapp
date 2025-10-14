@@ -1,3 +1,4 @@
+import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CarDetailScreen extends StatefulWidget {
@@ -856,6 +857,7 @@ class _ReportAdDialogState extends State<ReportAdDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: AppColors.whiteColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: SingleChildScrollView(
         child: Padding(

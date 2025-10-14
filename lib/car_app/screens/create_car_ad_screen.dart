@@ -5,6 +5,7 @@ import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/material.dart';
@@ -36,13 +37,13 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   TextEditingController _adTitleController = TextEditingController();
   TextEditingController _yearController= TextEditingController();
   TextEditingController _mileageController = TextEditingController();
-  TextEditingController _horsepowerController = TextEditingController();
-  TextEditingController _torqueController = TextEditingController();
-  TextEditingController _accelerationController = TextEditingController();
+  TextEditingController _maxDistanceController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _priceController = TextEditingController();
   TextEditingController _engineSizeController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
+  Map<String, bool> _boolValues = {};
+  Map<String, TextEditingController> _controllers = {};
 
 
   CarMakeModel? _selectedBrand;
@@ -54,6 +55,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   String? _selectedFuelType;
   CityModel? _selectedCity;
   AreaModel? _selectedArea;
+  bool isNegotiable = false;
 
   List<File> _images = [];
   File? _video;
@@ -273,6 +275,30 @@ List<StepData> _getSteps() {
             suffix: Padding(
               padding: const EdgeInsets.all(12),
               child: Text('EGP', style: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  selectedLang[AppLangAssets.isNegotiable]!,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                Switch(
+                  value: isNegotiable,
+                  activeColor: AppColors.primaryColor,
+                  focusColor: AppColors.primaryColor,
+                  inactiveThumbColor: AppColors.whiteColor,
+                  inactiveTrackColor: AppColors.greyColor,
+                  onChanged: (value) {
+                    setState(() {
+                      isNegotiable = !isNegotiable;
+                    });
+                  }
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 8),
@@ -578,6 +604,17 @@ List<StepData> _getSteps() {
             items: _fuelTypes,
             onChanged: (value) => setState(() => _selectedFuelType = value),
             fillColor: Colors.grey.shade50,
+          ),
+          if (_selectedFuelType == 'electric' || _selectedFuelType == 'hybird')
+          authField(
+            title: '${selectedLang[AppLangAssets.distanceRange]} *',
+            inputTitle: selectedLang[AppLangAssets.selectDistanceRange]!,
+            inputStyle: const TextStyle(fontSize: 16),
+            fillColor: Colors.grey.shade50,
+            textInputAction: TextInputAction.next,
+            keyBoardType: TextInputType.number,
+            formaters: [FilteringTextInputFormatter.digitsOnly],
+            controller: _maxDistanceController,
           ),
         ],
       ),
@@ -1275,7 +1312,6 @@ void _showSuccessDialog(BuildContext context) {
 }
 
 
-
 Widget _buildSpecField(CarSpecsModel spec) {
   TextInputType keyboardType;
   List<TextInputFormatter> formatters = [];
@@ -1328,16 +1364,12 @@ Widget _buildBooleanField(CarSpecsModel spec) {
   );
 }
 
-final Map<String, TextEditingController> _controllers = {};
-
 TextEditingController _getController(String specName) {
   if (!_controllers.containsKey(specName)) {
     _controllers[specName] = TextEditingController();
   }
   return _controllers[specName]!;
 }
-
-final Map<String, bool> _boolValues = {};
 
 bool _getBoolValue(String specName) {
   return _boolValues[specName] ?? false;
@@ -1644,13 +1676,61 @@ void _setBoolValue(String specName, bool value) {
                       Expanded(
                         flex: 2,
                         child: BlocConsumer<CarCubit, CarStates>(
-                          listener: (context, state) {},
+                          listener: (context, state) {
+                            if (state is CreateCarAdsErrorState) {
+                              Toaster.show(
+                                context,
+                                message: state.errorMsg,
+                                position: ToasterPosition.top,
+                                type: ToasterType.error
+                              );
+                            } else if (state is CreateCarAdsSomeThingWentWrongState) {
+                              Toaster.show(
+                                context,
+                                message: selectedLang[AppLangAssets.someThingWentWrong]!,
+                                position: ToasterPosition.top,
+                                type: ToasterType.error
+                              );
+                            } else if (state is CreateCarAdsSuccessState) {
+                              _showSuccessDialog(context);
+                            }
+                          },
                           builder: (context, state) => ElevatedButton(
-                            onPressed: () {
+                            onPressed: state is CreateCarAdsLoadingState ? () {} : () {
                               if (_currentStep < steps.length - 1) {
                                 setState(() => _currentStep++);
                               } else {
-                                _showSuccessDialog(context);
+                                if (_adTitleController.text.isEmpty || _descriptionController.text.isEmpty || _selectedModel == null || selectedColor == null ||
+                                _selectedBodyType == null || _selectedArea == null || _selectedCondition == null || _selectedFuelType == null || _selectedTransmission == null ||
+                                _engineSizeController.text.isEmpty || _yearController.text.isEmpty || _mileageController.text.isEmpty || _priceController.text.isEmpty || _images.isEmpty) {
+                                  Toaster.show(
+                                    context,
+                                    message: selectedLang[AppLangAssets.fieldsRequired]!,
+                                    type: ToasterType.error,
+                                    position: ToasterPosition.top
+                                  );
+                                } else {
+                                  BlocProvider.of<CarCubit>(context).createCarAd(
+                                    adTitle: _adTitleController.text, 
+                                    adDescription: _descriptionController.text,
+                                    carModel: _selectedModel!.id,
+                                    carColor: selectedColor!.id,
+                                    carShape: _selectedBodyType!.id,
+                                    adArea: _selectedArea!.id,
+                                    carCondition: _selectedCondition!,
+                                    fuelType: _selectedFuelType!,
+                                    transmissionType: _selectedTransmission!,
+                                    engineCapacity: int.parse(_engineSizeController.text),
+                                    carYear: int.parse(_yearController.text),
+                                    kiloMeters: int.parse(_mileageController.text),
+                                    price: _priceController.text,
+                                    isNegotioable: isNegotiable,
+                                    video: _video!,
+                                    imgs: _images,
+                                    distanceRange: _selectedFuelType == 'electric' || _selectedFuelType == 'hybird' ? int.parse(_maxDistanceController.text) : 0,
+                                    specsValues: []
+                                  );
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -1665,7 +1745,8 @@ void _setBoolValue(String specName, bool value) {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  _currentStep == steps.length - 1 ? selectedLang[AppLangAssets.publishAd]! : selectedLang[AppLangAssets.continueStep]!,
+                                  _currentStep == steps.length - 1 ? selectedLang[AppLangAssets.publishAd]! : state is CreateCarAdsLoadingState ?
+                                  selectedLang[AppLangAssets.loading]! : selectedLang[AppLangAssets.continueStep]!,
                                   style: TextStyle(fontSize: 16, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(width: 8),
@@ -1794,9 +1875,6 @@ void _setBoolValue(String specName, bool value) {
   @override
   void dispose() {
     _mileageController.dispose();
-    _horsepowerController.dispose();
-    _torqueController.dispose();
-    _accelerationController.dispose();
     _descriptionController.dispose();
     _adTitleController.dispose();
     _priceController.dispose();

@@ -238,6 +238,8 @@ class AppLangAssets {
   static String selectFuelType = 'selectFuelType';
   static String selectTransimission = 'selectTransimission';
   static String selectEngineSize = 'selectEngineSize';
+  static String selectDistanceRange = 'selectDostanceRange';
+  static String distanceRange = 'distanceRange';
   static String videoUploaded = 'videoUploaded';
   static String chooseVideo = 'chooseVideo';
   static String uploadVideoDescription = 'uploadVideoDescription';
@@ -269,4 +271,5 @@ class AppLangAssets {
   static String weRecommendMeeting = 'weRecommendMeeting';
   static String neverShareFinanceInfo = 'neverShareFinanceInfo';
   static String limitedTime = 'limitedTime';
+  static String isNegotiable = 'isNegotiable';
 }

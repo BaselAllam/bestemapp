@@ -269,4 +269,7 @@ final Map<String, String> arData = {
   AppLangAssets.weRecommendMeeting: 'الافضل انك تقابل المشتريين في مكان عام',
   AppLangAssets.neverShareFinanceInfo: 'متشاركش ابدا بياناتك الماديه او الشخصيه',
   AppLangAssets.limitedTime: 'لفتره محدوده',
+  AppLangAssets.distanceRange: 'اقصي مسافه للشحنه',
+  AppLangAssets.selectDistanceRange: 'ادخل اقصي مسافه للشحنه',
+  AppLangAssets.isNegotiable: 'قابل للتفاوض',
 };

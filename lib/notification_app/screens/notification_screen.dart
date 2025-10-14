@@ -159,7 +159,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       itemCount: notificationCubit.notifications.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          return _buildSectionHeader(context);
+          if (BlocProvider.of<NotificationCubit>(context).unreadNotification > 0) {
+            return _buildSectionHeader(context);
+          } else {
+            return SizedBox();
+          }
         }
         return _buildNotificationItem(
           context,

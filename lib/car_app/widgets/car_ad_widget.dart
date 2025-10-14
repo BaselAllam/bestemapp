@@ -46,7 +46,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
       ),
       child: InkWell(
         onTap: () {
-          Navigator.push(context, CupertinoPageRoute(builder: (_) => CarDetailScreen(isAdmin: true)));
+          Navigator.push(context, CupertinoPageRoute(builder: (_) => CarDetailScreen()));
         },
         borderRadius: BorderRadius.circular(12),
         child: Column(

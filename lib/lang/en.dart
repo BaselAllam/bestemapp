@@ -269,4 +269,7 @@ final Map<String, String> enData = {
   AppLangAssets.weRecommendMeeting: 'We recommend meeting in public places for viewings',
   AppLangAssets.neverShareFinanceInfo: 'Never share personal financial information',
   AppLangAssets.limitedTime: 'Limited Time',
+  AppLangAssets.distanceRange: 'Dstance Range',
+  AppLangAssets.selectDistanceRange: 'Enter Distance Range',
+  AppLangAssets.isNegotiable: 'Is Negotiable'
 };
