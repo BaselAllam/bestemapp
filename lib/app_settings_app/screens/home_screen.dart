@@ -1,9 +1,11 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/screens/car_search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
+import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
@@ -28,27 +30,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
-  final List<Map<String, dynamic>> _offers = [
-    {
-      'title': 'Summer Sale',
-      'subtitle': 'Up to 30% Off on Selected Cars',
-      'image': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=400&fit=crop',
-      'color': const Color(0xFFEF4444),
-    },
-    {
-      'title': 'New Arrivals',
-      'subtitle': 'Check Out Latest 2025 Models',
-      'image': 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&h=400&fit=crop',
-      'color': const Color(0xFF3B82F6),
-    },
-    {
-      'title': 'Trade-In Bonus',
-      'subtitle': 'Get Extra Value for Your Old Car',
-      'image': 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=400&fit=crop',
-      'color': const Color(0xFF10B981),
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -69,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     
     Future.delayed(const Duration(seconds: 3), () {
       if (_carouselController.hasClients) {
-        int nextPage = (_currentCarouselIndex + 1) % _offers.length;
+        int nextPage = (_currentCarouselIndex + 1) % BlocProvider.of<AppSettingsCubit>(context).landingBanners.length;
         _carouselController.animateToPage(
           nextPage,
           duration: const Duration(milliseconds: 400),
@@ -192,160 +173,134 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildOffersCarousel() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 200,
-          child: PageView.builder(
-            controller: _carouselController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentCarouselIndex = index;
-              });
-            },
-            itemCount: _offers.length,
-            itemBuilder: (context, index) {
-              final offer = _offers[index];
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (offer['color'] as Color).withOpacity(0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
+    return BlocBuilder<AppSettingsCubit, AppSettingsStates>(
+      builder: (context, state) {
+        if (state is GetLandingBannersLoadingState) {
+          return Center(child: CustomLoadingSpinner());
+        } else if (state is GetLandingBannersErrorState || state is GetLandingBannersSomeThingWentWrongState) {
+          return Center(child: CustomErrorWidget());
+        } else {
+          return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 200,
+              child: PageView.builder(
+                controller: _carouselController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentCarouselIndex = index;
+                  });
+                },
+                itemCount: BlocProvider.of<AppSettingsCubit>(context).landingBanners.length,
+                itemBuilder: (context, index) {
+                  final offer = BlocProvider.of<AppSettingsCubit>(context).landingBanners[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.network(
-                        offer['image'] as String,
-                        fit: BoxFit.cover,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black.withOpacity(0.1),
-                              Colors.black.withOpacity(0.7),
-                            ],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.network(
+                            offer.bannerImg,
+                            fit: BoxFit.cover,
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 24,
-                        right: 24,
-                        bottom: 24,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: offer['color'] as Color,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: const Text(
-                                'LIMITED TIME',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              offer['title'] as String,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              offer['subtitle'] as String,
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: offer['color'] as Color,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 12,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                elevation: 0,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    selectedLang[AppLangAssets.viewOffer]!,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  SizedBox(width: 6),
-                                  Icon(Icons.arrow_forward, size: 16),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.1),
+                                  Colors.black.withOpacity(0.7),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Positioned(
+                            left: 24,
+                            right: 24,
+                            bottom: 24,
+                            top: 20,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    selectedLang[AppLangAssets.limitedTime]!,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 30),
+                                Text(
+                                  BlocProvider.of<AppSettingsCubit>(context).selectedLangOption == LanguageOption.ar ? offer.bannerTitleAr : offer.bannerTitle,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  BlocProvider.of<AppSettingsCubit>(context).selectedLangOption == LanguageOption.ar ? offer.bannerDescriptionAr : offer.bannerDescription,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.9),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            _offers.length,
-            (index) => AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              height: 8,
-              width: _currentCarouselIndex == index ? 24 : 8,
-              decoration: BoxDecoration(
-                color: _currentCarouselIndex == index
-                    ? const Color(0xFF3B82F6)
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(4),
+                    ),
+                  );
+                },
               ),
             ),
-          ),
-        ),
-      ],
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                BlocProvider.of<AppSettingsCubit>(context).landingBanners.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  height: 8,
+                  width: _currentCarouselIndex == index ? 24 : 8,
+                  decoration: BoxDecoration(
+                    color: _currentCarouselIndex == index
+                        ? const Color(0xFF3B82F6)
+                        : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+        }
+      }
     );
   }
 

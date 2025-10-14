@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> initData(BuildContext context) async {
   await BlocProvider.of<AppSettingsCubit>(context).checkLang();
+  await BlocProvider.of<AppSettingsCubit>(context).getLandingBanners();
   BlocProvider.of<AppSettingsCubit>(context).getFaq();
   BlocProvider.of<AppSettingsCubit>(context).getColors();
   BlocProvider.of<AppSettingsCubit>(context).getCountries();

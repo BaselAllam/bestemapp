@@ -1,6 +1,7 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
+import 'package:bestemapp/app_settings_app/logic/landing_banner_model.dart';
 import 'package:bestemapp/lang/ar.dart';
 import 'package:bestemapp/lang/en.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
@@ -35,6 +36,9 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
 
   List<ColorModel> _colors = [];
   List<ColorModel> get colors => _colors;
+
+  List<LandingBannerModel> _landingBanners = [];
+  List<LandingBannerModel> get landingBanners => _landingBanners;
 
   final List<Map<String, dynamic>> bottomScreens = [
     {
@@ -147,6 +151,25 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
       }
     } catch (e) {
       emit(GetColorsSomeThingWentWrongState());
+    }
+  }
+
+  Future<void> getLandingBanners() async {
+    emit(GetLandingBannersLoadingState());
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/core/landing_banners/'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        for (var i in data['data']) {
+          _landingBanners.add(LandingBannerModel.fromJson(i));
+        }
+        emit(GetLandingBannersSuccessState());
+      } else {
+        emit(GetLandingBannersErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(GetLandingBannersSomeThingWentWrongState());
     }
   }
 }

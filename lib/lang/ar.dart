@@ -268,4 +268,5 @@ final Map<String, String> arData = {
   AppLangAssets.privacyAndSafety: 'الامان والخصوصيه',
   AppLangAssets.weRecommendMeeting: 'الافضل انك تقابل المشتريين في مكان عام',
   AppLangAssets.neverShareFinanceInfo: 'متشاركش ابدا بياناتك الماديه او الشخصيه',
+  AppLangAssets.limitedTime: 'لفتره محدوده',
 };

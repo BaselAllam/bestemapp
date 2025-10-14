@@ -268,4 +268,5 @@ class AppLangAssets {
   static String privacyAndSafety = 'privacyAndSafety';
   static String weRecommendMeeting = 'weRecommendMeeting';
   static String neverShareFinanceInfo = 'neverShareFinanceInfo';
+  static String limitedTime = 'limitedTime';
 }

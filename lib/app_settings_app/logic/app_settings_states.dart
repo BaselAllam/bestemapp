@@ -48,3 +48,16 @@ class GetColorsErrorState extends AppSettingsStates {
 }
 
 class GetColorsSomeThingWentWrongState extends AppSettingsStates {}
+
+
+class GetLandingBannersLoadingState extends AppSettingsStates {}
+
+class GetLandingBannersSuccessState extends AppSettingsStates {}
+
+class GetLandingBannersErrorState extends AppSettingsStates {
+
+  String errorMsg;
+  GetLandingBannersErrorState(this.errorMsg);
+}
+
+class GetLandingBannersSomeThingWentWrongState extends AppSettingsStates {}

@@ -268,4 +268,5 @@ final Map<String, String> enData = {
   AppLangAssets.privacyAndSafety: 'Privacy & Safety',
   AppLangAssets.weRecommendMeeting: 'We recommend meeting in public places for viewings',
   AppLangAssets.neverShareFinanceInfo: 'Never share personal financial information',
+  AppLangAssets.limitedTime: 'Limited Time',
 };

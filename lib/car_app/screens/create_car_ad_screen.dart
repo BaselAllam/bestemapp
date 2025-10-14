@@ -6,6 +6,7 @@ import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
+import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,6 +65,7 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   @override
   void initState() {
     super.initState();
+    _phoneController.text = BlocProvider.of<UserCubit>(context).userModel!.phone;
     _descriptionController.addListener(() {
       setState(() {});
     });
