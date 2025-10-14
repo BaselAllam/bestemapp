@@ -260,4 +260,5 @@ final Map<String, String> arData = {
   AppLangAssets.yesterday: 'امبارح',
   AppLangAssets.noNotification: 'مفيش اشعارات',
   AppLangAssets.noNotificationSubTitle: 'إنت كده خلصت كل حاجة! هنبعتلك إشعار أول ما في جديد يوصل.',
+  AppLangAssets.contactDetails: 'بيانات التواصل',
 };

@@ -260,4 +260,5 @@ final Map<String, String> enData = {
   AppLangAssets.yesterday: 'yesterday',
   AppLangAssets.noNotification: 'No Notification',
   AppLangAssets.noNotificationSubTitle: 'You\'re all caught up!\nWe\'ll notify you when something new arrives',
+  AppLangAssets.contactDetails: 'Contact Details',
 };

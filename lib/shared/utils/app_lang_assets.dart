@@ -260,4 +260,5 @@ class AppLangAssets {
   static String yesterday = 'yesterday';
   static String noNotification = 'noNotification';
   static String noNotificationSubTitle = 'noNotificationSubTitle';
+  static String contactDetails = 'contactDetails';
 }
