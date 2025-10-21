@@ -301,4 +301,22 @@ class CarCubit extends Cubit<CarStates> {
       emit(CreateCarAdsSomeThingWentWrongState());
     }
   }
+
+  Future<void> reportCarAd({required CarAdModel carAd, required String reason, required String comment}) async {
+    emit(CreateCarAdReportLoadingState());
+    try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
+      Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
+      http.Response? response = await http.post(Uri.parse('${AppApi.ipAddress}/cars/car_ad_report/'), headers: headers, body: json.encode({'car_ad': carAd.id, 'reason': reason, 'comment': comment}));
+      var data = json.decode(response.body);
+      if (response.statusCode == 201) {
+        emit(CreateCarAdReportSuccessState());
+      } else {
+        emit(CreateCarAdReportErrorState(data['data']));
+      }
+    } catch (e) {
+      emit(CreateCarAdReportSomeThingWentWrongState());
+    }
+  }
 }

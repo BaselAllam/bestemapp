@@ -28,6 +28,18 @@ class GetCarMakesErrorState extends CarStates {
 
 class GetCarMakesSomeThingWentWrongState extends CarStates {}
 
+class CreateCarAdReportLoadingState extends CarStates {}
+
+class CreateCarAdReportSuccessState extends CarStates {}
+
+class CreateCarAdReportErrorState extends CarStates {
+
+  String errorMsg;
+  CreateCarAdReportErrorState(this.errorMsg);
+}
+
+class CreateCarAdReportSomeThingWentWrongState extends CarStates {}
+
 class GetCarShapesLoadingState extends CarStates {}
 
 class GetCarShapesSuccessState extends CarStates {}
