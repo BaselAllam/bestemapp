@@ -736,164 +736,166 @@ class AdStatisticsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Ad Statistics",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Ad Statistics",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade50,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.green.shade200),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.check_circle, size: 16, color: Colors.green.shade700),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Active',
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            
+            // Statistics Grid
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.visibility,
+                    title: 'Views',
+                    value: '2,456',
+                    color: const Color(0xFF3B82F6),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.favorite,
+                    title: 'Favorites',
+                    value: '87',
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.phone,
+                    title: 'Calls',
+                    value: '34',
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.chat,
+                    title: 'Messages',
+                    value: '52',
+                    color: Colors.orange,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 20),
+            const Divider(),
+            const SizedBox(height: 16),
+            
+            // Ad Information
+            _buildInfoRow('Posted Date', 'Oct 1, 2025'),
+            const SizedBox(height: 12),
+            _buildInfoRow('Last Updated', 'Oct 12, 2025'),
+            const SizedBox(height: 12),
+            _buildInfoRow('Ad ID', '#AD-2025-10234'),
+            const SizedBox(height: 12),
+            _buildInfoRow('Category', 'SUV'),
+            
+            const SizedBox(height: 20),
+            const Divider(),
+            const SizedBox(height: 16),
+            
+            // Performance Metrics
+            const Text(
+              'Performance',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.green.shade200),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.check_circle, size: 16, color: Colors.green.shade700),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Active',
-                      style: TextStyle(
-                        color: Colors.green.shade700,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
+            ),
+            const SizedBox(height: 16),
+            
+            _buildProgressMetric('View Rate', 0.78, '78%'),
+            const SizedBox(height: 12),
+            _buildProgressMetric('Engagement Rate', 0.42, '42%'),
+            const SizedBox(height: 12),
+            _buildProgressMetric('Response Rate', 0.65, '65%'),
+            
+            const SizedBox(height: 24),
+            
+            // Admin Actions
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.edit),
+                    label: const Text('Edit Ad'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      side: BorderSide(color: Colors.grey.shade400),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                  ],
+                    onPressed: () {},
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          
-          // Statistics Grid
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.visibility,
-                  title: 'Views',
-                  value: '2,456',
-                  color: const Color(0xFF3B82F6),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.delete_outline, color: Colors.red),
+                    label: const Text(
+                      'Delete',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {},
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.favorite,
-                  title: 'Favorites',
-                  value: '87',
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.phone,
-                  title: 'Calls',
-                  value: '34',
-                  color: Colors.green,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.chat,
-                  title: 'Messages',
-                  value: '52',
-                  color: Colors.orange,
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: 20),
-          const Divider(),
-          const SizedBox(height: 16),
-          
-          // Ad Information
-          _buildInfoRow('Posted Date', 'Oct 1, 2025'),
-          const SizedBox(height: 12),
-          _buildInfoRow('Last Updated', 'Oct 12, 2025'),
-          const SizedBox(height: 12),
-          _buildInfoRow('Ad ID', '#AD-2025-10234'),
-          const SizedBox(height: 12),
-          _buildInfoRow('Category', 'SUV'),
-          
-          const SizedBox(height: 20),
-          const Divider(),
-          const SizedBox(height: 16),
-          
-          // Performance Metrics
-          const Text(
-            'Performance',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              ],
             ),
-          ),
-          const SizedBox(height: 16),
-          
-          _buildProgressMetric('View Rate', 0.78, '78%'),
-          const SizedBox(height: 12),
-          _buildProgressMetric('Engagement Rate', 0.42, '42%'),
-          const SizedBox(height: 12),
-          _buildProgressMetric('Response Rate', 0.65, '65%'),
-          
-          const SizedBox(height: 24),
-          
-          // Admin Actions
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Edit Ad'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    side: BorderSide(color: Colors.grey.shade400),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
-                  label: const Text(
-                    'Delete',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    side: const BorderSide(color: Colors.red),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
