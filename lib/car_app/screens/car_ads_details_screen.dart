@@ -3,8 +3,10 @@ import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/widgets/report_dialog.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
+import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CarDetailScreen extends StatefulWidget {
@@ -283,14 +285,19 @@ class _CarDetailScreenState extends State<CarDetailScreen>
   }
 
   Widget _buildIconButton(IconData icon) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(12),
+    return InkWell(
+      onTap: () {
+        Share.share('${AppApi.ipAddress}/car/${widget.carAdModel.id}');
+      },
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: Colors.black, size: 22),
       ),
-      child: Icon(icon, color: Colors.black, size: 22),
     );
   }
 
@@ -326,7 +333,6 @@ class _CarDetailScreenState extends State<CarDetailScreen>
 
   Widget _buildDescriptionTab() {
     return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(24),
       child: Container(
         padding: const EdgeInsets.all(24),
