@@ -1,4 +1,5 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
+import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -10,6 +11,7 @@ import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
 import 'package:bestemapp/car_app/widgets/sell_btn.dart';
+import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,11 +26,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  int _selectedTab = 0;
+  int _selectedTabIndex = 0;
+  String _selectedTab = 'All';
   int _currentCarouselIndex = 0;
   final PageController _carouselController = PageController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  CityModel? _selectedCity;
+  AreaModel? _selectedArea;
+  CarMakeModel? _selectedBrand;
+  CarMakeModelModel? _selectedModel;
 
   @override
   void initState() {
@@ -322,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: Stack(
           children: [
             Container(
-              height: 460,
+              height: 490,
             ),
             Positioned(
               bottom: 0,
@@ -367,17 +374,173 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ],
                     ),
                     const SizedBox(height: 20),
-                    _buildDropdown('Any Makes', Icons.directions_car),
+                    DropdownButtonFormField<CarMakeModel>(
+                      dropdownColor: AppColors.whiteColor,
+                      value: _selectedBrand,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                        prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
+                        hintText: selectedLang[AppLangAssets.selectBrand]!,
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                        ),
+                      ),
+                      items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
+                        return DropdownMenuItem(value: item, child: Row(
+                          children: [
+                            Image.network(item.makeLogo, height: 20, width: 20),
+                            SizedBox(width: 10),
+                            Text(item.makeName),
+                          ],
+                        ));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedBrand = value;
+                          _selectedModel = null;
+                        });
+                      },
+                    ),
                     const SizedBox(height: 12),
-                    _buildDropdown('Any Models', Icons.car_rental),
+                    if (_selectedBrand != null)
+                    DropdownButtonFormField<CarMakeModelModel>(
+                      dropdownColor: AppColors.whiteColor,
+                      value: _selectedModel,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                        prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
+                        hintText: selectedLang[AppLangAssets.selectBrand]!,
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                        ),
+                      ),
+                      items: _selectedBrand!.models.map((item) {
+                        return DropdownMenuItem(value: item, child: Text(item.modelName));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedModel = value;
+                        });
+                      },
+                    ),
                     const SizedBox(height: 12),
-                    _buildDropdown('Prices: All Prices', Icons.attach_money),
+                    DropdownButtonFormField<CityModel>(
+                      dropdownColor: AppColors.whiteColor,
+                      value: _selectedCity,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                        prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
+                        hintText: selectedLang[AppLangAssets.selectCity]!,
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                        ),
+                      ),
+                      items: BlocProvider.of<AppSettingsCubit>(context).countries[0].cities.map((item) {
+                        return DropdownMenuItem(value: item, child: Text(item.cityName));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCity = value;
+                          _selectedArea = null;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    if (_selectedCity != null)
+                    DropdownButtonFormField<AreaModel>(
+                      dropdownColor: AppColors.whiteColor,
+                      value: _selectedArea,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                        prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
+                        hintText: selectedLang[AppLangAssets.selectCity]!,
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                        ),
+                      ),
+                      items: _selectedCity!.areas.map((item) {
+                        return DropdownMenuItem(value: item, child: Text(item.areaName));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedArea = value;
+                        });
+                      },
+                    ),
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       height: 56,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_selectedArea == null) {
+                            Toaster.show(context, message: selectedLang[AppLangAssets.selectAreaFirst]!, type: ToasterType.error, position: ToasterPosition.top);
+                            return;
+                          }
+                          String _params = '';
+                          if (_selectedArea != null) {
+                            _params = '?ad_area_id=${_selectedArea!.id}';
+                          }
+                          if (_selectedBrand != null) {
+                            _params = '$_params&?car_make_id=${_selectedBrand!.id}';
+                          }
+                          if (_selectedModel != null) {
+                            _params = '$_params&?car_model_id=${_selectedModel!.id}';
+                          }
+                          if (_selectedTab != 'All') {
+                            _params = '$_params&?car_condition=${_selectedTab.toLowerCase()}';
+                          }
+                          BlocProvider.of<CarCubit>(context).searchCarAds(_params);
+                          Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(screenTitle: selectedLang[AppLangAssets.searchResult]!)));
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3B82F6),
                           shape: RoundedRectangleBorder(
@@ -687,11 +850,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 }
 
   Widget _buildTab(String label, int index) {
-    final isSelected = _selectedTab == index;
+    final isSelected = _selectedTabIndex == index;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _selectedTab = index;
+          _selectedTabIndex = index;
+          _selectedTab = label;
         });
       },
       child: Column(

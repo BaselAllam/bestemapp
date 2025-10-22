@@ -191,11 +191,11 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
-  Future<void> searchCarAds() async {
+  Future<void> searchCarAds(String searchParams) async {
     emit(SearchCarAdsLoadingState());
     try {
       Map<String, String> headers = AppApi.headerData;
-      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/'), headers: headers);
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/$searchParams'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         for (var i in data['data']) {

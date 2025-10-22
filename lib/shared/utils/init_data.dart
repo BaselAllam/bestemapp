@@ -7,13 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> initData(BuildContext context) async {
   await BlocProvider.of<AppSettingsCubit>(context).checkLang();
   await BlocProvider.of<AppSettingsCubit>(context).getLandingBanners();
-  BlocProvider.of<AppSettingsCubit>(context).getFaq();
-  BlocProvider.of<AppSettingsCubit>(context).getColors();
-  BlocProvider.of<AppSettingsCubit>(context).getCountries();
-  BlocProvider.of<CarCubit>(context).getCarMakes();
-  BlocProvider.of<CarCubit>(context).getCarShapes();
-  BlocProvider.of<CarCubit>(context).getCarSpecs();
-  BlocProvider.of<CarCubit>(context).getCarsLanding();
+  await BlocProvider.of<AppSettingsCubit>(context).getFaq();
+  await BlocProvider.of<AppSettingsCubit>(context).getColors();
+  await BlocProvider.of<AppSettingsCubit>(context).getCountries();
+  await BlocProvider.of<CarCubit>(context).getCarMakes();
+  await BlocProvider.of<CarCubit>(context).getCarShapes();
+  await BlocProvider.of<CarCubit>(context).getCarSpecs();
+  await BlocProvider.of<CarCubit>(context).getCarsLanding();
 }
 
 Future<void> initAuthData(BuildContext context) async {

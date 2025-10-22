@@ -286,4 +286,6 @@ class AppLangAssets {
   static String sellerInfo = 'sellerInfo';
   static String seller = 'seller';
   static String callSeller = 'callSeller';
+  static String searchResult = 'searchResult';
+  static String selectAreaFirst = 'selectAreaFirst';
 }
