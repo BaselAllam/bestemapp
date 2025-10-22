@@ -3,6 +3,7 @@ import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
+import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +202,51 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                         ),
                       ),
                     ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.grey[300]!, width: 1),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Image.network(
+                          '${AppApi.imgIp}/${widget.carAdModel.carMake['make_logo']}',
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(Icons.directions_car, size: 20, color: Colors.grey[400]);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.carAdModel.carMake['make_name']!,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            Text(
+                              widget.carAdModel.carModel.modelName,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]
                   ),
                   const SizedBox(height: 8),
                   Text(

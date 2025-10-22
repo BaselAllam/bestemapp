@@ -539,7 +539,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             _params = '$_params&?car_condition=${_selectedTab.toLowerCase()}';
                           }
                           BlocProvider.of<CarCubit>(context).searchCarAds(_params);
-                          Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(screenTitle: selectedLang[AppLangAssets.searchResult]!)));
+                          Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
+                            screenTitle: selectedLang[AppLangAssets.searchResult]!,
+                            ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,
+                            ),
+                          ));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3B82F6),
@@ -676,6 +680,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               CupertinoPageRoute(
                 builder: (_) => SearchResultsScreen(
                   screenTitle: selectedLang[AppLangAssets.popular]!,
+                  ads: BlocProvider.of<CarCubit>(context).landingCarAdsResult['popular']!,
                 ),
               ),
             );
@@ -699,6 +704,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               CupertinoPageRoute(
                 builder: (_) => SearchResultsScreen(
                   screenTitle: selectedLang[AppLangAssets.recentlyAdded]!,
+                  ads: BlocProvider.of<CarCubit>(context).landingCarAdsResult['recently_added']!,
                 ),
               ),
             );
@@ -883,37 +889,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildDropdown(String label, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.grey[700], size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label,
-              style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
-        ],
-      ),
-    );
-  }
-
   Widget buildItemsSection(String sectionTitle) {
     return Container(
-      height: 470.0,
+      height: 500.0,
       margin: const EdgeInsets.only(left: 20),
       child: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {

@@ -1,12 +1,20 @@
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_model.dart';
+import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/car_app/widgets/filter_widget.dart';
 import 'package:bestemapp/car_app/widgets/sort_widget.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
+import 'package:bestemapp/shared/shared_widgets/no_result_found.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchResultsScreen extends StatefulWidget {
   final String screenTitle;
-  const SearchResultsScreen({super.key, required this.screenTitle});
+  List<CarAdModel> ads;
+  SearchResultsScreen({required this.ads, required this.screenTitle});
 
   @override
   State<SearchResultsScreen> createState() => _SearchResultsScreenState();
@@ -38,99 +46,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   }
 
   String _sortBy = 'Relevant';
-
-  final List<Map<String, dynamic>> _cars = [
-    {
-      'id': '1',
-      'title': '2023 Toyota Camry SE',
-      'price': 28500,
-      'year': 2023,
-      'mileage': 12500,
-      'location': 'Los Angeles, CA',
-      'transmission': 'Automatic',
-      'fuelType': 'Hybrid',
-      'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
-      'condition': 'Like New',
-      'seller': 'Premium Dealer',
-      'isFeatured': true,
-      'isVerified': true,
-    },
-    {
-      'id': '2',
-      'title': '2022 Honda Accord Sport',
-      'price': 26900,
-      'year': 2022,
-      'mileage': 18200,
-      'location': 'San Diego, CA',
-      'transmission': 'Automatic',
-      'fuelType': 'Gasoline',
-      'image': 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800',
-      'condition': 'Excellent',
-      'seller': 'Private Seller',
-      'isFeatured': false,
-      'isVerified': true,
-    },
-    {
-      'id': '3',
-      'title': '2021 Tesla Model 3 Long Range',
-      'price': 42000,
-      'year': 2021,
-      'mileage': 22000,
-      'location': 'San Francisco, CA',
-      'transmission': 'Automatic',
-      'fuelType': 'Electric',
-      'image': 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800',
-      'condition': 'Excellent',
-      'seller': 'Certified Dealer',
-      'isFeatured': true,
-      'isVerified': true,
-    },
-    {
-      'id': '4',
-      'title': '2023 BMW 3 Series 330i',
-      'price': 45500,
-      'year': 2023,
-      'mileage': 8500,
-      'location': 'Sacramento, CA',
-      'transmission': 'Automatic',
-      'fuelType': 'Gasoline',
-      'image': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800',
-      'condition': 'Like New',
-      'seller': 'Premium Dealer',
-      'isFeatured': false,
-      'isVerified': true,
-    },
-    {
-      'id': '5',
-      'title': '2022 Ford Mustang GT',
-      'price': 38900,
-      'year': 2022,
-      'mileage': 15000,
-      'location': 'Fresno, CA',
-      'transmission': 'Manual',
-      'fuelType': 'Gasoline',
-      'image': 'https://images.unsplash.com/photo-1584345604476-8ec5f5b8c4b0?w=800',
-      'condition': 'Excellent',
-      'seller': 'Private Seller',
-      'isFeatured': false,
-      'isVerified': false,
-    },
-    {
-      'id': '6',
-      'title': '2021 Audi A4 Premium Plus',
-      'price': 37200,
-      'year': 2021,
-      'mileage': 24000,
-      'location': 'Oakland, CA',
-      'transmission': 'Automatic',
-      'fuelType': 'Gasoline',
-      'image': 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
-      'condition': 'Good',
-      'seller': 'Certified Dealer',
-      'isFeatured': false,
-      'isVerified': true,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -164,13 +79,25 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
             const Expanded(
               child: Center(child: CircularProgressIndicator()),
             )
-          else if (_cars.isEmpty)
+          else if (widget.ads.isEmpty)
             _buildEmptyState()
           else
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _onRefresh,
-                child: _buildListView()
+                child: BlocBuilder<CarCubit, CarStates>(
+                  builder: (context, state) {
+                    if (state is SearchCarAdsLoadingState) {
+                      return Center(child: CustomLoadingSpinner());
+                    } else if (state is SearchCarAdsErrorState) {
+                      return Center(child: CustomErrorWidget());
+                    } else if (BlocProvider.of<CarCubit>(context).searchCarAdsResult.isEmpty) {
+                      return Center(child: NoResultFoundWidget());
+                    } else {
+                      return _buildListView();
+                    }
+                  }
+                )
               ),
             ),
         ],
@@ -199,7 +126,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 Icon(Icons.search_rounded, size: 18, color: Colors.grey[600]),
                 const SizedBox(width: 8),
                 Text(
-                  '${_cars.length} ${_cars.length == 1 ? 'car' : 'cars'} found',
+                  '${widget.ads.length} ${widget.ads.length == 1 ? 'car' : 'cars'} found',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -587,11 +514,11 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   Widget _buildListView() {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: _cars.length,
+      itemCount: widget.ads.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Container(), // CarAdWidget(car: _cars[index]),
+          child: CarAdWidget(carAdModel: widget.ads[index]),
         );
       },
     );
