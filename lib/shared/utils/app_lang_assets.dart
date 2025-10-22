@@ -272,4 +272,10 @@ class AppLangAssets {
   static String neverShareFinanceInfo = 'neverShareFinanceInfo';
   static String limitedTime = 'limitedTime';
   static String isNegotiable = 'isNegotiable';
+  static String reportAd = 'reportAd';
+  static String helpUsUnderstand = 'helpUsUnderstand';
+  static String reason = 'reason';
+  static String additionalDetails = 'additionalDetails';
+  static String provideMoreInfo = 'provideMoreInfo';
+  static String submitReport = 'submitReport';
 }

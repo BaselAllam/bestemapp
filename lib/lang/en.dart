@@ -271,5 +271,11 @@ final Map<String, String> enData = {
   AppLangAssets.limitedTime: 'Limited Time',
   AppLangAssets.distanceRange: 'Dstance Range',
   AppLangAssets.selectDistanceRange: 'Enter Distance Range',
-  AppLangAssets.isNegotiable: 'Is Negotiable'
+  AppLangAssets.isNegotiable: 'Is Negotiable',
+  AppLangAssets.reportAd: 'Report Ad',
+  AppLangAssets.helpUsUnderstand: 'Help us understand the problem',
+  AppLangAssets.reason: 'Reason',
+  AppLangAssets.additionalDetails: 'Additional Details (Optional)',
+  AppLangAssets.provideMoreInfo: 'Provide more information about your report...',
+  AppLangAssets.submitReport: 'Submit Report',
 };

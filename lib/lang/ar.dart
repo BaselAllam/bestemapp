@@ -272,4 +272,10 @@ final Map<String, String> arData = {
   AppLangAssets.distanceRange: 'اقصي مسافه للشحنه',
   AppLangAssets.selectDistanceRange: 'ادخل اقصي مسافه للشحنه',
   AppLangAssets.isNegotiable: 'قابل للتفاوض',
+  AppLangAssets.reportAd: 'ابلاغ عن اعلان',
+  AppLangAssets.helpUsUnderstand: 'ساعدنا في جوده المحتوي',
+  AppLangAssets.reason: 'السبب',
+  AppLangAssets.additionalDetails: 'تفاصيل اضافيه',
+  AppLangAssets.provideMoreInfo: 'قولنا اكتر عن الاعلان',
+  AppLangAssets.submitReport: 'قدم البلاغ',
 };

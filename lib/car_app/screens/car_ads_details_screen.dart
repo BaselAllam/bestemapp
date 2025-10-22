@@ -1,14 +1,16 @@
+import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/widgets/report_dialog.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CarDetailScreen extends StatefulWidget {
-  final bool isAdmin; // Pass this from your navigation
+  final bool isAdmin;
+  CarAdModel carAdModel;
   
-  const CarDetailScreen({
-    Key? key,
+  CarDetailScreen({
     this.isAdmin = false,
-  }) : super(key: key);
+    required this.carAdModel
+  });
 
   @override
   State<CarDetailScreen> createState() => _CarDetailScreenState();
@@ -65,7 +67,6 @@ class _CarDetailScreenState extends State<CarDetailScreen>
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
-          // Image Gallery Section
           SliverAppBar(
             expandedHeight: 300,
             pinned: false,
@@ -264,7 +265,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ReportAdDialog(carAdModel: widget,);
+        return ReportAdDialog(carAdModel: widget.carAdModel);
       },
     );
   }
