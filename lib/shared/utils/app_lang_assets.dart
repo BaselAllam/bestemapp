@@ -278,4 +278,12 @@ class AppLangAssets {
   static String additionalDetails = 'additionalDetails';
   static String provideMoreInfo = 'provideMoreInfo';
   static String submitReport = 'submitReport';
+  static String overview = 'overview';
+  static String specifications = 'specifications';
+  static String keyHighlights = 'keyHighlights';
+  static String shape = 'shape';
+  static String included = 'included';
+  static String sellerInfo = 'sellerInfo';
+  static String seller = 'seller';
+  static String callSeller = 'callSeller';
 }

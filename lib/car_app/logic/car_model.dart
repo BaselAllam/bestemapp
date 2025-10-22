@@ -47,11 +47,12 @@ class CarAdModel {
   List<Map<String, dynamic>> specs;
   int viewsCount;
   SellerModel seller;
+  String contactPhone;
 
   CarAdModel({required this.id, required this.isFav, required this.adStatus, required this.submittedAt, required this.carCondition, required this.adTitle, required this.adDescription,
   required this.carModel, required this.carYear, required this.carColor, required this.price, required this.isNegotiable, required this.adArea, required this.fuelType, required this.transmissionType,
   required this.engineCapacity, required this.kilometers, required this.distanceRange, required this.carShape, required this.adVideo, required this.adImgs, required this.specs, required this.viewsCount,
-  required this.seller
+  required this.seller, required this.contactPhone
   });
 
   factory CarAdModel.fromJson(Map<String, dynamic> json) {
@@ -75,11 +76,12 @@ class CarAdModel {
       kilometers: json['kilometers'] ?? 0,
       distanceRange: json['distance_range'] ?? 0,
       carShape: json['car_shape'] != null ? CarShapeModel.fromJson(json['car_shape']) : CarShapeModel(id: '', shapeName: '', shapeIcon: ''),
-      seller: json['user'] != null ? SellerModel.fromJson(json['user']) : SellerModel(profilePicture: '', firstName: '', lastName: ''),
+      seller: json['user'] != null ? SellerModel.fromJson(json['user']) : SellerModel(profilePicture: '', firstName: '', lastName: '', phone: ''),
       adVideo: json['ad_video'] ?? '',
       adImgs: (json['imgs'] as List?)?.map((img) => CarAdImg.fromJson(img)).toList() ?? [],
       specs: (json['specs_value'] as List?)?.map((spec) => Map<String, dynamic>.from(spec)).toList() ?? [],
-      viewsCount: json['views_count']
+      viewsCount: json['views_count'],
+      contactPhone: json['contact_phone'] ?? ''
     );
   }
 }

@@ -278,4 +278,12 @@ final Map<String, String> arData = {
   AppLangAssets.additionalDetails: 'تفاصيل اضافيه',
   AppLangAssets.provideMoreInfo: 'قولنا اكتر عن الاعلان',
   AppLangAssets.submitReport: 'قدم البلاغ',
+  AppLangAssets.overview: 'تفاصيل عامه',
+  AppLangAssets.specifications: 'التفاصيل',
+  AppLangAssets.keyHighlights: 'اهم التفاصيل:',
+  AppLangAssets.shape: 'هيكل السياره',
+  AppLangAssets.included: 'موجود',
+  AppLangAssets.sellerInfo: "بيانات البائع",
+  AppLangAssets.seller: 'البائع',
+  AppLangAssets.callSeller: 'تواصل مع البائع',
 };
