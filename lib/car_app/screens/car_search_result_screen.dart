@@ -566,7 +566,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               ),
               const SizedBox(height: 32),
               ElevatedButton.icon(
-                onPressed: _clearAllFilters,
+                onPressed: () {
+                  BlocProvider.of<CarCubit>(context).clearSearchCarParams();
+                },
                 icon: const Icon(Icons.refresh_rounded, size: 20),
                 label: const Text('Clear All Filters'),
                 style: ElevatedButton.styleFrom(

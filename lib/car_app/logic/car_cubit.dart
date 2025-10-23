@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+enum SearchCarParamsKeys {ad_area_id, ad_city_id, car_make_id, car_model_id, car_condition, fuel_type, transmission_type, min_price, max_price}
 
 class CarCubit extends Cubit<CarStates> {
 
@@ -191,12 +193,47 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
-  Future<void> searchCarAds(String searchParams) async {
+  Map<String, String> _searchCarParams = {
+    SearchCarParamsKeys.ad_area_id.name: '',
+    SearchCarParamsKeys.ad_city_id.name: '',
+    SearchCarParamsKeys.car_condition.name: '',
+    SearchCarParamsKeys.car_make_id.name: '',
+    SearchCarParamsKeys.car_model_id.name: '',
+    SearchCarParamsKeys.fuel_type.name: '',
+    SearchCarParamsKeys.transmission_type.name: '',
+    SearchCarParamsKeys.min_price.name: '',
+    SearchCarParamsKeys.max_price.name: '',
+  };
+
+  Map<String, String> get searchCarParams => _searchCarParams;
+
+  void setSearchCarParams(SearchCarParamsKeys paramKey, String paramValue) {
+    _searchCarParams[paramKey.name] = paramValue;
+    _searchCarParams.removeWhere((key, value) => value.isEmpty);
+    emit(SetSearchCarParamState());
+  }
+
+  void clearSearchCarParams() {
+    _searchCarParams.clear();
+    log(searchCarParams.toString());
+    emit(SetSearchCarParamState());
+  }
+  
+  String _prepareSearchCarParam() {
+    String searchParam = '?';
+    _searchCarParams.forEach((k, v) {
+      searchParam = '$searchParam${searchParam.length < 2 ? '' : '&'}$k=$v';
+    });
+    return searchParam;
+  }
+
+  Future<void> searchCarAds() async {
     emit(SearchCarAdsLoadingState());
     _searchCarAdsResult.clear();
     try {
       Map<String, String> headers = AppApi.headerData;
-      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/$searchParams'), headers: headers);
+      log(_prepareSearchCarParam());
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/${_prepareSearchCarParam()}'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         for (var i in data['data']) {

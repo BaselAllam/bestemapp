@@ -287,5 +287,5 @@ final Map<String, String> arData = {
   AppLangAssets.seller: 'البائع',
   AppLangAssets.callSeller: 'تواصل مع البائع',
   AppLangAssets.searchResult: 'نتائج البحث',
-  AppLangAssets.selectAreaFirst: 'لنتائج افضل اختر المدينه والمنطقه',
+  AppLangAssets.selectAreaFirst: 'لنتائج افضل اختر المدينه او المنطقه',
 };

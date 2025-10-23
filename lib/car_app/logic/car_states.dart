@@ -100,6 +100,8 @@ class SearchCarAdsErrorState extends CarStates {
 
 class SearchCarAdsSomeThingWentWrongState extends CarStates {}
 
+class SetSearchCarParamState extends CarStates {}
+
 class LandingCarAdsLoadingState extends CarStates {}
 
 class LandingCarAdsSuccessState extends CarStates {}

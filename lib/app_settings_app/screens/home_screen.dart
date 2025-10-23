@@ -411,6 +411,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           _selectedBrand = value;
                           _selectedModel = null;
                         });
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.car_make_id, _selectedBrand!.id);
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.car_model_id, '');
                       },
                     ),
                     const SizedBox(height: 12),
@@ -445,6 +447,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         setState(() {
                           _selectedModel = value;
                         });
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.car_make_id, '');
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.car_model_id, _selectedModel!.id);
                       },
                     ),
                     const SizedBox(height: 12),
@@ -479,6 +483,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           _selectedCity = value;
                           _selectedArea = null;
                         });
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.ad_city_id, _selectedCity!.id);
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.ad_area_id, '');
                       },
                     ),
                     const SizedBox(height: 12),
@@ -513,6 +519,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         setState(() {
                           _selectedArea = value;
                         });
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.ad_city_id, '');
+                        BlocProvider.of<CarCubit>(context)..setSearchCarParams(SearchCarParamsKeys.ad_area_id, _selectedArea!.id);
                       },
                     ),
                     const SizedBox(height: 20),
@@ -521,24 +529,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       height: 56,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_selectedArea == null) {
+                          if (_selectedCity == null) {
                             Toaster.show(context, message: selectedLang[AppLangAssets.selectAreaFirst]!, type: ToasterType.error, position: ToasterPosition.top);
                             return;
                           }
-                          String _params = '';
-                          if (_selectedArea != null) {
-                            _params = '?ad_area_id=${_selectedArea!.id}';
-                          }
-                          if (_selectedBrand != null) {
-                            _params = '$_params&?car_make_id=${_selectedBrand!.id}';
-                          }
-                          if (_selectedModel != null) {
-                            _params = '$_params&?car_model_id=${_selectedModel!.id}';
-                          }
-                          if (_selectedTab != 'All') {
-                            _params = '$_params&?car_condition=${_selectedTab.toLowerCase()}';
-                          }
-                          BlocProvider.of<CarCubit>(context).searchCarAds(_params);
+                          BlocProvider.of<CarCubit>(context).searchCarAds();
                           Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
                             screenTitle: selectedLang[AppLangAssets.searchResult]!,
                             ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,

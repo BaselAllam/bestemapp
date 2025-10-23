@@ -287,5 +287,5 @@ final Map<String, String> enData = {
   AppLangAssets.seller: 'Seller',
   AppLangAssets.callSeller: 'Call Seller',
   AppLangAssets.searchResult: 'Search Result',
-  AppLangAssets.selectAreaFirst: 'Select City & Area First',
+  AppLangAssets.selectAreaFirst: 'Select City or Area First',
 };
