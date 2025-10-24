@@ -37,158 +37,157 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 const SizedBox(height: 24),
                 _buildSection(
                   icon: Icons.handshake,
-                  title: '1. Acceptance of Terms',
+                  title: selectedLang[AppLangAssets.acceptanceOfTerms]!,
                   content: [
                     _buildParagraph(
-                      'By accessing and using this car marketplace application, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use this service.',
+                      selectedLang[AppLangAssets.acceptanceOfTermsBody]!,
                     ),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.person_outline,
-                  title: '2. User Responsibilities',
+                  title: selectedLang[AppLangAssets.userResponsibility]!,
                   content: [
                     _buildSubSection(
-                      'Account Security',
-                      'You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.',
+                      selectedLang[AppLangAssets.userResponsibilityBody1]!,
+                      selectedLang[AppLangAssets.userResponsibilityBody2]!,
                     ),
                     _buildSubSection(
-                      'Accurate Information',
-                      'Users must provide truthful and accurate information when creating accounts or listing vehicles. Any false information may result in account suspension.',
+                      selectedLang[AppLangAssets.userResponsibilityBody3]!,
+                      selectedLang[AppLangAssets.userResponsibilityBody4]!,
                     ),
                     _buildSubSection(
-                      'Legal Compliance',
-                      'You agree to comply with all applicable local, state, and federal laws when using our platform.',
+                      selectedLang[AppLangAssets.userResponsibilityBody5]!,
+                      selectedLang[AppLangAssets.userResponsibilityBody6]!,
                     ),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.directions_car,
-                  title: '3. Vehicle Listings',
+                  title: selectedLang[AppLangAssets.vehicleListing]!,
                   content: [
-                    _buildBulletPoint('All vehicle information must be accurate and truthful'),
-                    _buildBulletPoint('Photos must represent the actual condition of the vehicle'),
-                    _buildBulletPoint('Mileage, accident history, and defects must be disclosed'),
-                    _buildBulletPoint('Misleading or fraudulent listings are strictly prohibited'),
-                    _buildBulletPoint('Sellers must have legal ownership or authorization to sell'),
-                    _buildBulletPoint('Listings violating these terms may be removed without notice'),
+                    _buildBulletPoint(selectedLang[AppLangAssets.vehicleListingBody1]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.vehicleListingBody2]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.vehicleListingBody3]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.vehicleListingBody4]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.vehicleListingBody5]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.vehicleListingBody6]!),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.swap_horiz,
-                  title: '4. Transactions',
+                  title: selectedLang[AppLangAssets.transactions]!,
                   content: [
                     _buildParagraph(
-                      'All transactions between buyers and sellers are conducted at their own risk. Our platform facilitates connections but is not a party to the actual sale, transfer, or condition of vehicles.',
+                      selectedLang[AppLangAssets.transactionsBody]!,
                     ),
                     const SizedBox(height: 12),
                     _buildSubSection(
-                      'Buyer Responsibilities',
-                      'Buyers should inspect vehicles, verify documentation, and conduct due diligence before purchase.',
+                      selectedLang[AppLangAssets.transactionsBodyTitle1]!,
+                      selectedLang[AppLangAssets.transactionsBodySubTitle1]!,
                     ),
                     _buildSubSection(
-                      'Seller Responsibilities',
-                      'Sellers must provide clear title, accurate documentation, and honest disclosure of vehicle condition.',
+                      selectedLang[AppLangAssets.transactionsBodyTitle2]!,
+                      selectedLang[AppLangAssets.transactionsBodySubTitle2]!,
                     ),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.payments,
-                  title: '5. Payment and Fees',
+                  title: selectedLang[AppLangAssets.paymentFee]!,
                   content: [
-                    _buildBulletPoint('Service fees may apply for premium listings or featured placements'),
-                    _buildBulletPoint('All fees are clearly communicated before charges are made'),
-                    _buildBulletPoint('Payments are processed through secure, authorized gateways'),
-                    _buildBulletPoint('Refund policies are outlined in our refund terms'),
-                    _buildBulletPoint('Transaction fees between buyers and sellers are separate'),
+                    _buildBulletPoint(selectedLang[AppLangAssets.paymentFeeBody1]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.paymentFeeBody2]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.paymentFeeBody3]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.paymentFeeBody4]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.paymentFeeBody5]!),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.block,
-                  title: '6. Prohibited Activities',
+                  title: selectedLang[AppLangAssets.prohibtedActivities]!,
                   content: [
-                    _buildBulletPoint('Posting fraudulent or stolen vehicles'),
-                    _buildBulletPoint('Manipulating listings or reviews'),
-                    _buildBulletPoint('Harassing or threatening other users'),
-                    _buildBulletPoint('Using the platform for illegal purposes'),
-                    _buildBulletPoint('Creating multiple accounts to circumvent restrictions'),
-                    _buildBulletPoint('Scraping or mining data without authorization'),
-                    _buildBulletPoint('Impersonating other users or entities'),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody1]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody2]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody3]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody4]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody5]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody6]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.prohibtedActivitiesBody7]!),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.shield,
-                  title: '7. Intellectual Property',
+                  title: selectedLang[AppLangAssets.intellectualPropery]!,
                   content: [
                     _buildParagraph(
-                      'All content on the platform, including logos, designs, text, and graphics, is owned by us or our licensors. Users may not reproduce, distribute, or create derivative works without permission.',
+                      selectedLang[AppLangAssets.intellectualProperyBody]!,
                     ),
                     const SizedBox(height: 12),
                     _buildSubSection(
-                      'User Content',
-                      'By posting content, you grant us a non-exclusive license to use, display, and distribute your content on our platform.',
+                      selectedLang[AppLangAssets.intellectualProperyBody1]!,
+                      selectedLang[AppLangAssets.intellectualProperyBody2]!,
                     ),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.gavel,
-                  title: '8. Liability Limitations',
+                  title: selectedLang[AppLangAssets.liabilityLimitations]!,
                   content: [
                     _buildParagraph(
-                      'The platform is provided "as is" without warranties of any kind. We are not liable for:',
+                      selectedLang[AppLangAssets.liabilityLimitationsBody]!,
                     ),
                     const SizedBox(height: 8),
-                    _buildBulletPoint('Disputes between buyers and sellers'),
-                    _buildBulletPoint('Vehicle defects, accidents, or mechanical issues'),
-                    _buildBulletPoint('Fraudulent transactions or misrepresentations'),
-                    _buildBulletPoint('Loss of data or service interruptions'),
-                    _buildBulletPoint('Indirect, incidental, or consequential damages'),
+                    _buildBulletPoint(selectedLang[AppLangAssets.liabilityLimitationsBody1]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.liabilityLimitationsBody2]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.liabilityLimitationsBody3]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.liabilityLimitationsBody4]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.liabilityLimitationsBody5]!),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.balance,
-                  title: '9. Dispute Resolution',
+                  title: selectedLang[AppLangAssets.disputeResolution]!,
                   content: [
                     _buildSubSection(
-                      'Mediation',
-                      'Users agree to attempt resolution through mediation before pursuing legal action. We provide support for resolving conflicts but are not party to transactions.',
+                      selectedLang[AppLangAssets.disputeResolutionBody]!,
+                      selectedLang[AppLangAssets.disputeResolutionBody2]!,
                     ),
                     _buildSubSection(
-                      'Arbitration',
-                      'Any disputes that cannot be resolved through mediation will be settled through binding arbitration in accordance with applicable laws.',
+                      selectedLang[AppLangAssets.disputeResolutionBody3]!,
+                      selectedLang[AppLangAssets.disputeResolutionBody4]!,
                     ),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.cancel,
-                  title: '10. Account Termination',
+                  title: selectedLang[AppLangAssets.accountTermination]!,
                   content: [
-                    _buildBulletPoint('We reserve the right to suspend or terminate accounts violating these terms'),
-                    _buildBulletPoint('Users may close their accounts at any time through settings'),
-                    _buildBulletPoint('Upon termination, active listings will be removed'),
-                    _buildBulletPoint('Some data may be retained for legal compliance'),
+                    _buildBulletPoint(selectedLang[AppLangAssets.accountTerminationBody1]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.accountTerminationBody2]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.accountTerminationBody3]!),
+                    _buildBulletPoint(selectedLang[AppLangAssets.accountTerminationBody4]!),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.update,
-                  title: '11. Changes to Terms',
+                  title: selectedLang[AppLangAssets.changesToTerms]!,
                   content: [
                     _buildParagraph(
-                      'We may update these terms periodically. Users will be notified of significant changes via email or app notification. Continued use after changes constitutes acceptance of the revised terms.',
+                      selectedLang[AppLangAssets.changesToTermsBody]!,
                     ),
                   ],
                 ),
                 _buildSection(
                   icon: Icons.contact_support,
-                  title: '12. Contact Information',
+                  title: selectedLang[AppLangAssets.contactUsTitle]!,
                   content: [
                     _buildParagraph(
-                      'For questions or concerns about these terms, please contact us:',
+                      selectedLang[AppLangAssets.termsContactSubTitle]!,
                     ),
                     const SizedBox(height: 8),
-                    _buildContactInfo('Email', 'support@carmarketplace.com', Icons.email),
-                    _buildContactInfo('Phone', '+1 (555) 123-4567', Icons.phone),
-                    _buildContactInfo('Address', '123 Market Street, Suite 100\nSan Francisco, CA 94103', Icons.location_on),
+                    _buildContactInfo(selectedLang[AppLangAssets.email]!, 'info@bestem.app', Icons.email),
+                    _buildContactInfo(selectedLang[AppLangAssets.addressTitle]!, 'Shorouk City, Cairo, EG 11837', Icons.location_on),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -235,7 +234,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Last updated: October 12, 2025',
+            '${selectedLang[AppLangAssets.lastUpdated]} October 12, 2025',
             style: TextStyle(
               fontSize: 14,
               color: Colors.white.withOpacity(0.9),
@@ -243,7 +242,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            'Please read these terms carefully before using our car marketplace platform. By using our services, you agree to these terms and conditions.',
+            selectedLang[AppLangAssets.plzReadTerms]!,
             style: TextStyle(
               fontSize: 15,
               color: Colors.white.withOpacity(0.95),
@@ -428,8 +427,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
         children: [
           Icon(Icons.verified_user, color: Colors.blue[700], size: 32),
           const SizedBox(height: 8),
-          const Text(
-            'Safe & Transparent Marketplace',
+          Text(
+            selectedLang[AppLangAssets.termsHeaderTitle]!,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -438,7 +437,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'These terms ensure a fair and secure environment for all users buying and selling vehicles on our platform.',
+            selectedLang[AppLangAssets.termsHeaderSubTitle]!,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
