@@ -12,7 +12,7 @@ class AboutUsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('About Us', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(selectedLang[AppLangAssets.aboutUs]!, style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0,
@@ -77,8 +77,8 @@ class AboutUsScreen extends StatelessWidget {
             child: const Icon(Icons.directions_car, color: Colors.white, size: 48),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Revolutionizing Car Trading',
+          Text(
+            selectedLang[AppLangAssets.aboutHeaderTitle]!,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 26,
@@ -88,7 +88,7 @@ class AboutUsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Connecting buyers and sellers in a trusted, transparent marketplace since 2020',
+            selectedLang[AppLangAssets.aboutHeaderSubTitle]!,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
@@ -129,8 +129,8 @@ class AboutUsScreen extends StatelessWidget {
                 child: Icon(Icons.flag, color: Colors.orange[700], size: 24),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Our Mission',
+              Text(
+                selectedLang[AppLangAssets.ourMission]!,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -141,7 +141,7 @@ class AboutUsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'To create the most trusted and user-friendly platform for buying and selling cars. We believe everyone deserves a safe, transparent, and hassle-free experience when trading vehicles.',
+            selectedLang[AppLangAssets.ourMissionSubTitle]!,
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[700],
@@ -169,8 +169,8 @@ class AboutUsScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
-            'Our Impact',
+          Text(
+            selectedLang[AppLangAssets.ourImpact]!,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -234,8 +234,8 @@ class AboutUsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Our Core Values',
+          Text(
+            selectedLang[AppLangAssets.coreValuesTitle]!,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -245,26 +245,26 @@ class AboutUsScreen extends StatelessWidget {
           const SizedBox(height: 16),
           _buildValueItem(
             Icons.verified_user,
-            'Trust & Safety',
-            'We prioritize security and verification to create a safe marketplace for everyone.',
+            selectedLang[AppLangAssets.trustSafetyTitle]!,
+            selectedLang[AppLangAssets.trustSafetyBody]!,
             Colors.green,
           ),
           _buildValueItem(
             Icons.wb_sunny_outlined,
-            'Transparency',
-            'Clear information, honest communication, and no hidden fees - what you see is what you get.',
+            selectedLang[AppLangAssets.transparencyTitle]!,
+            selectedLang[AppLangAssets.transparencyBody]!,
             Colors.orange,
           ),
           _buildValueItem(
             Icons.speed,
-            'Innovation',
-            'We constantly improve our platform with cutting-edge technology and user feedback.',
+            selectedLang[AppLangAssets.innovationTitle]!,
+            selectedLang[AppLangAssets.innovationBody]!,
             Colors.blue,
           ),
           _buildValueItem(
             Icons.favorite,
-            'Customer First',
-            'Your satisfaction drives everything we do. We\'re here to support you every step of the way.',
+            selectedLang[AppLangAssets.customerFirstTitle]!,
+            selectedLang[AppLangAssets.customerFirstBody]!,
             Colors.red,
           ),
         ],
@@ -333,8 +333,8 @@ class AboutUsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Why Choose Us?',
+          Text(
+            selectedLang[AppLangAssets.whyChooseUs]!,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -342,12 +342,10 @@ class AboutUsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          _buildFeatureItem('Verified Listings', 'All vehicles are verified for authenticity'),
-          _buildFeatureItem('Secure Payments', 'Protected transactions with trusted partners'),
-          _buildFeatureItem('Easy Communication', 'Direct messaging between buyers and sellers'),
-          _buildFeatureItem('Market Insights', 'Real-time pricing and market trends'),
-          _buildFeatureItem('24/7 Support', 'Always here to help when you need us'),
-          _buildFeatureItem('Free to List', 'No upfront costs to sell your car'),
+          _buildFeatureItem(selectedLang[AppLangAssets.verified]!, selectedLang[AppLangAssets.verifiedListingsBody]!),
+          _buildFeatureItem(selectedLang[AppLangAssets.securePaymentsTitle]!, selectedLang[AppLangAssets.securePaymentsBody]!),
+          _buildFeatureItem(selectedLang[AppLangAssets.easyCommTitle]!, selectedLang[AppLangAssets.securePaymentsBody]!),
+          _buildFeatureItem(selectedLang[AppLangAssets.marketInsightsTitle]!, selectedLang[AppLangAssets.marketInsightsBody]!),
         ],
       ),
     );
@@ -412,8 +410,8 @@ class AboutUsScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
-            'Meet Our Team',
+          Text(
+            selectedLang[AppLangAssets.meetOurTeamTitle]!,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -422,7 +420,7 @@ class AboutUsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'We\'re a passionate team of automotive enthusiasts, tech innovators, and customer service experts dedicated to transforming the car buying and selling experience.',
+            selectedLang[AppLangAssets.meetOurTeamSubTitle]!,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -434,10 +432,10 @@ class AboutUsScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildTeamMember(Icons.engineering, 'Engineering'),
-              _buildTeamMember(Icons.design_services, 'Design'),
-              _buildTeamMember(Icons.support_agent, 'Support'),
-              _buildTeamMember(Icons.business, 'Business'),
+              _buildTeamMember(Icons.engineering, selectedLang[AppLangAssets.engineering]!),
+              _buildTeamMember(Icons.design_services, selectedLang[AppLangAssets.design]!),
+              _buildTeamMember(Icons.support_agent, selectedLang[AppLangAssets.support]!),
+              _buildTeamMember(Icons.business, selectedLang[AppLangAssets.business]!),
             ],
           ),
         ],
@@ -486,8 +484,8 @@ class AboutUsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Our Journey',
+          Text(
+            selectedLang[AppLangAssets.ourJourneyTitle]!,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -495,11 +493,11 @@ class AboutUsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _buildTimelineItem('2020', 'Company Founded', 'Started with a vision to simplify car trading'),
-          _buildTimelineItem('2021', 'Reached 50K Users', 'Expanded to 10 major cities'),
-          _buildTimelineItem('2023', 'Launched Mobile App', 'Made buying and selling even easier'),
-          _buildTimelineItem('2024', 'AI-Powered Features', 'Introduced smart pricing and recommendations'),
-          _buildTimelineItem('2025', '500K+ Community', 'Became a trusted marketplace nationwide'),
+          _buildTimelineItem('2020', selectedLang[AppLangAssets.timeline2020Title]!, selectedLang[AppLangAssets.timeline2020Body]!),
+          _buildTimelineItem('2021', selectedLang[AppLangAssets.timeline2021Title]!, selectedLang[AppLangAssets.timeline2021Body]!),
+          _buildTimelineItem('2023', selectedLang[AppLangAssets.timeline2023Title]!, selectedLang[AppLangAssets.timeline2023Body]!),
+          _buildTimelineItem('2024', selectedLang[AppLangAssets.timeline2024Title]!, selectedLang[AppLangAssets.timeline2024Body]!),
+          _buildTimelineItem('2025', selectedLang[AppLangAssets.timeline2025Title]!, selectedLang[AppLangAssets.timeline2025Body]!),
         ],
       ),
     );
@@ -528,13 +526,6 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              if (description != 'Became a trusted marketplace nationwide')
-                Container(
-                  width: 2,
-                  height: 40,
-                  color: Colors.blue[200],
-                  margin: const EdgeInsets.symmetric(vertical: 4),
-                ),
             ],
           ),
           const SizedBox(width: 16),
@@ -581,8 +572,8 @@ class AboutUsScreen extends StatelessWidget {
         children: [
           const Icon(Icons.mail_outline, color: Colors.white, size: 40),
           const SizedBox(height: 12),
-          const Text(
-            'Get in Touch',
+          Text(
+            selectedLang[AppLangAssets.getInTouch]!,
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -591,7 +582,7 @@ class AboutUsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Have questions or want to partner with us? We\'d love to hear from you!',
+            selectedLang[AppLangAssets.getInTouchSubTitle]!,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -607,7 +598,7 @@ class AboutUsScreen extends StatelessWidget {
                 // Navigate to contact page
               },
               icon: const Icon(Icons.email),
-              label: const Text('Contact Us'),
+              label: Text(selectedLang[AppLangAssets.contactUs]!),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.blue[700],
