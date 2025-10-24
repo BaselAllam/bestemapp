@@ -1,3 +1,5 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -8,7 +10,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('Privacy Policy', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(selectedLang[AppLangAssets.privacyPolicy]!, style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0,
@@ -27,139 +29,138 @@ class PrivacyPolicyScreen extends StatelessWidget {
           const SizedBox(height: 24),
           _buildSection(
             icon: Icons.info_outline,
-            title: '1. Information We Collect',
+            title: selectedLang[AppLangAssets.informationWeCollect]!,
             content: [
               _buildSubSection(
-                'Personal Information',
-                'When you create an account, we collect your name, email address, phone number, and location. For sellers, we may also collect payment information and identification documents.',
+                selectedLang[AppLangAssets.informationWeCollectTitle1]!,
+                selectedLang[AppLangAssets.informationWeCollectSubTitle1]!,
               ),
               _buildSubSection(
-                'Vehicle Information',
-                'When listing a car, we collect details including make, model, year, VIN, mileage, condition, and photos you upload.',
+                selectedLang[AppLangAssets.informationWeCollectTitle2]!,
+                selectedLang[AppLangAssets.informationWeCollectSubTitle2]!,
               ),
               _buildSubSection(
-                'Usage Data',
-                'We automatically collect information about your device, browsing actions, and patterns. This includes IP address, device type, operating system, and app usage statistics.',
+                selectedLang[AppLangAssets.informationWeCollectTitle3]!,
+                selectedLang[AppLangAssets.informationWeCollectSubTitle3]!,
               ),
               _buildSubSection(
-                'Location Data',
-                'With your permission, we collect location data to show nearby listings and improve search results.',
+                selectedLang[AppLangAssets.informationWeCollectTitle4]!,
+                selectedLang[AppLangAssets.informationWeCollectSubTitle4]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.business_center,
-            title: '2. How We Use Your Information',
+            title: selectedLang[AppLangAssets.howWeUseUrInfo]!,
             content: [
-              _buildBulletPoint('To facilitate buying and selling of vehicles'),
-              _buildBulletPoint('To verify user identity and prevent fraud'),
-              _buildBulletPoint('To process payments and transactions'),
-              _buildBulletPoint('To communicate about your listings and inquiries'),
-              _buildBulletPoint('To send notifications about account activity'),
-              _buildBulletPoint('To improve our services and user experience'),
-              _buildBulletPoint('To provide customer support'),
-              _buildBulletPoint('To comply with legal obligations'),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo1]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo2]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo3]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo4]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo5]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo6]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo7]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.howWeUseUrInfo8]!),
             ],
           ),
           _buildSection(
             icon: Icons.share,
-            title: '3. Information Sharing',
+            title: selectedLang[AppLangAssets.informationSharing]!,
             content: [
               _buildSubSection(
-                'With Other Users',
-                'When you list a vehicle or inquire about one, certain information (name, contact details, location) is shared with potential buyers or sellers.',
+                selectedLang[AppLangAssets.informationSharingTitle1]!,
+                selectedLang[AppLangAssets.informationSharingSubTitle1]!,
               ),
               _buildSubSection(
-                'With Service Providers',
-                'We share information with third-party service providers who help us operate our platform, including payment processors, hosting services, and analytics providers.',
+                selectedLang[AppLangAssets.informationSharingTitle2]!,
+                selectedLang[AppLangAssets.informationSharingSubTitle2]!,
               ),
               _buildSubSection(
-                'For Legal Reasons',
-                'We may disclose information when required by law, to protect our rights, prevent fraud, or ensure user safety.',
+                selectedLang[AppLangAssets.informationSharingTitle3]!,
+                selectedLang[AppLangAssets.informationSharingSubTitle3]!,
               ),
               _buildSubSection(
-                'Business Transfers',
-                'If we\'re involved in a merger, acquisition, or sale, your information may be transferred to the new entity.',
+                selectedLang[AppLangAssets.informationSharingTitle4]!,
+                selectedLang[AppLangAssets.informationSharingSubTitle4]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.security,
-            title: '4. Data Security',
+            title: selectedLang[AppLangAssets.dataSecurity]!,
             content: [
               _buildParagraph(
-                'We implement industry-standard security measures to protect your personal information, including encryption, secure servers, and access controls. However, no method of transmission over the internet is 100% secure.',
+                selectedLang[AppLangAssets.dataSecuritySubtitle]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.cookie,
-            title: '5. Cookies and Tracking',
+            title: selectedLang[AppLangAssets.cookiesAndTracking]!,
             content: [
               _buildParagraph(
-                'We use cookies and similar technologies to enhance your experience, analyze usage patterns, and deliver personalized content. You can control cookie preferences through your device settings.',
+                selectedLang[AppLangAssets.cookiesAndTrackingSubTitle]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.account_circle,
-            title: '6. Your Rights and Choices',
+            title: selectedLang[AppLangAssets.yourRightsAndChoices]!,
             content: [
-              _buildBulletPoint('Access, update, or delete your personal information'),
-              _buildBulletPoint('Opt-out of marketing communications'),
-              _buildBulletPoint('Disable location services'),
-              _buildBulletPoint('Request a copy of your data'),
-              _buildBulletPoint('Object to data processing'),
-              _buildBulletPoint('Delete your account at any time'),
+              _buildBulletPoint(selectedLang[AppLangAssets.yourRightsAndChoices1]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.yourRightsAndChoices2]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.yourRightsAndChoices3]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.yourRightsAndChoices4]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.yourRightsAndChoices5]!),
+              _buildBulletPoint(selectedLang[AppLangAssets.yourRightsAndChoices6]!),
             ],
           ),
           _buildSection(
             icon: Icons.child_care,
-            title: '7. Children\'s Privacy',
+            title: selectedLang[AppLangAssets.childrenPolicyTitle]!,
             content: [
               _buildParagraph(
-                'Our service is not intended for users under 18 years of age. We do not knowingly collect information from children. If you believe we have collected information from a child, please contact us immediately.',
+                selectedLang[AppLangAssets.childrenPolicySubTitle]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.storage,
-            title: '8. Data Retention',
+            title: selectedLang[AppLangAssets.dataRetentionTitle]!,
             content: [
               _buildParagraph(
-                'We retain your information for as long as your account is active or as needed to provide services. After account deletion, we may retain certain information for legal compliance, dispute resolution, and fraud prevention.',
+                selectedLang[AppLangAssets.dataRetentionSubTitle]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.link,
-            title: '9. Third-Party Links',
+            title: selectedLang[AppLangAssets.thirdPartyLinksTitle]!,
             content: [
               _buildParagraph(
-                'Our app may contain links to third-party websites or services. We are not responsible for their privacy practices. We encourage you to review their privacy policies.',
+                selectedLang[AppLangAssets.thirdPartyLinksSubTitle]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.update,
-            title: '10. Changes to This Policy',
+            title: selectedLang[AppLangAssets.changesToThisPolicyTitle]!,
             content: [
               _buildParagraph(
-                'We may update this Privacy Policy periodically. We will notify you of significant changes via email or app notification. Your continued use after changes constitutes acceptance of the updated policy.',
+                selectedLang[AppLangAssets.changesToThisPolicySubTitle]!,
               ),
             ],
           ),
           _buildSection(
             icon: Icons.contact_mail,
-            title: '11. Contact Us',
+            title: selectedLang[AppLangAssets.contactUsTitle]!,
             content: [
               _buildParagraph(
-                'If you have questions about this Privacy Policy or our data practices, please contact us:',
+                selectedLang[AppLangAssets.changesToThisPolicySubTitle]!,
               ),
               const SizedBox(height: 8),
-              _buildContactInfo('Email', 'privacy@carmarketplace.com', Icons.email),
-              _buildContactInfo('Phone', '+1 (555) 123-4567', Icons.phone),
-              _buildContactInfo('Address', '123 Market Street, Suite 100\nSan Francisco, CA 94103', Icons.location_on),
+              _buildContactInfo(selectedLang[AppLangAssets.email]!, 'info@bestem.app', Icons.email),
+              _buildContactInfo(selectedLang[AppLangAssets.addressTitle]!, 'Shorouk City, Cairo, EG 11837', Icons.location_on),
             ],
           ),
           const SizedBox(height: 16),
@@ -193,8 +194,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
         children: [
           const Icon(Icons.privacy_tip, color: Colors.white, size: 40),
           const SizedBox(height: 12),
-          const Text(
-            'Your Privacy Matters',
+          Text(
+            selectedLang[AppLangAssets.urPrivacyMatters]!,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -203,7 +204,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Last updated: October 10, 2025',
+            '${selectedLang[AppLangAssets.lastUpdated]} October 10, 2025',
             style: TextStyle(
               fontSize: 14,
               color: Colors.white.withOpacity(0.9),
@@ -211,7 +212,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'This Privacy Policy explains how we collect, use, share, and protect your personal information when you use our car marketplace platform.',
+            selectedLang[AppLangAssets.privacyHeaderBody]!,
             style: TextStyle(
               fontSize: 15,
               color: Colors.white.withOpacity(0.95),
