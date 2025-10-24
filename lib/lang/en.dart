@@ -444,4 +444,6 @@ final Map<String, String> enData = {
   AppLangAssets.plzReadTerms: 'Please read these terms carefully before using our car marketplace platform. By using our services, you agree to these terms and conditions.',
   AppLangAssets.termsHeaderTitle: 'Safe & Transparent Marketplace',
   AppLangAssets.termsHeaderSubTitle: 'These terms ensure a fair and secure environment for all users buying and selling vehicles on our platform.',
+  AppLangAssets.yourTrustIsImportant: 'Your trust is important to us',
+  AppLangAssets.yourTrustIsImportantSubTitle: 'We are committed to protecting your privacy and maintaining the security of your personal information.',
 };

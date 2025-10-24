@@ -152,7 +152,7 @@ class _FAQScreenState extends State<FAQScreen> {
                                       const SizedBox(width: 12),
                                       Expanded(
                                         child: Text(
-                                          faq['faq_title']!,
+                                          BlocProvider.of<AppSettingsCubit>(context).selectedLangOption == LanguageOption.ar ? faq['faq_title_ar'] : faq['faq_title']!,
                                           style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
@@ -175,7 +175,7 @@ class _FAQScreenState extends State<FAQScreen> {
                                   width: double.infinity,
                                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                                   child: Text(
-                                    faq['faq_description']!,
+                                    BlocProvider.of<AppSettingsCubit>(context).selectedLangOption == LanguageOption.ar ? faq['faq_description_ar'] : faq['faq_description']!,
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[700],

@@ -443,4 +443,6 @@ class AppLangAssets {
   static String plzReadTerms = 'plzReadTerms';
   static String termsHeaderTitle = 'termsHeaderTitle';
   static String termsHeaderSubTitle = 'termsHeaderSubTitle';
+  static String yourTrustIsImportant = 'yourTrustIsImportant';
+  static String yourTrustIsImportantSubTitle = 'yourTrustIsImportantSubTitle';
 }

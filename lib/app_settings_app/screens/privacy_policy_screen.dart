@@ -397,8 +397,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
         children: [
           Icon(Icons.verified_user, color: Colors.blue[700], size: 32),
           const SizedBox(height: 8),
-          const Text(
-            'Your trust is important to us',
+          Text(
+            selectedLang[AppLangAssets.yourTrustIsImportant]!,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -407,7 +407,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'We are committed to protecting your privacy and maintaining the security of your personal information.',
+            selectedLang[AppLangAssets.yourTrustIsImportantSubTitle]!,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
