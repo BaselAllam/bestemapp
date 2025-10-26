@@ -200,7 +200,6 @@ class CarCubit extends Cubit<CarStates> {
   void setSearchCarParams(SearchCarParamsKeys paramKey, dynamic paramValue) {
     _searchCarParams[paramKey.name] = paramValue;
     _searchCarParams.removeWhere((key, value) => value == null);
-    log(_searchCarParams.toString());
     emit(SetSearchCarParamState());
   }
 
