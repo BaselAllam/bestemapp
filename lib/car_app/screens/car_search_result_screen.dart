@@ -1,3 +1,4 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -8,6 +9,7 @@ import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/no_result_found.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -126,7 +128,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 Icon(Icons.search_rounded, size: 18, color: Colors.grey[600]),
                 const SizedBox(width: 8),
                 Text(
-                  '${widget.ads.length} ${widget.ads.length == 1 ? 'car' : 'cars'} found',
+                  '${widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -138,7 +140,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           ),
           _buildControlButton(
             icon: Icons.tune_rounded,
-            label: 'Filter',
+            label: selectedLang[AppLangAssets.filter]!,
             badge: _getActiveFilterCount(),
             onTap: () => _showFilterBottomSheet(context),
           ),
@@ -546,7 +548,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               ),
               const SizedBox(height: 24),
               Text(
-                'No cars found',
+                selectedLang[AppLangAssets.noCarsFound]!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 22,
@@ -556,7 +558,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Try adjusting your filters or search criteria\nto find what you\'re looking for',
+                selectedLang[AppLangAssets.tryAdjustFilter]!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15,
@@ -570,7 +572,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                   BlocProvider.of<CarCubit>(context).clearSearchCarParams();
                 },
                 icon: const Icon(Icons.refresh_rounded, size: 20),
-                label: const Text('Clear All Filters'),
+                label: Text(selectedLang[AppLangAssets.clearAllFilters]!),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   foregroundColor: Colors.white,
@@ -632,8 +634,8 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                       children: [
                         Icon(Icons.sort_rounded, color: Colors.grey[700]),
                         const SizedBox(width: 12),
-                        const Text(
-                          'Sort By',
+                        Text(
+                          selectedLang[AppLangAssets.sort]!,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

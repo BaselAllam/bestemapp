@@ -448,4 +448,8 @@ final Map<String, String> enData = {
   AppLangAssets.yourTrustIsImportantSubTitle: 'We are committed to protecting your privacy and maintaining the security of your personal information.',
   AppLangAssets.fetchingData: 'Fetching your data',
   AppLangAssets.takesLonger: 'This is taking longer than expected...',
+  AppLangAssets.found: 'Found',
+  AppLangAssets.noCarsFound: 'No cars found',
+  AppLangAssets.tryAdjustFilter: 'Try adjusting your filters or search criteria\nto find what you\'re looking for',
+  AppLangAssets.clearAllFilters: 'Clear All Filters',
 };
