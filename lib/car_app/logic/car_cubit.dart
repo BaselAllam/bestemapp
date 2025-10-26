@@ -193,29 +193,19 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
-  Map<String, String> _searchCarParams = {
-    SearchCarParamsKeys.ad_area_id.name: '',
-    SearchCarParamsKeys.ad_city_id.name: '',
-    SearchCarParamsKeys.car_condition.name: '',
-    SearchCarParamsKeys.car_make_id.name: '',
-    SearchCarParamsKeys.car_model_id.name: '',
-    SearchCarParamsKeys.fuel_type.name: '',
-    SearchCarParamsKeys.transmission_type.name: '',
-    SearchCarParamsKeys.min_price.name: '',
-    SearchCarParamsKeys.max_price.name: '',
-  };
+  Map<String, dynamic> _searchCarParams = {};
 
-  Map<String, String> get searchCarParams => _searchCarParams;
+  Map<String, dynamic> get searchCarParams => _searchCarParams;
 
-  void setSearchCarParams(SearchCarParamsKeys paramKey, String paramValue) {
+  void setSearchCarParams(SearchCarParamsKeys paramKey, dynamic paramValue) {
     _searchCarParams[paramKey.name] = paramValue;
-    _searchCarParams.removeWhere((key, value) => value.isEmpty);
+    _searchCarParams.removeWhere((key, value) => value == null);
+    log(_searchCarParams.toString());
     emit(SetSearchCarParamState());
   }
 
   void clearSearchCarParams() {
     _searchCarParams.clear();
-    log(searchCarParams.toString());
     emit(SetSearchCarParamState());
   }
   
