@@ -1725,7 +1725,7 @@ void _setBoolValue(String specName, bool value) {
                                     kiloMeters: int.parse(_mileageController.text),
                                     price: _priceController.text,
                                     isNegotioable: isNegotiable,
-                                    video: _video!,
+                                    video: _video ?? null,
                                     imgs: _images,
                                     distanceRange: _selectedFuelType == 'electric' || _selectedFuelType == 'hybird' ? int.parse(_maxDistanceController.text) : 0,
                                     specsValues: []
