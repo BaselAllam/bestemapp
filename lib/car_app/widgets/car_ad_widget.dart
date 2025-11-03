@@ -1,6 +1,7 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
+import 'package:bestemapp/car_app/screens/edit_car_ad_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
@@ -135,7 +136,9 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                         icon: Icon(Icons.edit),
                         color: AppColors.greyColor,
                         iconSize: 15.0,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, CupertinoPageRoute(builder: (_) => CarAdEditScreen(carAd: widget.carAdModel)));
+                        },
                       ),
                     ) : FavButton(carAdModel: widget.carAdModel)
                   ),
