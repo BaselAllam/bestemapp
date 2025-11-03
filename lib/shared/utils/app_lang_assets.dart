@@ -445,4 +445,10 @@ class AppLangAssets {
   static String termsHeaderSubTitle = 'termsHeaderSubTitle';
   static String yourTrustIsImportant = 'yourTrustIsImportant';
   static String yourTrustIsImportantSubTitle = 'yourTrustIsImportantSubTitle';
+  static String fetchingData = 'fetchingData';
+  static String takesLonger = 'takesLonger';
+  static String found = 'found';
+  static String noCarsFound = 'noCarsFound';
+  static String tryAdjustFilter = 'tryAdjustFilter';
+  static String clearAllFilters = 'clearAllFilters';
 }

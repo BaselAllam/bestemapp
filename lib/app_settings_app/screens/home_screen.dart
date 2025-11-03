@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
@@ -373,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       const SizedBox(height: 20),
                       DropdownButtonFormField<CarMakeModel>(
                         dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id],
+                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name],
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                           prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
@@ -409,10 +407,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         },
                       ),
                       const SizedBox(height: 12),
-                      if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id] != null)
+                      if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name] != null)
                       DropdownButtonFormField<CarMakeModelModel>(
                         dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id],
+                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name],
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                           prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
@@ -433,9 +431,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
                           ),
                         ),
-                        items: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id]!.models.map((item) {
-                          return DropdownMenuItem(value: item, child: Text(item.modelName));
-                        }).toList(),
+                        items: <DropdownMenuItem<CarMakeModelModel>>[
+                          for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name]!.models)
+                          DropdownMenuItem(value: item, child: Text(item.modelName))
+                        ],
                         onChanged: (value) {
                           BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, value);
                         },
@@ -443,7 +442,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       const SizedBox(height: 12),
                       DropdownButtonFormField<CityModel>(
                         dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id],
+                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name],
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                           prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
@@ -473,10 +472,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         },
                       ),
                       const SizedBox(height: 12),
-                      if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id] != null)
+                      if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] != null)
                       DropdownButtonFormField<AreaModel>(
                         dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id],
+                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name],
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                           prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
@@ -497,9 +496,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
                           ),
                         ),
-                        items: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id]!.areas.map((item) {
-                          return DropdownMenuItem(value: item, child: Text(item.areaName));
-                        }).toList(),
+                        items: <DropdownMenuItem<AreaModel>>[
+                          for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name]!.areas)
+                          DropdownMenuItem(value: item, child: Text(item.areaName))
+                        ],
                         onChanged: (value) {
                           BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, value);
                         },
@@ -510,7 +510,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         height: 56,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id] == null) {
+                            if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null) {
                               Toaster.show(context, message: selectedLang[AppLangAssets.selectAreaFirst]!, type: ToasterType.error, position: ToasterPosition.top);
                               return;
                             }
@@ -835,7 +835,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget _buildTab(String label, int index) {
     return BlocBuilder<CarCubit, CarStates>(
       builder: (context, state) {
-        log((BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition] == label.toLowerCase()).toString());
       return GestureDetector(
         onTap: () {
           if (label == 'All') {
@@ -849,16 +848,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             Text(
               label,
               style: TextStyle(
-                color: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition] == label.toLowerCase() ? const Color(0xFF3B82F6) : Colors.grey[600],
+                color: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? const Color(0xFF3B82F6) : Colors.grey[600],
                 fontSize: 16,
-                fontWeight: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition] == label.toLowerCase() ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
             const SizedBox(height: 6),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               height: 3,
-              width: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition] == label.toLowerCase() ? 40 : 0,
+              width: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? 40 : 0,
               decoration: BoxDecoration(
                 color: const Color(0xFF3B82F6),
                 borderRadius: BorderRadius.circular(2),

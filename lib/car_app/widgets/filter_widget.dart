@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CarFilterBottomSheet extends StatefulWidget {
   final Function(Map<String, dynamic>) onApplyFilters;
@@ -16,11 +17,14 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // Filter States
-  String _condition = 'all'; // all, new, used
-  RangeValues _priceRange = RangeValues(0, 100000);
-  RangeValues _yearRange = RangeValues(2000, 2025);
-  RangeValues _mileageRange = RangeValues(0, 200000);
+  String _condition = 'all';
+  
+  final TextEditingController _priceMinController = TextEditingController(text: '0');
+  final TextEditingController _priceMaxController = TextEditingController(text: '100000');
+  final TextEditingController _yearMinController = TextEditingController(text: '2000');
+  final TextEditingController _yearMaxController = TextEditingController();
+  final TextEditingController _mileageMinController = TextEditingController(text: '0');
+  final TextEditingController _mileageMaxController = TextEditingController(text: '200000');
   
   String? _selectedMake;
   String? _selectedModel;
@@ -31,7 +35,6 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
   
   List<String> _selectedFeatures = [];
   
-  // Data Lists
   final List<String> _makes = [
     'Any Make', 'Toyota', 'Honda', 'BMW', 'Mercedes-Benz', 'Ford', 
     'Chevrolet', 'Nissan', 'Hyundai', 'Volkswagen', 'Audi', 'Lexus',
@@ -74,20 +77,30 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
     _selectedTransmission = _transmissions[0];
     _selectedFuelType = _fuelTypes[0];
     _selectedColor = _colors[0];
+    _yearMaxController.text = DateTime.now().year.toString();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _priceMinController.dispose();
+    _priceMaxController.dispose();
+    _yearMinController.dispose();
+    _yearMaxController.dispose();
+    _mileageMinController.dispose();
+    _mileageMaxController.dispose();
     super.dispose();
   }
 
   void _resetFilters() {
     setState(() {
       _condition = 'all';
-      _priceRange = RangeValues(0, 100000);
-      _yearRange = RangeValues(2000, 2025);
-      _mileageRange = RangeValues(0, 200000);
+      _priceMinController.text = '0';
+      _priceMaxController.text = '100000';
+      _yearMinController.text = '2000';
+      _yearMaxController.text = DateTime.now().year.toString();
+      _mileageMinController.text = '0';
+      _mileageMaxController.text = '200000';
       _selectedMake = _makes[0];
       _selectedModel = null;
       _selectedBodyType = _bodyTypes[0];
@@ -101,12 +114,12 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
   void _applyFilters() {
     final filters = {
       'condition': _condition,
-      'priceMin': _priceRange.start,
-      'priceMax': _priceRange.end,
-      'yearMin': _yearRange.start.toInt(),
-      'yearMax': _yearRange.end.toInt(),
-      'mileageMin': _mileageRange.start.toInt(),
-      'mileageMax': _mileageRange.end.toInt(),
+      'priceMin': double.tryParse(_priceMinController.text) ?? 0,
+      'priceMax': double.tryParse(_priceMaxController.text) ?? 100000,
+      'yearMin': int.tryParse(_yearMinController.text) ?? 2000,
+      'yearMax': int.tryParse(_yearMaxController.text) ?? DateTime.now().year,
+      'mileageMin': int.tryParse(_mileageMinController.text) ?? 0,
+      'mileageMax': int.tryParse(_mileageMaxController.text) ?? 200000,
       'make': _selectedMake,
       'model': _selectedModel,
       'bodyType': _selectedBodyType,
@@ -214,35 +227,31 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
           
           SizedBox(height: 32),
           _buildSectionTitle('Price Range'),
-          _buildRangeSlider(
-            values: _priceRange,
-            min: 0,
-            max: 100000,
-            divisions: 100,
-            onChanged: (values) => setState(() => _priceRange = values),
-            formatter: (value) => '\$${(value / 1000).toStringAsFixed(0)}K',
+          SizedBox(height: 12),
+          _buildRangeInputs(
+            minController: _priceMinController,
+            maxController: _priceMaxController,
+            prefix: '\$',
+            hint: 'Price',
           ),
           
           SizedBox(height: 32),
           _buildSectionTitle('Year Range'),
-          _buildRangeSlider(
-            values: _yearRange,
-            min: 2000,
-            max: 2025,
-            divisions: 25,
-            onChanged: (values) => setState(() => _yearRange = values),
-            formatter: (value) => value.toInt().toString(),
+          SizedBox(height: 12),
+          _buildRangeInputs(
+            minController: _yearMinController,
+            maxController: _yearMaxController,
+            hint: 'Year',
           ),
           
           SizedBox(height: 32),
           _buildSectionTitle('Mileage Range (miles)'),
-          _buildRangeSlider(
-            values: _mileageRange,
-            min: 0,
-            max: 200000,
-            divisions: 100,
-            onChanged: (values) => setState(() => _mileageRange = values),
-            formatter: (value) => '${(value / 1000).toStringAsFixed(0)}K',
+          SizedBox(height: 12),
+          _buildRangeInputs(
+            minController: _mileageMinController,
+            maxController: _mileageMaxController,
+            suffix: ' mi',
+            hint: 'Mileage',
           ),
           
           SizedBox(height: 32),
@@ -431,54 +440,85 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
     );
   }
 
-  Widget _buildRangeSlider({
-    required RangeValues values,
-    required double min,
-    required double max,
-    required int divisions,
-    required Function(RangeValues) onChanged,
-    required String Function(double) formatter,
+  Widget _buildRangeInputs({
+    required TextEditingController minController,
+    required TextEditingController maxController,
+    String? prefix,
+    String? suffix,
+    required String hint,
   }) {
-    return Column(
+    return Row(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                formatter(values.start),
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-            Text('to', style: TextStyle(color: Colors.grey)),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                formatter(values.end),
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
+        Expanded(
+          child: _buildNumberInputField(
+            controller: minController,
+            label: 'Min $hint',
+            prefix: prefix,
+            suffix: suffix,
+          ),
         ),
-        RangeSlider(
-          values: values,
-          min: min,
-          max: max,
-          divisions: divisions,
-          activeColor: Color(0xFF3B82F6),
-          inactiveColor: Colors.grey.shade300,
-          onChanged: onChanged,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'to',
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          child: _buildNumberInputField(
+            controller: maxController,
+            label: 'Max $hint',
+            prefix: prefix,
+            suffix: suffix,
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildNumberInputField({
+    required TextEditingController controller,
+    required String label,
+    String? prefix,
+    String? suffix,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 15,
+        ),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: 12,
+          ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          prefixText: prefix,
+          suffixText: suffix,
+          prefixStyle: TextStyle(
+            color: Colors.grey.shade700,
+            fontWeight: FontWeight.w600,
+          ),
+          suffixStyle: TextStyle(
+            color: Colors.grey.shade600,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
     );
   }
 

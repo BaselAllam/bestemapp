@@ -445,4 +445,10 @@ final Map<String, String> arData = {
   AppLangAssets.termsContactSubTitle: 'للاستفسارات أو المخاوف بشأن هذه الشروط، يرجى الاتصال بنا:',
   AppLangAssets.yourTrustIsImportant: 'ثقتك مهمه بالنسبالنا',
   AppLangAssets.yourTrustIsImportantSubTitle: 'نحن نحرص دائمًا على حماية خصوصيتك والحفاظ على بياناتك بأمان.',
+  AppLangAssets.fetchingData: 'بنجيب بياناتك دلوقتي',
+  AppLangAssets.takesLonger: 'واضح إنها واخدة وقت أكتر من العادي...',
+  AppLangAssets.found: 'لاقيناهم',
+  AppLangAssets.noCarsFound: 'للاسف ملقناش اعلانات',
+  AppLangAssets.tryAdjustFilter: 'جرّب تغيّر الفلاتر أو معايير البحث شوية علشان تلاقي اللي بتدور عليه',
+  AppLangAssets.clearAllFilters: 'امسح كل الفلاتر',
 };
