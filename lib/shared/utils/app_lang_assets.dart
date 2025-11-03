@@ -451,4 +451,12 @@ class AppLangAssets {
   static String noCarsFound = 'noCarsFound';
   static String tryAdjustFilter = 'tryAdjustFilter';
   static String clearAllFilters = 'clearAllFilters';
+  static String maximumImgs = 'maximumImgs';
+  static String videoSize = 'videoSize';
+  static String urCarListingAdhasBennSubmited = 'urCarListingAdhasBennSubmited';
+  static String underReview = 'underReview';
+  static String underReviewSubTitle = 'underReviewSubTitle';
+  static String underReviewSubTitle2 = 'underReviewSubTitle2';
+  static String viewMyAd = 'viewMyAd';
+  static String done = 'done';
 }

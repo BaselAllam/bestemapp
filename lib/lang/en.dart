@@ -452,4 +452,12 @@ final Map<String, String> enData = {
   AppLangAssets.noCarsFound: 'No cars found',
   AppLangAssets.tryAdjustFilter: 'Try adjusting your filters or search criteria\nto find what you\'re looking for',
   AppLangAssets.clearAllFilters: 'Clear All Filters',
+  AppLangAssets.maximumImgs: 'Maximum 30 images allowed',
+  AppLangAssets.videoSize: 'Video size must be less than 100MB',
+  AppLangAssets.urCarListingAdhasBennSubmited: 'Your car listing has been submitted successfully',
+  AppLangAssets.underReview: 'Under Review',
+  AppLangAssets.underReviewSubTitle: 'Our team will review your ad to ensure it meets our quality standards. This usually takes 24-48 hours.',
+  AppLangAssets.underReviewSubTitle2: 'We\'ll notify you once your ad is approved and published',
+  AppLangAssets.viewMyAd: 'View My Ads',
+  AppLangAssets.done: 'Done',
 };

@@ -299,6 +299,7 @@ class CarCubit extends Cubit<CarStates> {
       request.fields['is_negotiable'] = isNegotioable.toString();
       request.fields['distance_range'] = distanceRange.toString();
       request.fields['specs_value'] = json.encode(specsValues);
+      log(specsValues.toString());
       if (video != null) {
         var videoFile = await http.MultipartFile.fromPath(
           'ad_video',
@@ -317,7 +318,6 @@ class CarCubit extends Cubit<CarStates> {
       http.StreamedResponse response = await request.send();
       var responseBody = await response.stream.bytesToString();
       var data = json.decode(responseBody);
-
       if (response.statusCode == 201) {
         _userCarAds.insert(0, CarAdModel.fromJson(data['data']));
         emit(CreateCarAdsSuccessState());

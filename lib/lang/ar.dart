@@ -451,4 +451,12 @@ final Map<String, String> arData = {
   AppLangAssets.noCarsFound: 'للاسف ملقناش اعلانات',
   AppLangAssets.tryAdjustFilter: 'جرّب تغيّر الفلاتر أو معايير البحث شوية علشان تلاقي اللي بتدور عليه',
   AppLangAssets.clearAllFilters: 'امسح كل الفلاتر',
+  AppLangAssets.maximumImgs: 'الحد الاقصى ٣٠ صوره',
+  AppLangAssets.videoSize: 'حجم الفيديو مينفعش يبقى اكبر من ١٠٠ ميجا',
+  AppLangAssets.urCarListingAdhasBennSubmited: 'تم إضافه أعلانك بنجاح',
+  AppLangAssets.underReview: 'بنراجع الاعلان',
+  AppLangAssets.underReviewSubTitle: 'احنا هنراجع الاعلان كويس عشان نتأكد من كل البيانات وهنبلغك او ما المراجعه تخلص وده خلال من ٢٤ ل ٤٨ ساعه',
+  AppLangAssets.underReviewSubTitle2: 'هنبلغك اول ما الاعلان نوافق عليه',
+  AppLangAssets.viewMyAd: 'إعلاناتي',
+  AppLangAssets.done: 'تم',
 };

@@ -79,9 +79,12 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
       setState(() {
         _images = pickedFiles.map((file) => File(file.path)).toList();
       });
-    } else if (pickedFiles.length > 20) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Maximum 20 images allowed')),
+    } else if (pickedFiles.length > 30) {
+      Toaster.show(
+        context,
+        message: selectedLang[AppLangAssets.maximumImgs]!,
+        position: ToasterPosition.top,
+        type: ToasterType.warning
       );
     }
   }
@@ -96,8 +99,11 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
           _video = file;
         });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Video size must be less than 100MB')),
+        Toaster.show(
+          context,
+          message: selectedLang[AppLangAssets.videoSize]!,
+          position: ToasterPosition.top,
+          type: ToasterType.warning
         );
       }
     }
@@ -1181,7 +1187,7 @@ void _showSuccessDialog(BuildContext context) {
               ),
               const SizedBox(height: 12),
               Text(
-                'Your car listing has been submitted successfully',
+                selectedLang[AppLangAssets.urCarListingAdhasBennSubmited]!,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey.shade700,
@@ -1204,7 +1210,7 @@ void _showSuccessDialog(BuildContext context) {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Under Review',
+                            selectedLang[AppLangAssets.underReview]!,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Colors.blue.shade900,
@@ -1216,7 +1222,7 @@ void _showSuccessDialog(BuildContext context) {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Our team will review your ad to ensure it meets our quality standards. This usually takes 24-48 hours.',
+                      selectedLang[AppLangAssets.underReviewSubTitle]!,
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.blue.shade900,
@@ -1239,7 +1245,7 @@ void _showSuccessDialog(BuildContext context) {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'We\'ll notify you once your ad is approved and published',
+                        selectedLang[AppLangAssets.underReviewSubTitle2]!,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.green.shade900,
@@ -1256,9 +1262,7 @@ void _showSuccessDialog(BuildContext context) {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // Close dialog
-                        // Navigate to My Ads page
-                        // Navigator.pushReplacementNamed(context, '/my-ads');
+                        Navigator.of(context).pop();
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -1268,7 +1272,7 @@ void _showSuccessDialog(BuildContext context) {
                         ),
                       ),
                       child: Text(
-                        'View My Ads',
+                        selectedLang[AppLangAssets.viewMyAd]!,
                         style: TextStyle(
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
@@ -1281,8 +1285,8 @@ void _showSuccessDialog(BuildContext context) {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // Close dialog
-                        Navigator.of(context).pop(); // Go back to previous screen
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -1292,7 +1296,7 @@ void _showSuccessDialog(BuildContext context) {
                         ),
                       ),
                       child: Text(
-                        'Done',
+                        selectedLang[AppLangAssets.done]!,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
