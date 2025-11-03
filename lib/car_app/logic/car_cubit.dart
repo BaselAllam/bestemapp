@@ -299,7 +299,6 @@ class CarCubit extends Cubit<CarStates> {
       request.fields['is_negotiable'] = isNegotioable.toString();
       request.fields['distance_range'] = distanceRange.toString();
       request.fields['specs_value'] = json.encode(specsValues);
-      log(specsValues.toString());
       if (video != null) {
         var videoFile = await http.MultipartFile.fromPath(
           'ad_video',

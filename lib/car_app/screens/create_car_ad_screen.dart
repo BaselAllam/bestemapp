@@ -1322,7 +1322,7 @@ Widget _buildSpecField(CarSpecsModel spec) {
   
   switch (spec.specType.toLowerCase()) {
     case 'number':
-      keyboardType = const TextInputType.numberWithOptions(decimal: true);
+      keyboardType = const TextInputType.numberWithOptions(decimal: false);
       formatters = [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))];
       break;
     case 'boolean':
@@ -1341,7 +1341,7 @@ Widget _buildSpecField(CarSpecsModel spec) {
     textInputAction: TextInputAction.done,
     keyBoardType: keyboardType,
     formaters: formatters,
-    controller: _getController(spec.spec),
+    controller: _getController(spec),
   );
 }
 
@@ -1356,32 +1356,32 @@ Widget _buildBooleanField(CarSpecsModel spec) {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         Switch(
-          value: _getBoolValue(spec.spec),
+          value: _getBoolValue(spec),
           activeColor: AppColors.primaryColor,
           focusColor: AppColors.primaryColor,
           inactiveThumbColor: AppColors.whiteColor,
           inactiveTrackColor: AppColors.greyColor,
-          onChanged: (value) => _setBoolValue(spec.spec, value),
+          onChanged: (value) => _setBoolValue(spec, value),
         ),
       ],
     ),
   );
 }
 
-TextEditingController _getController(String specName) {
-  if (!_controllers.containsKey(specName)) {
-    _controllers[specName] = TextEditingController();
+TextEditingController _getController(CarSpecsModel spec) {
+  if (_controllers[spec.id] == null) {
+    _controllers[spec.id] = TextEditingController();
   }
-  return _controllers[specName]!;
+  return _controllers[spec.id]!;
 }
 
-bool _getBoolValue(String specName) {
-  return _boolValues[specName] ?? false;
+bool _getBoolValue(CarSpecsModel spec) {
+  return _boolValues[spec.id] ?? false;
 }
 
-void _setBoolValue(String specName, bool value) {
+void _setBoolValue(CarSpecsModel spec, bool value) {
   setState(() {
-    _boolValues[specName] = value;
+    _boolValues[spec.id] = value;
   });
 }
 
@@ -1610,165 +1610,218 @@ void _setBoolValue(String specName, bool value) {
   @override
   Widget build(BuildContext context) {
     final steps = _getSteps();
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: Text(selectedLang[AppLangAssets.createCarAd]!, style: TextStyle(fontWeight: FontWeight.w600)),
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
-      body: Column(
-        children: [
-          _buildHorizontalStepper(),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '${selectedLang[AppLangAssets.step]} ${_currentStep + 1}/${steps.length}',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.whiteColor,
+            title: Text(selectedLang[AppLangAssets.exitConfirmation]!),
+            content: Text(
+              selectedLang[AppLangAssets.areUSureUWantToExit]!,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(selectedLang[AppLangAssets.cancel]!),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  selectedLang[AppLangAssets.exit]!,
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+        );
+        
+        return shouldPop ?? false;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade50,
+        appBar: AppBar(
+          title: Text(selectedLang[AppLangAssets.createCarAd]!, style: TextStyle(fontWeight: FontWeight.w600)),
+          elevation: 0,
+          backgroundColor: Colors.white,
+        ),
+        body: Column(
+          children: [
+            _buildHorizontalStepper(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    steps[_currentStep].title,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  steps[_currentStep].content,
-                  const SizedBox(height: 32),
-                  Row(
-                    children: [
-                      if (_currentStep > 0)
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              setState(() => _currentStep--);
-                            },
-                            icon: Icon(Icons.arrow_back, color: AppColors.greyColor,),
-                            label: Text(selectedLang[AppLangAssets.back]!, style: TextStyle(color: AppColors.greyColor)),
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              side: BorderSide(color: Colors.grey.shade300, width: 2),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                          child: Text(
+                            '${selectedLang[AppLangAssets.step]} ${_currentStep + 1}/${steps.length}',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
                             ),
                           ),
                         ),
-                      if (_currentStep > 0) const SizedBox(width: 12),
-                      Expanded(
-                        flex: 2,
-                        child: BlocConsumer<CarCubit, CarStates>(
-                          listener: (context, state) {
-                            if (state is CreateCarAdsErrorState) {
-                              Toaster.show(
-                                context,
-                                message: state.errorMsg,
-                                position: ToasterPosition.top,
-                                type: ToasterType.error
-                              );
-                            } else if (state is CreateCarAdsSomeThingWentWrongState) {
-                              Toaster.show(
-                                context,
-                                message: selectedLang[AppLangAssets.someThingWentWrong]!,
-                                position: ToasterPosition.top,
-                                type: ToasterType.error
-                              );
-                            } else if (state is CreateCarAdsSuccessState) {
-                              _showSuccessDialog(context);
-                            }
-                          },
-                          builder: (context, state) => ElevatedButton(
-                            onPressed: state is CreateCarAdsLoadingState ? () {} : () {
-                              if (_currentStep < steps.length - 1) {
-                                setState(() => _currentStep++);
-                              } else {
-                                if (_adTitleController.text.isEmpty || _descriptionController.text.isEmpty || _selectedModel == null || selectedColor == null ||
-                                _selectedBodyType == null || _selectedArea == null || _selectedCondition == null || _selectedFuelType == null || _selectedTransmission == null ||
-                                _engineSizeController.text.isEmpty || _yearController.text.isEmpty || _mileageController.text.isEmpty || _priceController.text.isEmpty || _images.isEmpty) {
-                                  Toaster.show(
-                                    context,
-                                    message: selectedLang[AppLangAssets.fieldsRequired]!,
-                                    type: ToasterType.error,
-                                    position: ToasterPosition.top
-                                  );
-                                } else {
-                                  BlocProvider.of<CarCubit>(context).createCarAd(
-                                    adTitle: _adTitleController.text, 
-                                    adDescription: _descriptionController.text,
-                                    carModel: _selectedModel!.id,
-                                    carColor: selectedColor!.id,
-                                    carShape: _selectedBodyType!.id,
-                                    adArea: _selectedArea!.id,
-                                    carCondition: _selectedCondition!,
-                                    fuelType: _selectedFuelType!,
-                                    transmissionType: _selectedTransmission!,
-                                    engineCapacity: int.parse(_engineSizeController.text),
-                                    carYear: int.parse(_yearController.text),
-                                    kiloMeters: int.parse(_mileageController.text),
-                                    price: _priceController.text,
-                                    isNegotioable: isNegotiable,
-                                    video: _video ?? null,
-                                    imgs: _images,
-                                    distanceRange: _selectedFuelType == 'electric' || _selectedFuelType == 'hybird' ? int.parse(_maxDistanceController.text) : 0,
-                                    specsValues: []
-                                  );
-                                }
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      steps[_currentStep].title,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    steps[_currentStep].content,
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        if (_currentStep > 0)
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                setState(() => _currentStep--);
+                              },
+                              icon: Icon(Icons.arrow_back, color: AppColors.greyColor,),
+                              label: Text(selectedLang[AppLangAssets.back]!, style: TextStyle(color: AppColors.greyColor)),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                side: BorderSide(color: Colors.grey.shade300, width: 2),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (_currentStep > 0) const SizedBox(width: 12),
+                        Expanded(
+                          flex: 2,
+                          child: BlocConsumer<CarCubit, CarStates>(
+                            listener: (context, state) {
+                              if (state is CreateCarAdsErrorState) {
+                                Toaster.show(
+                                  context,
+                                  message: state.errorMsg,
+                                  position: ToasterPosition.top,
+                                  type: ToasterType.error
+                                );
+                              } else if (state is CreateCarAdsSomeThingWentWrongState) {
+                                Toaster.show(
+                                  context,
+                                  message: selectedLang[AppLangAssets.someThingWentWrong]!,
+                                  position: ToasterPosition.top,
+                                  type: ToasterType.error
+                                );
+                              } else if (state is CreateCarAdsSuccessState) {
+                                _showSuccessDialog(context);
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              backgroundColor: AppColors.primaryColor,
-                              elevation: 2,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _currentStep == steps.length - 1 ? selectedLang[AppLangAssets.publishAd]! : state is CreateCarAdsLoadingState ?
-                                  selectedLang[AppLangAssets.loading]! : selectedLang[AppLangAssets.continueStep]!,
-                                  style: TextStyle(fontSize: 16, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
+                            builder: (context, state) => ElevatedButton(
+                              onPressed: state is CreateCarAdsLoadingState ? () {} : () {
+                                if (_currentStep < steps.length - 1) {
+                                  setState(() => _currentStep++);
+                                } else {
+                                  if (_adTitleController.text.isEmpty || _descriptionController.text.isEmpty || _selectedModel == null || selectedColor == null ||
+                                  _selectedBodyType == null || _selectedArea == null || _selectedCondition == null || _selectedFuelType == null || _selectedTransmission == null ||
+                                  _engineSizeController.text.isEmpty || _yearController.text.isEmpty || _mileageController.text.isEmpty || _priceController.text.isEmpty || _images.isEmpty) {
+                                    Toaster.show(
+                                      context,
+                                      message: selectedLang[AppLangAssets.fieldsRequired]!,
+                                      type: ToasterType.error,
+                                      position: ToasterPosition.top
+                                    );
+                                  } else {
+                                    BlocProvider.of<CarCubit>(context).createCarAd(
+                                      adTitle: _adTitleController.text, 
+                                      adDescription: _descriptionController.text,
+                                      carModel: _selectedModel!.id,
+                                      carColor: selectedColor!.id,
+                                      carShape: _selectedBodyType!.id,
+                                      adArea: _selectedArea!.id,
+                                      carCondition: _selectedCondition!,
+                                      fuelType: _selectedFuelType!,
+                                      transmissionType: _selectedTransmission!,
+                                      engineCapacity: int.parse(_engineSizeController.text),
+                                      carYear: int.parse(_yearController.text),
+                                      kiloMeters: int.parse(_mileageController.text),
+                                      price: _priceController.text,
+                                      isNegotioable: isNegotiable,
+                                      video: _video ?? null,
+                                      imgs: _images,
+                                      distanceRange: _selectedFuelType == 'electric' || _selectedFuelType == 'hybird' ? int.parse(_maxDistanceController.text) : 0,
+                                      specsValues: _prepareSpecsValues()
+                                    );
+                                  }
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                const SizedBox(width: 8),
-                                Icon(_currentStep == steps.length - 1 ? Icons.publish : Icons.arrow_forward, color: AppColors.whiteColor,),
-                              ],
+                                backgroundColor: AppColors.primaryColor,
+                                elevation: 2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    _currentStep == steps.length - 1 ? selectedLang[AppLangAssets.publishAd]! : state is CreateCarAdsLoadingState ?
+                                    selectedLang[AppLangAssets.loading]! : selectedLang[AppLangAssets.continueStep]!,
+                                    style: TextStyle(fontSize: 16, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Icon(_currentStep == steps.length - 1 ? Icons.publish : Icons.arrow_forward, color: AppColors.whiteColor,),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  List<Map<String, dynamic>> _prepareSpecsValues() {
+    List<Map<String, dynamic>> values = [];
+    for (var i in _boolValues.keys) {
+      values.add({'spec': i, 'value_boolean': _boolValues[i]});
+    }
+    for (var i in _controllers.keys) {
+      Map<String, dynamic> data = {
+        'spec': i,
+      };
+      for (var x in BlocProvider.of<CarCubit>(context).carSpecs) {
+        if (i == x.id) {
+          if (x.specType == 'number') {
+            data['value_number'] = _controllers[i]!.text;
+          } else {
+            data['value_text'] = _controllers[i]!.text;
+          }
+          break;
+        }
+      }
+      values.add(data);
+    }
+    return values;
   }
 
   Widget bodyTypeGridSelector({
@@ -1885,16 +1938,4 @@ void _setBoolValue(String specName, bool value) {
     _phoneController.dispose();
     super.dispose();
   }
-}
-
-class BodyTypeItem {
-  final String value;
-  final String label;
-  final IconData icon;
-
-  const BodyTypeItem({
-    required this.value,
-    required this.label,
-    required this.icon,
-  });
 }

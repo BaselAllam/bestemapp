@@ -460,4 +460,8 @@ final Map<String, String> enData = {
   AppLangAssets.underReviewSubTitle2: 'We\'ll notify you once your ad is approved and published',
   AppLangAssets.viewMyAd: 'View My Ads',
   AppLangAssets.done: 'Done',
+  AppLangAssets.exitConfirmation : 'Exit Confirmation',
+  AppLangAssets.areUSureUWantToExit : 'Are you sure you want to exit? Your data will be lost.',
+  AppLangAssets.exit : 'Exit',
+  AppLangAssets.cancel : 'Cancel',
 };

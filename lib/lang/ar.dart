@@ -459,4 +459,8 @@ final Map<String, String> arData = {
   AppLangAssets.underReviewSubTitle2: 'هنبلغك اول ما الاعلان نوافق عليه',
   AppLangAssets.viewMyAd: 'إعلاناتي',
   AppLangAssets.done: 'تم',
+  AppLangAssets.exitConfirmation : 'متأكد',
+  AppLangAssets.areUSureUWantToExit : 'متأكد انك عايز تلغي إضافه الاعلان ؟ خلي بالك ده هيخليك تخسر البيانات الي ضفتها',
+  AppLangAssets.exit : 'اقفل',
+  AppLangAssets.cancel : 'لا',
 };

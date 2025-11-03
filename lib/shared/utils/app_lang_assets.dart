@@ -459,4 +459,8 @@ class AppLangAssets {
   static String underReviewSubTitle2 = 'underReviewSubTitle2';
   static String viewMyAd = 'viewMyAd';
   static String done = 'done';
+  static String exitConfirmation = 'exitConfirmation';
+  static String areUSureUWantToExit = 'areUSureUWantToExit';
+  static String exit = 'exit';
+  static String cancel = 'cancel';
 }
