@@ -463,4 +463,6 @@ class AppLangAssets {
   static String areUSureUWantToExit = 'areUSureUWantToExit';
   static String exit = 'exit';
   static String cancel = 'cancel';
+  static String editCarAd = 'editCarAd';
+  static String updateAd = 'updateAd';
 }

@@ -1795,7 +1795,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-          title: Text('Edit Car Ad', style: TextStyle(fontWeight: FontWeight.w600)),
+          title: Text(selectedLang[AppLangAssets.editCarAd]!, style: TextStyle(fontWeight: FontWeight.w600)),
           elevation: 0,
           backgroundColor: Colors.white,
         ),
@@ -1917,8 +1917,8 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                                       imgs: _images,
                                       distanceRange: _selectedFuelType == 'electric' || _selectedFuelType == 'hybird' ? int.parse(_maxDistanceController.text) : 0,
                                       specsValues: _prepareSpecsValues(),
-                                      deleteImgsIds: [],
                                       deleteSpecsIds: [],
+                                      deleteImgsIds: [],
                                     );
                                   }
                                 }
@@ -1935,7 +1935,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    _currentStep == steps.length - 1 ? 'Update Ad' : state is CreateCarAdsLoadingState ?
+                                    _currentStep == steps.length - 1 ? selectedLang[AppLangAssets.updateAd]! : state is CreateCarAdsLoadingState ?
                                     selectedLang[AppLangAssets.loading]! : selectedLang[AppLangAssets.continueStep]!,
                                     style: TextStyle(fontSize: 16, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
                                   ),

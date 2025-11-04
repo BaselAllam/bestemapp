@@ -463,4 +463,6 @@ final Map<String, String> arData = {
   AppLangAssets.areUSureUWantToExit : 'متأكد انك عايز تلغي إضافه الاعلان ؟ خلي بالك ده هيخليك تخسر البيانات الي ضفتها',
   AppLangAssets.exit : 'اقفل',
   AppLangAssets.cancel : 'لا',
+  AppLangAssets.editCarAd: 'تعديل إعلان العربية',
+  AppLangAssets.updateAd: 'تحديث الإعلان',
 };

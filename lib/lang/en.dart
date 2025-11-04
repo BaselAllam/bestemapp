@@ -464,4 +464,6 @@ final Map<String, String> enData = {
   AppLangAssets.areUSureUWantToExit : 'Are you sure you want to exit? Your data will be lost.',
   AppLangAssets.exit : 'Exit',
   AppLangAssets.cancel : 'Cancel',
+  AppLangAssets.editCarAd: 'Edit Car Ad',
+  AppLangAssets.updateAd: 'Update Ad',
 };

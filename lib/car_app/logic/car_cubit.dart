@@ -395,18 +395,23 @@ class CarCubit extends Cubit<CarStates> {
       }
 
       // delete_img_ids & imgs
-      // for (int i = 0; i < imgs.length; i++) {
-      //   var imgFile = await http.MultipartFile.fromPath(
-      //     'imgs',
-      //     imgs[i].path,
-      //   );
-      //   request.files.add(imgFile);
-      // }
+      for (int i = 0; i < imgs.length; i++) {
+        var imgFile = await http.MultipartFile.fromPath(
+          'imgs',
+          imgs[i].path,
+        );
+        request.files.add(imgFile);
+      }
 
       http.StreamedResponse response = await request.send();
       var responseBody = await response.stream.bytesToString();
       var data = json.decode(responseBody);
       if (response.statusCode == 200) {
+        for (int i = 0; i < _userCarAds.length; i++) {
+          if (_userCarAds[i].id == carAd.id) {
+            _userCarAds.removeAt(i);
+          }
+        }
         _userCarAds.insert(0, CarAdModel.fromJson(data['data']));
         emit(UpdateCarAdsSuccessState());
       } else {
