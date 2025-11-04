@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -220,7 +221,7 @@ class CarCubit extends Cubit<CarStates> {
   String _prepareSearchCarParam() {
     String searchParam = '?';
     _searchCarParams.forEach((k, v) {
-      searchParam = '$searchParam${searchParam.length < 2 ? '' : '&'}$k=$v';
+      searchParam = '$searchParam${searchParam.length < 2 ? '' : '&'}$k=${v is String ? v : v is Bool ? v : v.id}';
     });
     return searchParam;
   }

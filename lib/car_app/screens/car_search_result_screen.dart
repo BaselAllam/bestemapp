@@ -74,35 +74,35 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          _buildControlBar(),
-          if (_isLoading)
-            const Expanded(
-              child: Center(child: CircularProgressIndicator()),
-            )
-          else if (widget.ads.isEmpty)
-            _buildEmptyState()
-          else
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: BlocBuilder<CarCubit, CarStates>(
-                  builder: (context, state) {
-                    if (state is SearchCarAdsLoadingState) {
-                      return Center(child: CustomLoadingSpinner());
-                    } else if (state is SearchCarAdsErrorState) {
-                      return Center(child: CustomErrorWidget());
-                    } else if (BlocProvider.of<CarCubit>(context).searchCarAdsResult.isEmpty) {
-                      return Center(child: NoResultFoundWidget());
-                    } else {
-                      return _buildListView();
-                    }
-                  }
-                )
-              ),
-            ),
-        ],
+      body: BlocBuilder<CarCubit, CarStates>(
+        builder: (context, state) {
+          if (state is SearchCarAdsLoadingState) {
+            return Center(child: CustomLoadingSpinner());
+          } else if (state is SearchCarAdsErrorState) {
+            return Center(child: CustomErrorWidget());
+          } else {
+            return Column(
+              children: [
+                _buildControlBar(),
+                if (_isLoading)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else if (widget.ads.isEmpty)
+                  _buildEmptyState()
+                else
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () {
+                        return BlocProvider.of<CarCubit>(context).searchCarAds();
+                      },
+                      child: _buildListView(),
+                    ),
+                  ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
@@ -588,19 +588,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _onRefresh() async {
-    setState(() {
-      _isLoading = true;
-    });
-    
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-    
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _showSortOptions() {

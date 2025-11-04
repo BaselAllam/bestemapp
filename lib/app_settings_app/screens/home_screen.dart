@@ -521,12 +521,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             ));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3B82F6),
+                            backgroundColor: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? AppColors.greyColor.withOpacity(0.5) : AppColors.primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
                             elevation: 0,
-                            shadowColor: const Color(0xFF3B82F6).withOpacity(0.4),
+                            shadowColor: AppColors.primaryColor.withOpacity(0.4),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
