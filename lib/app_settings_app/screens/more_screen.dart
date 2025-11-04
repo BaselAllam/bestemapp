@@ -17,7 +17,6 @@ import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:bestemapp/user_app/screens/user_profile_screen.dart';
-import 'package:bestemapp/user_app/screens/wallet_transactions_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -205,12 +204,6 @@ class _MoreScreenState extends State<MoreScreen> with SingleTickerProviderStateM
                   onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => MyAdsScreen())),
                 ),
                 _buildDivider(),
-                _buildEnhancedListTile(
-                  icon: AppAssets.walletIcon,
-                  title: selectedLang[AppLangAssets.myWalletTransactions]!,
-                  color: Colors.green,
-                  onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => WalletTransactionsScreen())),
-                ),
               ],
             ),
           ),

@@ -407,10 +407,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         },
                       ),
                       const SizedBox(height: 12),
-                      if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name] != null)
                       DropdownButtonFormField<CarMakeModelModel>(
                         dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name],
+                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name] ?? null,
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                           prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
@@ -431,7 +430,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
                           ),
                         ),
-                        items: <DropdownMenuItem<CarMakeModelModel>>[
+                        items:BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name] == null ?
+                        [] : <DropdownMenuItem<CarMakeModelModel>>[
                           for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name]!.models)
                           DropdownMenuItem(value: item, child: Text(item.modelName))
                         ],
@@ -472,10 +472,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         },
                       ),
                       const SizedBox(height: 12),
-                      if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] != null)
                       DropdownButtonFormField<AreaModel>(
                         dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name],
+                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name] ?? null,
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                           prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
@@ -496,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
                           ),
                         ),
-                        items: <DropdownMenuItem<AreaModel>>[
+                        items: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? [] : <DropdownMenuItem<AreaModel>>[
                           for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name]!.areas)
                           DropdownMenuItem(value: item, child: Text(item.areaName))
                         ],
@@ -873,7 +872,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget buildItemsSection(String sectionTitle) {
     return Container(
       height: 500.0,
-      margin: const EdgeInsets.only(left: 20),
+      margin: const EdgeInsets.all(5),
       child: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
           if (state is LandingCarAdsErrorState || state is LandingCarAdsSomeThingWentWrongState) {

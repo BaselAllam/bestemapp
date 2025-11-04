@@ -33,7 +33,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(5),
       width: MediaQuery.of(context).size.width /1.2,
       decoration: BoxDecoration(
         color: Colors.white,

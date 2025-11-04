@@ -34,8 +34,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
   int _currentStep = 0;
   var _formKey = GlobalKey<FormState>();
   ImagePicker _picker = ImagePicker();
-
-  // Form data
+  
   late TextEditingController _adTitleController;
   late TextEditingController _yearController;
   late TextEditingController _mileageController;
@@ -75,14 +74,14 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
   }
 
   void _initializeControllers() {
-    _adTitleController = TextEditingController();
-    _yearController = TextEditingController();
-    _mileageController = TextEditingController();
-    _maxDistanceController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _priceController = TextEditingController();
-    _engineSizeController = TextEditingController();
-    _phoneController = TextEditingController();
+    _adTitleController = TextEditingController(text: widget.carAd.adTitle);
+    _yearController = TextEditingController(text: widget.carAd.carYear.toString());
+    _mileageController = TextEditingController(text: widget.carAd.distanceRange.toString());
+    _maxDistanceController = TextEditingController(text: widget.carAd.distanceRange.toString());
+    _descriptionController = TextEditingController(text: widget.carAd.adDescription);
+    _priceController = TextEditingController(text: widget.carAd.price);
+    _engineSizeController = TextEditingController(text: widget.carAd.engineCapacity.toString());
+    _phoneController = TextEditingController(text: widget.carAd.contactPhone.toString());
     
     _descriptionController.addListener(() {
       setState(() {});
@@ -90,32 +89,14 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
   }
 
   void _loadExistingData() {
-    // Load basic details
-    _adTitleController.text = widget.carAd.adTitle;
-    _descriptionController.text = widget.carAd.adDescription;
-    _priceController.text = widget.carAd.price;
     isNegotiable = widget.carAd.isNegotiable;
-    _phoneController.text = widget.carAd.contactPhone;
-
-    // Load car data
     _selectedCondition = widget.carAd.carCondition;
-    _yearController.text = widget.carAd.carYear.toString();
-    _mileageController.text = widget.carAd.kilometers.toString();
-    _engineSizeController.text = widget.carAd.engineCapacity.toString();
     _selectedTransmission = widget.carAd.transmissionType;
     _selectedFuelType = widget.carAd.fuelType;
-    
-    if (widget.carAd.distanceRange > 0) {
-      _maxDistanceController.text = widget.carAd.distanceRange.toString();
-    }
-
-    // Load selected models
     _selectedModel = widget.carAd.carModel;
     selectedColor = widget.carAd.carColor;
     _selectedBodyType = widget.carAd.carShape;
     _selectedArea = widget.carAd.adArea;
-
-    // Find and set the selected brand based on the car model
     final carCubit = BlocProvider.of<CarCubit>(context);
     for (var make in carCubit.carMakes) {
       if (make.models.any((model) => model.id == _selectedModel!.id)) {
@@ -123,8 +104,6 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
         break;
       }
     }
-
-    // Find and set the selected city based on the area
     final appSettingsCubit = BlocProvider.of<AppSettingsCubit>(context);
     for (var city in appSettingsCubit.countries[0].cities) {
       if (city.areas.any((area) => area.id == _selectedArea!.id)) {
@@ -132,19 +111,12 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
         break;
       }
     }
-
-    // Load existing images
     _existingImages = widget.carAd.adImgs;
-    
-    // Load existing video
     if (widget.carAd.adVideo.isNotEmpty) {
       _existingVideo = widget.carAd.adVideo;
     }
-
-    // Load specs values
     for (var specValue in widget.carAd.specs) {
-      String specId = specValue['spec'];
-      
+      String specId = specValue['spec']['spec'];
       if (specValue.containsKey('value_boolean')) {
         _boolValues[specId] = specValue['value_boolean'] ?? false;
       } else if (specValue.containsKey('value_number')) {
@@ -179,7 +151,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
       if (fileSize <= 100 * 1024 * 1024) {
         setState(() {
           _video = file;
-          _existingVideo = null; // Clear existing video if new one is selected
+          _existingVideo = null;
         });
       } else {
         Toaster.show(
@@ -484,7 +456,9 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                     const SizedBox(height: 8),
                     DropdownButtonFormField<AreaModel>(
                       dropdownColor: AppColors.whiteColor,
-                      value: _selectedArea,
+                      value: _selectedArea != null && _selectedCity!.areas.any((a) => a.id == _selectedArea!.id)
+              ? _selectedCity!.areas.firstWhere((a) => a.id == _selectedArea!.id)
+              : null,
                       decoration: InputDecoration(
                         hintText: selectedLang[AppLangAssets.selectCity]!,
                         filled: true,
@@ -603,7 +577,9 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                   const SizedBox(height: 8),
                   DropdownButtonFormField<CarMakeModelModel>(
                     dropdownColor: AppColors.whiteColor,
-                    value: _selectedModel,
+                    value: _selectedModel != null && _selectedBrand!.models.any((a) => a.id == _selectedModel!.id)
+              ? _selectedBrand!.models.firstWhere((a) => a.id == _selectedModel!.id)
+              : null,
                     decoration: InputDecoration(
                       hintText: selectedLang[AppLangAssets.selectModel]!,
                       filled: true,
