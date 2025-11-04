@@ -3,6 +3,7 @@ import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/screens/splash_screen.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/notification_app/logic/notification_cubit.dart';
+import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +39,14 @@ class _MyAppState extends State<MyApp> {
       ],
       child: BlocBuilder<AppSettingsCubit, AppSettingsStates>(
         builder: (context, state) => MaterialApp(
+          theme: ThemeData(
+            useMaterial3: true,
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.whiteColor,
+              surfaceTintColor: AppColors.whiteColor,
+              scrolledUnderElevation: 0,
+            ),
+          ),
           debugShowCheckedModeBanner: false,
           locale: BlocProvider.of<AppSettingsCubit>(context).selectedLocale,
           supportedLocales: [Locale('ar'), Locale('en')],

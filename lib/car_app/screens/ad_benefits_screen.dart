@@ -130,7 +130,7 @@ class _CarAdBenefitsScreenState extends State<CarAdBenefitsScreen> with SingleTi
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     const Icon(Icons.check_circle, color: Colors.white, size: 20),
                                     const SizedBox(width: 8),

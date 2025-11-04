@@ -62,10 +62,6 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
   File? _video;
   String? _existingVideo;
 
-  final List<String> _conditions = ['new', 'used'];
-  final List<String> _transmissions = ['manual', 'automatic'];
-  final List<String> _fuelTypes = ['gas', 'diesel', 'natural gas', 'hybird', 'electric'];
-
   @override
   void initState() {
     super.initState();
@@ -81,7 +77,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
     _descriptionController = TextEditingController(text: widget.carAd.adDescription);
     _priceController = TextEditingController(text: widget.carAd.price);
     _engineSizeController = TextEditingController(text: widget.carAd.engineCapacity.toString());
-    _phoneController = TextEditingController(text: widget.carAd.contactPhone.toString());
+    _phoneController = TextEditingController(text: widget.carAd.contactPhone.isEmpty ? BlocProvider.of<UserCubit>(context).userModel!.phone : widget.carAd.contactPhone.toString());
     
     _descriptionController.addListener(() {
       setState(() {});
@@ -116,7 +112,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
       _existingVideo = widget.carAd.adVideo;
     }
     for (var specValue in widget.carAd.specs) {
-      String specId = specValue['spec']['spec'];
+      String specId = specValue['spec']['id'];
       if (specValue.containsKey('value_boolean')) {
         _boolValues[specId] = specValue['value_boolean'] ?? false;
       } else if (specValue.containsKey('value_number')) {
@@ -502,7 +498,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
               title: '${selectedLang[AppLangAssets.condition]} *',
               hint: selectedLang[AppLangAssets.selectCondition]!,
               value: _selectedCondition,
-              items: _conditions,
+              items: BlocProvider.of<CarCubit>(context).conditions,
               onChanged: (value) => setState(() => _selectedCondition = value),
               fillColor: Colors.grey.shade50,
             ),
@@ -664,7 +660,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
               title: '${selectedLang[AppLangAssets.transmission]} *',
               hint: selectedLang[AppLangAssets.selectTransimission]!,
               value: _selectedTransmission,
-              items: _transmissions,
+              items: BlocProvider.of<CarCubit>(context).transmissions,
               onChanged: (value) => setState(() => _selectedTransmission = value),
               fillColor: Colors.grey.shade50,
             ),
@@ -672,7 +668,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
               title: '${selectedLang[AppLangAssets.fuelType]} *',
               hint: selectedLang[AppLangAssets.selectFuelType]!,
               value: _selectedFuelType,
-              items: _fuelTypes,
+              items: BlocProvider.of<CarCubit>(context).fuelType,
               onChanged: (value) => setState(() => _selectedFuelType = value),
               fillColor: Colors.grey.shade50,
             ),
@@ -1901,10 +1897,8 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                                       position: ToasterPosition.top
                                     );
                                   } else {
-                                    // TODO: Call update method instead of create
-                                    // This should be: BlocProvider.of<CarCubit>(context).updateCarAd(...)
-                                    // For now, showing the structure with createCarAd
-                                    BlocProvider.of<CarCubit>(context).createCarAd(
+                                    BlocProvider.of<CarCubit>(context).updateCarAd(
+                                      carAd: widget.carAd,
                                       adTitle: _adTitleController.text, 
                                       adDescription: _descriptionController.text,
                                       carModel: _selectedModel!.id,
@@ -1922,7 +1916,9 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                                       video: _video ?? null,
                                       imgs: _images,
                                       distanceRange: _selectedFuelType == 'electric' || _selectedFuelType == 'hybird' ? int.parse(_maxDistanceController.text) : 0,
-                                      specsValues: _prepareSpecsValues()
+                                      specsValues: _prepareSpecsValues(),
+                                      deleteImgsIds: [],
+                                      deleteSpecsIds: [],
                                     );
                                   }
                                 }
@@ -2018,7 +2014,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
             itemCount: items.length,
             itemBuilder: (context, index) {
               final item = items[index];
-              final isSelected = selectedShape == item;
+              final isSelected = selectedShape!.id == item.id;
 
               return GestureDetector(
                 onTap: () => onChanged(item),

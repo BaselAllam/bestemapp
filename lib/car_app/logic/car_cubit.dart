@@ -14,6 +14,15 @@ class CarCubit extends Cubit<CarStates> {
 
   CarCubit() : super(InitCarStates());
 
+  final List<String> _fuelTypes = ['gas', 'diesel', 'natural gas', 'hybird', 'electric'];
+  List<String> get fuelType => _fuelTypes;
+
+  final List<String> _conditions = ['new', 'used'];
+  List<String> get conditions => _conditions;
+
+  final List<String> _transmissions = ['manual', 'automatic'];
+  List<String> get transmissions => _transmissions;
+
   List<CarShapeModel> _carShapes = [];
   List<CarShapeModel> get carShapes => _carShapes;
 
@@ -346,9 +355,10 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
-  void updateCarAd({ required String adTitle, required String adDescription, required String carModel, required String carColor, required String carShape, required String adArea,
+  void updateCarAd({ required CarAdModel carAd, required String adTitle, required String adDescription, required String carModel, required String carColor, required String carShape, required String adArea,
     required String carCondition, required String fuelType, required String transmissionType, required int engineCapacity, required int carYear, required int kiloMeters,
     required String price, required bool isNegotioable, File? video, required List<File> imgs, required int distanceRange, required List<Map<String, dynamic>> specsValues,
+    required List<String> deleteImgsIds, required List<String> deleteSpecsIds
     }) async {
     emit(UpdateCarAdsLoadingState());
     try {
@@ -356,25 +366,26 @@ class CarCubit extends Cubit<CarStates> {
       Map<String, String> headers = AppApi.headerData;
       headers['Authorization'] = 'Bearer $userToken';
       var uri = Uri.parse('${AppApi.ipAddress}/cars/user_car_ads/');
-      var request = http.MultipartRequest('POST', uri)
+      var request = http.MultipartRequest('PATCH', uri)
         ..headers.addAll(headers);
 
-      request.fields['ad_title'] = adTitle;
-      request.fields['ad_description'] = adDescription;
-      request.fields['car_model'] = carModel;
-      request.fields['car_color'] = carColor;
-      request.fields['car_shape'] = carShape;
-      request.fields['ad_area'] = adArea;
-      request.fields['car_condition'] = carCondition;
-      request.fields['fuel_type'] = fuelType;
-      request.fields['transmission_type'] = transmissionType;
-      request.fields['engine_capacity'] = engineCapacity.toString();
-      request.fields['car_year'] = carYear.toString();
-      request.fields['kilometers'] = kiloMeters.toString();
-      request.fields['price'] = price;
-      request.fields['is_negotiable'] = isNegotioable.toString();
-      request.fields['distance_range'] = distanceRange.toString();
-      request.fields['specs_value'] = json.encode(specsValues);
+      if (carAd.adTitle != adTitle) request.fields['ad_title'] = adTitle;
+      if (carAd.adDescription != adDescription) request.fields['ad_description'] = adDescription;
+      if (carAd.carModel.id != carModel) request.fields['car_model'] = carModel;
+      if (carAd.carColor.id != carColor) request.fields['car_color'] = carColor;
+      if (carAd.carShape.id != carShape) request.fields['car_shape'] = carShape;
+      if (carAd.adArea.id != adArea) request.fields['ad_area'] = adArea;
+      if (carAd.carCondition != carCondition) request.fields['car_condition'] = carCondition;
+      if (carAd.fuelType != fuelType) request.fields['fuel_type'] = fuelType;
+      if (carAd.transmissionType != transmissionType) request.fields['transmission_type'] = transmissionType;
+      if (carAd.engineCapacity != engineCapacity) request.fields['engine_capacity'] = engineCapacity.toString();
+      if (carAd.carYear != carYear) request.fields['car_year'] = carYear.toString();
+      if (carAd.kilometers != kiloMeters) request.fields['kilometers'] = kiloMeters.toString();
+      if (carAd.price != price) request.fields['price'] = price;
+      if (carAd.isNegotiable != isNegotioable) request.fields['is_negotiable'] = isNegotioable.toString();
+      if (carAd.distanceRange != distanceRange) request.fields['distance_range'] = distanceRange.toString();
+      // delete_spec_ids & specs_value
+      // if (carAd.adTitle != adTitle) request.fields['specs_value'] = json.encode(specsValues);
       if (video != null) {
         var videoFile = await http.MultipartFile.fromPath(
           'ad_video',
@@ -382,18 +393,20 @@ class CarCubit extends Cubit<CarStates> {
         );
         request.files.add(videoFile);
       }
-      for (int i = 0; i < imgs.length; i++) {
-        var imgFile = await http.MultipartFile.fromPath(
-          'imgs',
-          imgs[i].path,
-        );
-        request.files.add(imgFile);
-      }
+
+      // delete_img_ids & imgs
+      // for (int i = 0; i < imgs.length; i++) {
+      //   var imgFile = await http.MultipartFile.fromPath(
+      //     'imgs',
+      //     imgs[i].path,
+      //   );
+      //   request.files.add(imgFile);
+      // }
 
       http.StreamedResponse response = await request.send();
       var responseBody = await response.stream.bytesToString();
       var data = json.decode(responseBody);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         _userCarAds.insert(0, CarAdModel.fromJson(data['data']));
         emit(UpdateCarAdsSuccessState());
       } else {

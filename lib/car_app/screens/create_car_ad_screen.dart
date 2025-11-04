@@ -60,10 +60,6 @@ class _CarAdCreationPageState extends State<CarAdCreationPage> {
   List<File> _images = [];
   File? _video;
 
-  final List<String> _conditions = ['new', 'used'];
-  final List<String> _transmissions = ['manual', 'automatic',];
-  final List<String> _fuelTypes = ['gas', 'diesel', 'natural gas', 'hybird', 'electric'];
-
   @override
   void initState() {
     super.initState();
@@ -378,7 +374,6 @@ List<StepData> _getSteps() {
               ],
             ),
           ),
-          if (_selectedCity != null)
             Container(
               margin: const EdgeInsets.only(top: 15.0),
               child: Column(
@@ -395,7 +390,7 @@ List<StepData> _getSteps() {
                   const SizedBox(height: 8),
                   DropdownButtonFormField<AreaModel>(
                     dropdownColor: AppColors.whiteColor,
-                    value: _selectedArea,
+                    value: _selectedArea ?? null,
                     decoration: InputDecoration(
                       hintText: selectedLang[AppLangAssets.selectCity]!,
                       filled: true,
@@ -414,7 +409,7 @@ List<StepData> _getSteps() {
                         borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
                       ),
                     ),
-                    items: _selectedCity!.areas.map((item) {
+                    items: _selectedCity == null ? [] : _selectedCity!.areas.map((item) {
                       return DropdownMenuItem(value: item, child: Text(item.areaName));
                     }).toList(),
                     onChanged: (value) {
@@ -439,7 +434,7 @@ List<StepData> _getSteps() {
             title: '${selectedLang[AppLangAssets.condition]} *',
             hint: selectedLang[AppLangAssets.selectCondition]!,
             value: _selectedCondition,
-            items: _conditions,
+            items: BlocProvider.of<CarCubit>(context).conditions,
             onChanged: (value) => setState(() => _selectedCondition = value),
             fillColor: Colors.grey.shade50,
           ),
@@ -497,7 +492,6 @@ List<StepData> _getSteps() {
               ],
             ),
           ),
-          if (_selectedBrand != null)
           Container(
             margin: const EdgeInsets.only(top: 15.0),
             child: Column(
@@ -514,7 +508,7 @@ List<StepData> _getSteps() {
                 const SizedBox(height: 8),
                 DropdownButtonFormField<CarMakeModelModel>(
                   dropdownColor: AppColors.whiteColor,
-                  value: _selectedModel,
+                  value: _selectedModel ?? null,
                   decoration: InputDecoration(
                     hintText: selectedLang[AppLangAssets.selectModel]!,
                     filled: true,
@@ -533,7 +527,7 @@ List<StepData> _getSteps() {
                       borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
                     ),
                   ),
-                  items: _selectedBrand!.models.map((item) {
+                  items: _selectedBrand == null ? [] : _selectedBrand!.models.map((item) {
                     return DropdownMenuItem(value: item, child: Text(item.modelName));
                   }).toList(),
                   onChanged: (value) {
@@ -599,7 +593,7 @@ List<StepData> _getSteps() {
             title: '${selectedLang[AppLangAssets.transmission]} *',
             hint: selectedLang[AppLangAssets.selectTransimission]!,
             value: _selectedTransmission,
-            items: _transmissions,
+            items: BlocProvider.of<CarCubit>(context).transmissions,
             onChanged: (value) => setState(() => _selectedTransmission = value),
             fillColor: Colors.grey.shade50,
           ),
@@ -607,7 +601,7 @@ List<StepData> _getSteps() {
             title: '${selectedLang[AppLangAssets.fuelType]} *',
             hint: selectedLang[AppLangAssets.selectFuelType]!,
             value: _selectedFuelType,
-            items: _fuelTypes,
+            items: BlocProvider.of<CarCubit>(context).fuelType,
             onChanged: (value) => setState(() => _selectedFuelType = value),
             fillColor: Colors.grey.shade50,
           ),
