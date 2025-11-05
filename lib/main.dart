@@ -41,6 +41,14 @@ class _MyAppState extends State<MyApp> {
         builder: (context, state) => MaterialApp(
           theme: ThemeData(
             useMaterial3: true,
+            dropdownMenuTheme: DropdownMenuThemeData(
+              menuStyle: MenuStyle(
+                backgroundColor: MaterialStateProperty.all(AppColors.whiteColor),
+              )
+            ),
+            popupMenuTheme: PopupMenuThemeData(
+                color: AppColors.whiteColor,
+            ),
             appBarTheme: AppBarTheme(
               backgroundColor: AppColors.whiteColor,
               surfaceTintColor: AppColors.whiteColor,

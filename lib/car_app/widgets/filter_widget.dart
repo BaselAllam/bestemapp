@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
@@ -9,11 +11,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CarFilterBottomSheet extends StatefulWidget {
-  final Function(Map<String, dynamic>) onApplyFilters;
 
   const CarFilterBottomSheet({
     super.key,
-    required this.onApplyFilters,
   });
 
   @override
@@ -24,29 +24,27 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
 
   String _condition = 'all';
   
-  final TextEditingController _priceMinController = TextEditingController(text: '0');
-  final TextEditingController _priceMaxController = TextEditingController(text: '100000');
-  final TextEditingController _yearMinController = TextEditingController(text: '2000');
+  final TextEditingController _priceMinController = TextEditingController();
+  final TextEditingController _priceMaxController = TextEditingController();
+  final TextEditingController _yearMinController = TextEditingController();
   final TextEditingController _yearMaxController = TextEditingController();
-  final TextEditingController _mileageMinController = TextEditingController(text: '0');
-  final TextEditingController _mileageMaxController = TextEditingController(text: '200000');
+  final TextEditingController _kiloMeterMinController = TextEditingController();
+  final TextEditingController _kiloMeterMaxController = TextEditingController();
   
   CarMakeModel? _selectedMake;
   CarMakeModelModel? _selectedModel;
   String? _selectedTransmission;
   String? _selectedFuelType;
   ColorModel? _selectedColor;
-  
-  List<String> _selectedFeatures = [];
 
   @override
   void initState() {
     super.initState();
-    _selectedMake = BlocProvider.of<CarCubit>(context).carMakes[0];
+    _selectedMake = null;
     _selectedTransmission = BlocProvider.of<CarCubit>(context).transmissions[0];
     _selectedFuelType = BlocProvider.of<CarCubit>(context).fuelType[0];
-    _selectedColor = BlocProvider.of<AppSettingsCubit>(context).colors[0];
-    _yearMaxController.text = DateTime.now().year.toString();
+    _selectedColor = null;
+    _yearMaxController.text = '';
   }
 
   @override
@@ -55,47 +53,48 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
     _priceMaxController.dispose();
     _yearMinController.dispose();
     _yearMaxController.dispose();
-    _mileageMinController.dispose();
-    _mileageMaxController.dispose();
+    _kiloMeterMinController.dispose();
+    _kiloMeterMaxController.dispose();
     super.dispose();
   }
 
   void _resetFilters() {
     setState(() {
-      _condition = 'all';
-      _priceMinController.text = '0';
-      _priceMaxController.text = '100000';
-      _yearMinController.text = '2000';
-      _yearMaxController.text = DateTime.now().year.toString();
-      _mileageMinController.text = '0';
-      _mileageMaxController.text = '200000';
-      _selectedMake = BlocProvider.of<CarCubit>(context).carMakes[0];
+      _condition = BlocProvider.of<CarCubit>(context).conditions[0];
+      _priceMinController.text = '';
+      _priceMaxController.text = '';
+      _yearMinController.text = '';
+      _yearMaxController.text = '';
+      _kiloMeterMinController.text = '';
+      _kiloMeterMaxController.text = '';
+      _selectedMake = null;
       _selectedModel = null;
       _selectedTransmission = BlocProvider.of<CarCubit>(context).transmissions[0];
       _selectedFuelType = BlocProvider.of<CarCubit>(context).fuelType[0];
-      _selectedColor = BlocProvider.of<AppSettingsCubit>(context).colors[0];
-      _selectedFeatures = [];
+      _selectedColor = null;
     });
   }
 
   void _applyFilters() {
     final filters = {
-      'condition': _condition,
-      'priceMin': double.tryParse(_priceMinController.text) ?? 0,
-      'priceMax': double.tryParse(_priceMaxController.text) ?? 100000,
-      'yearMin': int.tryParse(_yearMinController.text) ?? 2000,
-      'yearMax': int.tryParse(_yearMaxController.text) ?? DateTime.now().year,
-      'mileageMin': int.tryParse(_mileageMinController.text) ?? 0,
-      'mileageMax': int.tryParse(_mileageMaxController.text) ?? 200000,
-      'make': _selectedMake,
-      'model': _selectedModel,
-      'transmission': _selectedTransmission,
-      'fuelType': _selectedFuelType,
-      'color': _selectedColor,
-      'features': _selectedFeatures,
+      SearchCarParamsKeys.car_condition: _condition == 'all' ? null : _condition.toLowerCase(),
+      SearchCarParamsKeys.min_price: _priceMinController.text.isEmpty ? null : _priceMinController.text,
+      SearchCarParamsKeys.max_price: _priceMaxController.text.isEmpty ? null : _priceMaxController.text,
+      SearchCarParamsKeys.min_year: _yearMinController.text.isEmpty ? null : _yearMinController.text,
+      SearchCarParamsKeys.max_year: _yearMinController.text.isEmpty ? null : _yearMinController.text,
+      SearchCarParamsKeys.min_kilometers: _kiloMeterMinController.text.isEmpty ? null : _kiloMeterMinController.text,
+      SearchCarParamsKeys.max_kilometers: _kiloMeterMinController.text.isEmpty ? null : _kiloMeterMinController.text,
+      SearchCarParamsKeys.car_make_id: _selectedMake ?? _selectedMake,
+      SearchCarParamsKeys.car_model_id: _selectedModel ?? _selectedModel,
+      SearchCarParamsKeys.transmission_type: _selectedTransmission ?? _selectedTransmission,
+      SearchCarParamsKeys.fuel_type: _selectedFuelType ?? _selectedFuelType,
+      SearchCarParamsKeys.car_color__id: _selectedColor ?? _selectedColor,
     };
-    widget.onApplyFilters(filters);
-    Navigator.pop(context);
+    filters.forEach((k, v) {
+      BlocProvider.of<CarCubit>(context).setSearchCarParams(k, v);
+    });
+    log(BlocProvider.of<CarCubit>(context).searchCarParams.toString());
+    // Navigator.pop(context);
   }
 
   @override
@@ -182,8 +181,8 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
           _buildSectionTitle(selectedLang[AppLangAssets.kiloMeterRange]!),
           SizedBox(height: 12),
           _buildRangeInputs(
-            minController: _mileageMinController,
-            maxController: _mileageMaxController,
+            minController: _kiloMeterMinController,
+            maxController: _kiloMeterMaxController,
             suffix: ' km',
             hint: 'km',
           ),
@@ -230,7 +229,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
           ),
 
           SizedBox(height: 24),
-          _buildSectionTitle(selectedLang[AppLangAssets.model]!),
+          _buildSectionTitle(selectedLang[AppLangAssets.brand]!),
           SizedBox(height: 8),
           DropdownButtonFormField<CarMakeModelModel>(
             dropdownColor: AppColors.whiteColor,
@@ -238,7 +237,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
             decoration: InputDecoration(
               suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
               prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
-              hintText: selectedLang[AppLangAssets.selectBrand]!,
+              hintText: selectedLang[AppLangAssets.selectModel]!,
               filled: true,
               fillColor: Colors.grey.shade50,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -457,6 +456,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
           value: value,
           isExpanded: true,
           icon: Icon(Icons.keyboard_arrow_down),
+          dropdownColor: AppColors.whiteColor,
           onChanged: onChanged,
           items: items.map((item) {
             return DropdownMenuItem(
@@ -475,7 +475,6 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
       spacing: 12,
       runSpacing: 12,
       children: BlocProvider.of<AppSettingsCubit>(context).colors.map((entry) {
-        final isSelected = _selectedColor!.id == entry.id;
         return InkWell(
           onTap: () => setState(() => _selectedColor = entry),
           borderRadius: BorderRadius.circular(8),
@@ -485,12 +484,14 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
             decoration: BoxDecoration(
               color: entry.colorCode,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
-                width: isSelected ? 3 : 1,
+              border: _selectedColor == null ? Border.all() : Border.all(
+                color: _selectedColor!.id == entry.id ? Color(0xFF3B82F6) : Colors.grey.shade300,
+                width: _selectedColor!.id == entry.id ? 3 : 1,
               ),
             ),
-            child: isSelected
+            child: _selectedColor == null ? Center(
+                    child: Icon(Icons.palette, color: Colors.grey.shade600),
+                  ) : _selectedColor!.id == entry.id
                     ? Icon(Icons.check, color: Colors.white)
                     : null,
           ),

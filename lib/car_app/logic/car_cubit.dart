@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -9,19 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-enum SearchCarParamsKeys {ad_area_id, ad_city_id, car_make_id, car_model_id, car_condition, fuel_type, transmission_type, min_price, max_price}
+enum SearchCarParamsKeys {ad_area_id, ad_city_id, car_make_id, car_model_id, car_condition, fuel_type, transmission_type, min_price, max_price, min_year, max_year, min_kilometers, max_kilometers, sort_by, car_color__id, car_shape__id}
 
 class CarCubit extends Cubit<CarStates> {
 
   CarCubit() : super(InitCarStates());
 
-  final List<String> _fuelTypes = ['gas', 'diesel', 'natural gas', 'hybird', 'electric'];
+  final List<String> _fuelTypes = ['all', 'gas', 'diesel', 'natural gas', 'hybird', 'electric'];
   List<String> get fuelType => _fuelTypes;
 
-  final List<String> _conditions = ['new', 'used'];
+  final List<String> _conditions = ['all', 'new', 'used'];
   List<String> get conditions => _conditions;
 
-  final List<String> _transmissions = ['manual', 'automatic'];
+  final List<String> _transmissions = ['all', 'manual', 'automatic'];
   List<String> get transmissions => _transmissions;
 
   List<CarShapeModel> _carShapes = [];
@@ -231,7 +230,6 @@ class CarCubit extends Cubit<CarStates> {
     _searchCarAdsResult.clear();
     try {
       Map<String, String> headers = AppApi.headerData;
-      log(_prepareSearchCarParam());
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/${_prepareSearchCarParam()}'), headers: headers);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {

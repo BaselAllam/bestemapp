@@ -8,7 +8,6 @@ import 'package:bestemapp/car_app/widgets/sort_widget.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
-import 'package:bestemapp/shared/shared_widgets/no_result_found.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,28 +23,7 @@ class SearchResultsScreen extends StatefulWidget {
 
 class _SearchResultsScreenState extends State<SearchResultsScreen> {
   CarSortOption? _currentSort;
-  Map<String, dynamic> _activeFilters = {};
   bool _isLoading = false;
-
-
-  void _showSortBottomSheet() async {
-    final result = await CarSortBottomSheet.show(
-      context: context,
-      currentSort: _currentSort,
-      showMileageOptions: true,
-    );
-
-    if (result != null) {
-      setState(() {
-        _currentSort = result;
-      });
-      _applySorting(result);
-    }
-  }
-
-  void _applySorting(CarSortOption sort) {
-    // Apply sorting logic
-  }
 
   String _sortBy = 'Relevant';
 
@@ -61,18 +39,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(_activeFilters.isEmpty ? 1 : 61),
-          child: Column(
-            children: [
-              Container(
-                color: Colors.grey[200],
-                height: 1,
-              ),
-              if (_activeFilters.isNotEmpty) _buildActiveFiltersBar(),
-            ],
-          ),
-        ),
       ),
       body: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
@@ -141,7 +107,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           _buildControlButton(
             icon: Icons.tune_rounded,
             label: selectedLang[AppLangAssets.filter]!,
-            badge: _getActiveFilterCount(),
             onTap: () => _showFilterBottomSheet(context),
           ),
           const SizedBox(width: 8),
@@ -155,28 +120,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     );
   }
 
-  int _getActiveFilterCount() {
-    int count = 0;
-    _activeFilters.forEach((key, value) {
-      if (value != null) {
-        if (value is List && value.isNotEmpty) {
-          count++;
-        } else if (value is Map && value.isNotEmpty) {
-          count++;
-        } else if (value is String && value.isNotEmpty) {
-          count++;
-        } else if (value is num) {
-          count++;
-        }
-      }
-    });
-    return count;
-  }
-
   Widget _buildControlButton({
     required IconData icon,
     required String label,
-    int? badge,
     required VoidCallback onTap,
   }) {
     return Material(
@@ -194,31 +140,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 clipBehavior: Clip.none,
                 children: [
                   Icon(icon, size: 18, color: AppColors.primaryColor),
-                  if (badge != null && badge > 0)
-                    Positioned(
-                      right: -6,
-                      top: -6,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
-                        ),
-                        child: Text(
-                          badge > 9 ? '9+' : '$badge',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
                 ],
               ),
               const SizedBox(width: 6),
@@ -235,276 +156,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildActiveFiltersBar() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.blue[50],
-        border: Border(
-          bottom: BorderSide(color: Colors.grey[200]!, width: 1),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: 36,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ..._buildFilterChips(),
-                  if (_getActiveFilterCount() > 0) 
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: _buildClearAllChip(),
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _buildFilterChips() {
-    List<Widget> chips = [];
-    
-    _activeFilters.forEach((key, value) {
-      // Only add chip if the filter has a valid value
-      if (_isValidFilterValue(value)) {
-        String displayValue = _formatFilterValue(key, value);
-        chips.add(
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: _buildFilterChip(key, displayValue),
-          ),
-        );
-      }
-    });
-    
-    return chips;
-  }
-
-  bool _isValidFilterValue(dynamic value) {
-    if (value == null) return false;
-    
-    if (value is String) {
-      return value.isNotEmpty;
-    } else if (value is List) {
-      return value.isNotEmpty;
-    } else if (value is Map) {
-      return value.isNotEmpty && 
-             (value.containsKey('min') || value.containsKey('max'));
-    } else if (value is num) {
-      return true;
-    }
-    
-    return false;
-  }
-
-  Widget _buildFilterChip(String key, String value) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            _getFilterIcon(key),
-            size: 14,
-            color: AppColors.primaryColor,
-          ),
-          const SizedBox(width: 6),
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 150),
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[800],
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(width: 6),
-          GestureDetector(
-            onTap: () => _removeFilter(key),
-            child: Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.close_rounded,
-                size: 14,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildClearAllChip() {
-    return GestureDetector(
-      onTap: _clearAllFilters,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: Colors.red[50],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.red[200]!),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.clear_all_rounded,
-              size: 14,
-              color: Colors.red[700],
-            ),
-            const SizedBox(width: 6),
-            Text(
-              'Clear All',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.red[700],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  IconData _getFilterIcon(String key) {
-    switch (key.toLowerCase()) {
-      case 'price':
-      case 'pricemin':
-      case 'pricemax':
-        return Icons.attach_money_rounded;
-      case 'year':
-      case 'yearmin':
-      case 'yearmax':
-        return Icons.calendar_today_rounded;
-      case 'mileage':
-      case 'mileagemin':
-      case 'mileagemax':
-        return Icons.speed_rounded;
-      case 'brand':
-      case 'make':
-      case 'model':
-        return Icons.directions_car_rounded;
-      case 'location':
-      case 'city':
-        return Icons.location_on_rounded;
-      case 'fueltype':
-      case 'fuel':
-        return Icons.local_gas_station_rounded;
-      case 'transmission':
-        return Icons.settings_rounded;
-      case 'condition':
-        return Icons.star_rounded;
-      case 'color':
-        return Icons.palette_rounded;
-      case 'bodytype':
-        return Icons.drive_eta_rounded;
-      default:
-        return Icons.filter_alt_rounded;
-    }
-  }
-
-  String _formatFilterValue(String key, dynamic value) {
-    // Handle list values
-    if (value is List && value.isNotEmpty) {
-      if (value.length == 1) {
-        return value[0].toString();
-      } else if (value.length == 2) {
-        return '${value[0]}, ${value[1]}';
-      } else {
-        return '${value[0]} +${value.length - 1} more';
-      }
-    }
-    
-    // Handle range values (Map with min/max)
-    if (value is Map) {
-      final hasMin = value.containsKey('min') && value['min'] != null;
-      final hasMax = value.containsKey('max') && value['max'] != null;
-      
-      switch (key.toLowerCase()) {
-        case 'price':
-          if (hasMin && hasMax) {
-            return '\$${value['min']} - \$${value['max']}';
-          } else if (hasMin) {
-            return 'From \$${value['min']}';
-          } else if (hasMax) {
-            return 'Up to \$${value['max']}';
-          }
-          break;
-        case 'year':
-          if (hasMin && hasMax) {
-            return '${value['min']} - ${value['max']}';
-          } else if (hasMin) {
-            return 'From ${value['min']}';
-          } else if (hasMax) {
-            return 'Up to ${value['max']}';
-          }
-          break;
-        case 'mileage':
-          if (hasMin && hasMax) {
-            return '${value['min']}k - ${value['max']}k mi';
-          } else if (hasMin) {
-            return 'From ${value['min']}k mi';
-          } else if (hasMax) {
-            return 'Up to ${value['max']}k mi';
-          }
-          break;
-      }
-    }
-    
-    // Handle simple string/number values
-    return value.toString();
-  }
-
-  void _removeFilter(String key) {
-    setState(() {
-      _activeFilters.remove(key);
-    });
-    // Reapply search with updated filters
-    _applyFilters();
-  }
-
-  void _clearAllFilters() {
-    setState(() {
-      _activeFilters.clear();
-    });
-    // Reapply search with no filters
-    _applyFilters();
-  }
-
-  void _applyFilters() {
-    // Apply the current filters to the search results
-    // This would typically involve calling your API or filtering your data
-    print('Applying filters: $_activeFilters');
   }
 
   String _getSortLabel() {
@@ -680,14 +331,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => CarFilterBottomSheet(
-        onApplyFilters: (filters) {
-          setState(() {
-            _activeFilters = filters;
-          });
-          _applyFilters();
-        },
-      ),
+      builder: (context) => CarFilterBottomSheet(),
     );
   }
 }
