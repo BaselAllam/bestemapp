@@ -465,4 +465,18 @@ final Map<String, String> arData = {
   AppLangAssets.cancel : 'لا',
   AppLangAssets.editCarAd: 'تعديل إعلان العربية',
   AppLangAssets.updateAd: 'تحديث الإعلان',
+  AppLangAssets.advancedFilter: 'بحث متقدّم',
+  AppLangAssets.basic: 'أساسي',
+  AppLangAssets.details: 'التفاصيل',
+  AppLangAssets.priceRange: 'السعر من كام لكام',
+  AppLangAssets.price: 'السعر',
+  AppLangAssets.yearRange: 'سنة الموديل',
+  AppLangAssets.make: 'الماركة',
+  AppLangAssets.kiloMeterRange: 'عدد الكيلومترات',
+  AppLangAssets.min: 'أقل حاجة',
+  AppLangAssets.max: 'أعلى حاجة',
+  AppLangAssets.to: 'لحد',
+  AppLangAssets.reset: 'اعادة ضبط',
+  AppLangAssets.applyFilters: 'اعرض النتائج',
+
 };

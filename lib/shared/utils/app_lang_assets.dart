@@ -465,4 +465,17 @@ class AppLangAssets {
   static String cancel = 'cancel';
   static String editCarAd = 'editCarAd';
   static String updateAd = 'updateAd';
+  static String advancedFilter = 'advancedFilter';
+  static String basic = 'basic';
+  static String details = 'details';
+  static String priceRange = 'priceRange';
+  static String price = 'price';
+  static String yearRange = 'yearRange';
+  static String make = 'make';
+  static String kiloMeterRange = 'kiloMeterRange';
+  static String min = 'min';
+  static String max = 'max';
+  static String to = 'to';
+  static String reset = 'reset';
+  static String applyFilters = 'applyFilters';
 }

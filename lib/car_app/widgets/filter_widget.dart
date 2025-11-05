@@ -1,5 +1,12 @@
+import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/logic/color_model.dart';
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
+import 'package:bestemapp/car_app/logic/car_model.dart';
+import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CarFilterBottomSheet extends StatefulWidget {
   final Function(Map<String, dynamic>) onApplyFilters;
@@ -13,9 +20,7 @@ class CarFilterBottomSheet extends StatefulWidget {
   State<CarFilterBottomSheet> createState() => _CarFilterBottomSheetState();
 }
 
-class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
 
   String _condition = 'all';
   
@@ -26,63 +31,26 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
   final TextEditingController _mileageMinController = TextEditingController(text: '0');
   final TextEditingController _mileageMaxController = TextEditingController(text: '200000');
   
-  String? _selectedMake;
-  String? _selectedModel;
-  String? _selectedBodyType;
+  CarMakeModel? _selectedMake;
+  CarMakeModelModel? _selectedModel;
   String? _selectedTransmission;
   String? _selectedFuelType;
-  String? _selectedColor;
+  ColorModel? _selectedColor;
   
   List<String> _selectedFeatures = [];
-  
-  final List<String> _makes = [
-    'Any Make', 'Toyota', 'Honda', 'BMW', 'Mercedes-Benz', 'Ford', 
-    'Chevrolet', 'Nissan', 'Hyundai', 'Volkswagen', 'Audi', 'Lexus',
-    'Mazda', 'Kia', 'Subaru', 'Jeep', 'Tesla', 'Porsche'
-  ];
-  
-  final List<String> _bodyTypes = [
-    'Any Body Type', 'Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 
-    'Convertible', 'Van', 'Wagon', 'Minivan', 'Crossover'
-  ];
-  
-  final List<String> _transmissions = [
-    'Any Transmission', 'Automatic', 'Manual', 'CVT', 'Semi-Automatic'
-  ];
-  
-  final List<String> _fuelTypes = [
-    'Any Fuel Type', 'Gasoline', 'Diesel', 'Electric', 'Hybrid', 
-    'Plug-in Hybrid', 'Hydrogen'
-  ];
-  
-  final List<String> _colors = [
-    'Any Color', 'Black', 'White', 'Silver', 'Gray', 'Red', 'Blue', 
-    'Green', 'Yellow', 'Orange', 'Brown', 'Gold', 'Beige'
-  ];
-  
-  final List<String> _features = [
-    'Sunroof', 'Leather Seats', 'Navigation System', 'Backup Camera',
-    'Blind Spot Monitor', 'Lane Departure Warning', 'Cruise Control',
-    'Heated Seats', 'Cooled Seats', 'All-Wheel Drive', 'Apple CarPlay',
-    'Android Auto', 'Bluetooth', 'USB Port', 'Parking Sensors',
-    'Keyless Entry', 'Push Start', 'Premium Audio', 'Third Row Seats'
-  ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _selectedMake = _makes[0];
-    _selectedBodyType = _bodyTypes[0];
-    _selectedTransmission = _transmissions[0];
-    _selectedFuelType = _fuelTypes[0];
-    _selectedColor = _colors[0];
+    _selectedMake = BlocProvider.of<CarCubit>(context).carMakes[0];
+    _selectedTransmission = BlocProvider.of<CarCubit>(context).transmissions[0];
+    _selectedFuelType = BlocProvider.of<CarCubit>(context).fuelType[0];
+    _selectedColor = BlocProvider.of<AppSettingsCubit>(context).colors[0];
     _yearMaxController.text = DateTime.now().year.toString();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     _priceMinController.dispose();
     _priceMaxController.dispose();
     _yearMinController.dispose();
@@ -101,12 +69,11 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
       _yearMaxController.text = DateTime.now().year.toString();
       _mileageMinController.text = '0';
       _mileageMaxController.text = '200000';
-      _selectedMake = _makes[0];
+      _selectedMake = BlocProvider.of<CarCubit>(context).carMakes[0];
       _selectedModel = null;
-      _selectedBodyType = _bodyTypes[0];
-      _selectedTransmission = _transmissions[0];
-      _selectedFuelType = _fuelTypes[0];
-      _selectedColor = _colors[0];
+      _selectedTransmission = BlocProvider.of<CarCubit>(context).transmissions[0];
+      _selectedFuelType = BlocProvider.of<CarCubit>(context).fuelType[0];
+      _selectedColor = BlocProvider.of<AppSettingsCubit>(context).colors[0];
       _selectedFeatures = [];
     });
   }
@@ -122,7 +89,6 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
       'mileageMax': int.tryParse(_mileageMaxController.text) ?? 200000,
       'make': _selectedMake,
       'model': _selectedModel,
-      'bodyType': _selectedBodyType,
       'transmission': _selectedTransmission,
       'fuelType': _selectedFuelType,
       'color': _selectedColor,
@@ -146,17 +112,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
       child: Column(
         children: [
           _buildHeader(),
-          _buildTabBar(),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildBasicFilters(),
-                _buildDetailedFilters(),
-                _buildFeaturesFilters(),
-              ],
-            ),
-          ),
+          Expanded(child: _buildFilters()),
           _buildActionButtons(),
         ],
       ),
@@ -175,7 +131,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Advanced Filters',
+            selectedLang[AppLangAssets.advancedFilter]!,
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -193,182 +149,144 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
     );
   }
 
-  Widget _buildTabBar() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
-        ),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        labelColor: Color(0xFF3B82F6),
-        unselectedLabelColor: Colors.grey,
-        indicatorColor: Color(0xFF3B82F6),
-        labelStyle: TextStyle(fontWeight: FontWeight.w600),
-        tabs: [
-          Tab(text: 'Basic'),
-          Tab(text: 'Details'),
-          Tab(text: 'Features'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBasicFilters() {
+  Widget _buildFilters() {
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle('Condition'),
+          _buildSectionTitle(selectedLang[AppLangAssets.condition]!),
           SizedBox(height: 12),
           _buildConditionSelector(),
           
           SizedBox(height: 32),
-          _buildSectionTitle('Price Range'),
+          _buildSectionTitle(selectedLang[AppLangAssets.priceRange]!),
           SizedBox(height: 12),
           _buildRangeInputs(
             minController: _priceMinController,
             maxController: _priceMaxController,
-            prefix: '\$',
-            hint: 'Price',
+            prefix: 'EGP ',
+            hint: selectedLang[AppLangAssets.price]!,
           ),
           
           SizedBox(height: 32),
-          _buildSectionTitle('Year Range'),
+          _buildSectionTitle(selectedLang[AppLangAssets.yearRange]!),
           SizedBox(height: 12),
           _buildRangeInputs(
             minController: _yearMinController,
             maxController: _yearMaxController,
-            hint: 'Year',
+            hint: selectedLang[AppLangAssets.year]!,
           ),
           
           SizedBox(height: 32),
-          _buildSectionTitle('Mileage Range (miles)'),
+          _buildSectionTitle(selectedLang[AppLangAssets.kiloMeterRange]!),
           SizedBox(height: 12),
           _buildRangeInputs(
             minController: _mileageMinController,
             maxController: _mileageMaxController,
-            suffix: ' mi',
-            hint: 'Mileage',
+            suffix: ' km',
+            hint: 'km',
           ),
           
           SizedBox(height: 32),
-          _buildSectionTitle('Make'),
+          _buildSectionTitle(selectedLang[AppLangAssets.make]!),
           SizedBox(height: 8),
-          _buildDropdown(
-            value: _selectedMake!,
-            items: _makes,
-            onChanged: (value) => setState(() => _selectedMake = value),
+          DropdownButtonFormField<CarMakeModel>(
+            dropdownColor: AppColors.whiteColor,
+            value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name],
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+              prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
+              hintText: selectedLang[AppLangAssets.selectBrand]!,
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+            ),
+            items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
+              return DropdownMenuItem(value: item, child: Row(
+                children: [
+                  Image.network(item.makeLogo, height: 20, width: 20),
+                  SizedBox(width: 10),
+                  Text(item.makeName),
+                ],
+              ));
+            }).toList(),
+            onChanged: (value) {
+              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_make_id, value);
+              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, null);
+            },
           ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildDetailedFilters() {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Body Type'),
+          SizedBox(height: 24),
+          _buildSectionTitle(selectedLang[AppLangAssets.model]!),
           SizedBox(height: 8),
-          _buildDropdown(
-            value: _selectedBodyType!,
-            items: _bodyTypes,
-            onChanged: (value) => setState(() => _selectedBodyType = value),
+          DropdownButtonFormField<CarMakeModelModel>(
+            dropdownColor: AppColors.whiteColor,
+            value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name] ?? null,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+              prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
+              hintText: selectedLang[AppLangAssets.selectBrand]!,
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+            ),
+            items:BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name] == null ?
+            [] : <DropdownMenuItem<CarMakeModelModel>>[
+              for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name]!.models)
+              DropdownMenuItem(value: item, child: Text(item.modelName))
+            ],
+            onChanged: (value) {
+              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, value);
+            },
           ),
           
           SizedBox(height: 24),
-          _buildSectionTitle('Transmission'),
+          _buildSectionTitle(selectedLang[AppLangAssets.transmission]!),
           SizedBox(height: 8),
           _buildDropdown(
             value: _selectedTransmission!,
-            items: _transmissions,
+            items: BlocProvider.of<CarCubit>(context).transmissions,
             onChanged: (value) => setState(() => _selectedTransmission = value),
           ),
           
           SizedBox(height: 24),
-          _buildSectionTitle('Fuel Type'),
+          _buildSectionTitle(selectedLang[AppLangAssets.fuelType]!),
           SizedBox(height: 8),
           _buildDropdown(
             value: _selectedFuelType!,
-            items: _fuelTypes,
+            items: BlocProvider.of<CarCubit>(context).fuelType,
             onChanged: (value) => setState(() => _selectedFuelType = value),
           ),
           
           SizedBox(height: 24),
-          _buildSectionTitle('Exterior Color'),
+          _buildSectionTitle(selectedLang[AppLangAssets.color]!),
           SizedBox(height: 8),
           _buildColorGrid(),
-          
-          SizedBox(height: 24),
-          _buildSectionTitle('Number of Doors'),
-          SizedBox(height: 12),
-          _buildChipSelection(
-            options: ['2 Door', '4 Door', '5 Door'],
-            selectedOption: null,
-            onSelected: (value) {},
-          ),
-          
-          SizedBox(height: 24),
-          _buildSectionTitle('Drivetrain'),
-          SizedBox(height: 12),
-          _buildChipSelection(
-            options: ['FWD', 'RWD', 'AWD', '4WD'],
-            selectedOption: null,
-            onSelected: (value) {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeaturesFilters() {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Select Features'),
-          SizedBox(height: 8),
-          Text(
-            'Choose all the features you want in your car',
-            style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-          ),
-          SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _features.map((feature) {
-              final isSelected = _selectedFeatures.contains(feature);
-              return FilterChip(
-                label: Text(feature),
-                selected: isSelected,
-                onSelected: (selected) {
-                  setState(() {
-                    if (selected) {
-                      _selectedFeatures.add(feature);
-                    } else {
-                      _selectedFeatures.remove(feature);
-                    }
-                  });
-                },
-                backgroundColor: Colors.grey.shade100,
-                selectedColor: Color(0xFF3B82F6).withOpacity(0.2),
-                checkmarkColor: Color(0xFF3B82F6),
-                labelStyle: TextStyle(
-                  color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade700,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                ),
-                side: BorderSide(
-                  color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
-                ),
-              );
-            }).toList(),
-          ),
         ],
       ),
     );
@@ -452,7 +370,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
         Expanded(
           child: _buildNumberInputField(
             controller: minController,
-            label: 'Min $hint',
+            label: '${selectedLang[AppLangAssets.min]!} $hint',
             prefix: prefix,
             suffix: suffix,
           ),
@@ -460,7 +378,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            'to',
+            '${selectedLang[AppLangAssets.to]!}',
             style: TextStyle(
               color: Colors.grey.shade600,
               fontWeight: FontWeight.w500,
@@ -470,7 +388,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
         Expanded(
           child: _buildNumberInputField(
             controller: maxController,
-            label: 'Max $hint',
+            label: '${selectedLang[AppLangAssets.max]!} $hint',
             prefix: prefix,
             suffix: suffix,
           ),
@@ -552,46 +470,27 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
   }
 
   Widget _buildColorGrid() {
-    final colorMap = {
-      'Any Color': null,
-      'Black': Colors.black,
-      'White': Colors.white,
-      'Silver': Colors.grey.shade400,
-      'Gray': Colors.grey.shade700,
-      'Red': Colors.red,
-      'Blue': Colors.blue,
-      'Green': Colors.green,
-      'Yellow': Colors.yellow.shade700,
-      'Orange': Colors.orange,
-      'Brown': Colors.brown,
-      'Gold': Colors.amber.shade700,
-      'Beige': Colors.brown.shade200,
-    };
 
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: colorMap.entries.map((entry) {
-        final isSelected = _selectedColor == entry.key;
+      children: BlocProvider.of<AppSettingsCubit>(context).colors.map((entry) {
+        final isSelected = _selectedColor!.id == entry.id;
         return InkWell(
-          onTap: () => setState(() => _selectedColor = entry.key),
+          onTap: () => setState(() => _selectedColor = entry),
           borderRadius: BorderRadius.circular(8),
           child: Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: entry.value ?? Colors.grey.shade200,
+              color: entry.colorCode,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
                 width: isSelected ? 3 : 1,
               ),
             ),
-            child: entry.value == null
-                ? Center(
-                    child: Icon(Icons.palette, color: Colors.grey.shade600),
-                  )
-                : isSelected
+            child: isSelected
                     ? Icon(Icons.check, color: Colors.white)
                     : null,
           ),
@@ -600,31 +499,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
     );
   }
 
-  Widget _buildChipSelection({
-    required List<String> options,
-    required String? selectedOption,
-    required Function(String) onSelected,
-  }) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: options.map((option) {
-        final isSelected = selectedOption == option;
-        return ChoiceChip(
-          label: Text(option),
-          selected: isSelected,
-          onSelected: (selected) => onSelected(option),
-          backgroundColor: Colors.grey.shade100,
-          selectedColor: Color(0xFF3B82F6),
-          labelStyle: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey.shade700,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          ),
-        );
-      }).toList(),
-    );
-  }
-
+  
   Widget _buildActionButtons() {
     return Container(
       padding: EdgeInsets.all(20),
@@ -651,7 +526,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
                 ),
               ),
               child: Text(
-                'Reset',
+                selectedLang[AppLangAssets.reset]!,
                 style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 16,
@@ -674,7 +549,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet>
                 elevation: 0,
               ),
               child: Text(
-                'Apply Filters',
+                selectedLang[AppLangAssets.applyFilters]!,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

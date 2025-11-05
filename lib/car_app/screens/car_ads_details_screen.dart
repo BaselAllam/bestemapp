@@ -8,6 +8,7 @@ import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
 
 class CarDetailScreen extends StatefulWidget {
   final bool isAdmin;
@@ -27,17 +28,38 @@ class _CarDetailScreenState extends State<CarDetailScreen>
   late TabController _tabController;
   int _currentImageIndex = 0;
   final ScrollController _thumbnailScrollController = ScrollController();
+  VideoPlayerController? _mainVideoController;
+  bool _isMainVideoInitialized = false;
 
   @override
   void initState() {
     super.initState();
+    _currentImageIndex = 0;
     _tabController = TabController(length: 3, vsync: this);
+    if (widget.carAdModel.adVideo != null && widget.carAdModel.adVideo!.isNotEmpty) {
+    _initializeMainVideo();
   }
+  }
+
+  Future<void> _initializeMainVideo() async {
+  _mainVideoController = VideoPlayerController.network('${AppApi.imgIp}/${widget.carAdModel.adVideo}');
+  try {
+    await _mainVideoController!.initialize();
+    setState(() {
+      _isMainVideoInitialized = true;
+    });
+  } catch (e) {
+    print('Error initializing video: $e');
+  }
+}
+
+int get totalMediaItems => (widget.carAdModel.adVideo != null ? 1 : 0) + widget.carAdModel.adImgs.length;
 
   @override
   void dispose() {
     _tabController.dispose();
     _thumbnailScrollController.dispose();
+    _mainVideoController?.dispose();
     super.dispose();
   }
 
@@ -58,6 +80,124 @@ class _CarDetailScreenState extends State<CarDetailScreen>
     setState(() {
       _currentImageIndex = index;
     });
+  }
+
+  Widget _buildMainMediaView() {
+  if (widget.carAdModel.adVideo != null && _currentImageIndex == 0) {
+    if (!_isMainVideoInitialized || _mainVideoController == null) {
+      return Container(
+        width: double.infinity,
+        height: 300,
+        color: Colors.black,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
+    return SizedBox(
+      width: double.infinity,
+      height: 300,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          VideoPlayer(_mainVideoController!),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (_mainVideoController!.value.isPlaying) {
+                    _mainVideoController!.pause();
+                  } else {
+                    _mainVideoController!.play();
+                  }
+                });
+              },
+              child: AnimatedOpacity(
+                opacity: _mainVideoController!.value.isPlaying ? 0.0 : 0.7,
+                duration: const Duration(milliseconds: 300),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: const Icon(
+                    Icons.play_arrow,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  // Show image
+  final imageIndex = widget.carAdModel.adVideo != null ? _currentImageIndex - 1 : _currentImageIndex;
+  return Hero(
+    tag: 'car_image_$imageIndex',
+    child: Image.network(
+      '${widget.carAdModel.adImgs[imageIndex].image}',
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: 300,
+    ),
+  );
+}
+
+Widget _buildThumbnailItem(int index) {
+  // Video thumbnail
+  if (widget.carAdModel.adVideo != null && index == 0) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Use first image as video thumbnail or show placeholder
+        if (widget.carAdModel.adImgs.isNotEmpty)
+          Image.network(
+            '${widget.carAdModel.adImgs[0].image}',
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.grey.shade300,
+                child: const Icon(Icons.video_library),
+              );
+            },
+          )
+        else
+          Container(
+            color: Colors.grey.shade300,
+            child: const Icon(Icons.video_library),
+          ),
+        
+        // Play icon overlay
+        Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6),
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(8),
+            child: const Icon(
+              Icons.play_arrow,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+    
+    // Image thumbnail
+    final imageIndex = widget.carAdModel.adVideo != null ? index - 1 : index;
+    return Image.network(
+      '${widget.carAdModel.adImgs[imageIndex].image}',
+      fit: BoxFit.cover,
+    );
   }
 
   @override
@@ -86,18 +226,10 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                 children: [
                   GestureDetector(
                     onTap: () => _openImagePopup(_currentImageIndex),
-                    child: Hero(
-                      tag: 'car_image_$_currentImageIndex',
-                      child: Image.network(
-                        '${widget.carAdModel.adImgs[_currentImageIndex].image}',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 300,
-                      ),
-                    ),
+                    child: _buildMainMediaView(),
                   ),
                   
-                  // Image Counter
+                  // Image/Video Counter
                   Positioned(
                     bottom: 16,
                     right: 16,
@@ -108,7 +240,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        '${_currentImageIndex + 1}/${widget.carAdModel.adImgs.length}',
+                        '${_currentImageIndex + 1}/$totalMediaItems',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -131,9 +263,10 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                 controller: _thumbnailScrollController,
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: widget.carAdModel.adImgs.length,
+                itemCount: totalMediaItems,
                 itemBuilder: (context, index) {
                   final isSelected = _currentImageIndex == index;
+                  
                   return GestureDetector(
                     onTap: () => _selectImage(index),
                     child: Container(
@@ -150,10 +283,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          '${widget.carAdModel.adImgs[index].image}',
-                          fit: BoxFit.cover,
-                        ),
+                        child: _buildThumbnailItem(index),
                       ),
                     ),
                   );
@@ -187,7 +317,7 @@ class _CarDetailScreenState extends State<CarDetailScreen>
                             ),
                             SizedBox(height: 8),
                             Text(
-                              '\EGP ${widget.carAdModel.price}',
+                              'EGP ${widget.carAdModel.price}',
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
