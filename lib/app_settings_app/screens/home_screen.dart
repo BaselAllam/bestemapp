@@ -306,252 +306,254 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildHeroSearchSection() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF3B82F6).withOpacity(0.15),
-            blurRadius: 30,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          children: [
-            Container(
-              height: 490,
+    return BlocBuilder<CarCubit, CarStates>(
+      builder: (context, state) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF3B82F6).withOpacity(0.15),
+              blurRadius: 30,
+              offset: const Offset(0, 10),
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(32),
-                    topRight: Radius.circular(32),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(
+            children: [
+              Container(
+                height: 490,
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
+                    ),
                   ),
-                ),
-                child: BlocBuilder<CarCubit, CarStates>(
-                  builder: (context, state) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        selectedLang[AppLangAssets.findUrDreamCar]!,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1F2937),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        selectedLang[AppLangAssets.searchFromThousands]!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        children: [
-                          _buildTab('All', 0),
-                          const SizedBox(width: 32),
-                          _buildTab('New', 1),
-                          const SizedBox(width: 32),
-                          _buildTab('Used', 2),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      DropdownButtonFormField<CarMakeModel>(
-                        dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name],
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
-                          prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
-                          hintText: selectedLang[AppLangAssets.selectBrand]!,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                  child: BlocBuilder<CarCubit, CarStates>(
+                    builder: (context, state) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          selectedLang[AppLangAssets.findUrDreamCar]!,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1F2937),
                           ),
                         ),
-                        items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
-                          return DropdownMenuItem(value: item, child: Row(
-                            children: [
-                              Image.network(item.makeLogo, height: 20, width: 20),
-                              SizedBox(width: 10),
-                              Text(item.makeName),
-                            ],
-                          ));
-                        }).toList(),
-                        onChanged: (value) {
-                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_make_id, value);
-                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, null);
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      DropdownButtonFormField<CarMakeModelModel>(
-                        dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name] ?? null,
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
-                          prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
-                          hintText: selectedLang[AppLangAssets.selectModel]!,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                        const SizedBox(height: 4),
+                        Text(
+                          selectedLang[AppLangAssets.searchFromThousands]!,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
                           ),
                         ),
-                        items:BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name] == null ?
-                        [] : <DropdownMenuItem<CarMakeModelModel>>[
-                          for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name]!.models)
-                          DropdownMenuItem(value: item, child: Text(item.modelName))
-                        ],
-                        onChanged: (value) {
-                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, value);
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      DropdownButtonFormField<CityModel>(
-                        dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name],
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
-                          prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
-                          hintText: selectedLang[AppLangAssets.selectCity]!,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
-                          ),
+                        const SizedBox(height: 24),
+                        Row(
+                          children: [
+                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[0], 0),
+                            const SizedBox(width: 32),
+                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[1], 1),
+                            const SizedBox(width: 32),
+                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[2], 2),
+                          ],
                         ),
-                        items: BlocProvider.of<AppSettingsCubit>(context).countries[0].cities.map((item) {
-                          return DropdownMenuItem(value: item, child: Text(item.cityName));
-                        }).toList(),
-                        onChanged: (value) {
-                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_city_id, value);
-                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, null);
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      DropdownButtonFormField<AreaModel>(
-                        dropdownColor: AppColors.whiteColor,
-                        value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name] ?? null,
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
-                          prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
-                          hintText: selectedLang[AppLangAssets.selectCity]!,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
-                          ),
-                        ),
-                        items: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? [] : <DropdownMenuItem<AreaModel>>[
-                          for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name]!.areas)
-                          DropdownMenuItem(value: item, child: Text(item.areaName))
-                        ],
-                        onChanged: (value) {
-                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, value);
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null) {
-                              Toaster.show(context, message: selectedLang[AppLangAssets.selectAreaFirst]!, type: ToasterType.error, position: ToasterPosition.top);
-                              return;
-                            }
-                            BlocProvider.of<CarCubit>(context).searchCarAds();
-                            Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
-                              screenTitle: selectedLang[AppLangAssets.searchResult]!,
-                              ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,
-                              ),
-                            ));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? AppColors.greyColor.withOpacity(0.5) : AppColors.primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                        const SizedBox(height: 20),
+                        DropdownButtonFormField<CarMakeModel>(
+                          dropdownColor: AppColors.whiteColor,
+                          value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name],
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                            prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
+                            hintText: selectedLang[AppLangAssets.selectBrand]!,
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
                             ),
-                            elevation: 0,
-                            shadowColor: AppColors.primaryColor.withOpacity(0.4),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                            ),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.search, color: Colors.white, size: 24),
-                              SizedBox(width: 12),
-                              Text(
-                                selectedLang[AppLangAssets.search]!,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.5,
+                          items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
+                            return DropdownMenuItem(value: item, child: Row(
+                              children: [
+                                Image.network(item.makeLogo, height: 20, width: 20),
+                                SizedBox(width: 10),
+                                Text(item.makeName),
+                              ],
+                            ));
+                          }).toList(),
+                          onChanged: (value) {
+                            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_make_id, value);
+                            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, null);
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<CarMakeModelModel>(
+                          dropdownColor: AppColors.whiteColor,
+                          value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name] ?? null,
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                            prefixIcon: Icon(Icons.car_crash, color: Colors.grey[700], size: 20),
+                            hintText: selectedLang[AppLangAssets.selectModel]!,
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                            ),
+                          ),
+                          items:BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name] == null ?
+                          [] : <DropdownMenuItem<CarMakeModelModel>>[
+                            for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name]!.models)
+                            DropdownMenuItem(value: item, child: Text(item.modelName))
+                          ],
+                          onChanged: (value) {
+                            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, value);
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<CityModel>(
+                          dropdownColor: AppColors.whiteColor,
+                          value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name],
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                            prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
+                            hintText: selectedLang[AppLangAssets.selectCity]!,
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                            ),
+                          ),
+                          items: BlocProvider.of<AppSettingsCubit>(context).countries[0].cities.map((item) {
+                            return DropdownMenuItem(value: item, child: Text(item.cityName));
+                          }).toList(),
+                          onChanged: (value) {
+                            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_city_id, value);
+                            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, null);
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<AreaModel>(
+                          dropdownColor: AppColors.whiteColor,
+                          value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name] ?? null,
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+                            prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
+                            hintText: selectedLang[AppLangAssets.selectCity]!,
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                            ),
+                          ),
+                          items: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? [] : <DropdownMenuItem<AreaModel>>[
+                            for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name]!.areas)
+                            DropdownMenuItem(value: item, child: Text(item.areaName))
+                          ],
+                          onChanged: (value) {
+                            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, value);
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null) {
+                                Toaster.show(context, message: selectedLang[AppLangAssets.selectAreaFirst]!, type: ToasterType.error, position: ToasterPosition.top);
+                                return;
+                              }
+                              BlocProvider.of<CarCubit>(context).searchCarAds();
+                              Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
+                                screenTitle: selectedLang[AppLangAssets.searchResult]!,
+                                ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,
                                 ),
+                              ));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? AppColors.greyColor.withOpacity(0.5) : AppColors.primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                            ],
+                              elevation: 0,
+                              shadowColor: AppColors.primaryColor.withOpacity(0.4),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search, color: Colors.white, size: 24),
+                                SizedBox(width: 12),
+                                Text(
+                                  selectedLang[AppLangAssets.search]!,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -836,16 +838,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          if (label == 'All') {
-            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_condition, null);
-          } else {
-            BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_condition, label.toLowerCase());
-          }
+          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_condition, label.toLowerCase());
         },
         child: Column(
           children: [
             Text(
-              label,
+              label.toUpperCase(),
               style: TextStyle(
                 color: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? const Color(0xFF3B82F6) : Colors.grey[600],
                 fontSize: 16,

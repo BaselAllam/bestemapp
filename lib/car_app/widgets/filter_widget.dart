@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
+import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
@@ -40,11 +39,18 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
   @override
   void initState() {
     super.initState();
-    _selectedMake = null;
-    _selectedTransmission = BlocProvider.of<CarCubit>(context).transmissions[0];
-    _selectedFuelType = BlocProvider.of<CarCubit>(context).fuelType[0];
-    _selectedColor = null;
-    _yearMaxController.text = '';
+    _condition = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] ?? BlocProvider.of<CarCubit>(context).conditions[0];
+    _selectedMake = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name];
+    _selectedModel = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name];
+    _selectedTransmission = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.transmission_type.name] ?? BlocProvider.of<CarCubit>(context).transmissions[0];
+    _selectedFuelType = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.fuel_type.name] ?? BlocProvider.of<CarCubit>(context).fuelType[0];
+    _selectedColor = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_color__id.name];
+    _yearMaxController.text = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.max_year.name] ?? '';
+    _yearMinController.text = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.min_year.name] ?? '';
+    _priceMaxController.text = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.max_price.name] ?? '';
+    _priceMinController.text = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.min_price.name] ?? '';
+    _kiloMeterMaxController.text = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.max_kilometers.name] ?? '';
+    _kiloMeterMinController.text = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.min_kilometers.name] ?? '';
   }
 
   @override
@@ -93,27 +99,29 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
     filters.forEach((k, v) {
       BlocProvider.of<CarCubit>(context).setSearchCarParams(k, v);
     });
-    log(BlocProvider.of<CarCubit>(context).searchCarParams.toString());
-    // Navigator.pop(context);
+    BlocProvider.of<CarCubit>(context).searchCarAds();
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.9,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+    return BlocBuilder<CarCubit, CarStates>(
+      builder: (context, state) => Container(
+        height: MediaQuery.of(context).size.height * 0.9,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          _buildHeader(),
-          Expanded(child: _buildFilters()),
-          _buildActionButtons(),
-        ],
+        child: Column(
+          children: [
+            _buildHeader(),
+            Expanded(child: _buildFilters()),
+            _buildActionButtons(),
+          ],
+        ),
       ),
     );
   }

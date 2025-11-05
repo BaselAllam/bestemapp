@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -209,6 +210,7 @@ class CarCubit extends Cubit<CarStates> {
   void setSearchCarParams(SearchCarParamsKeys paramKey, dynamic paramValue) {
     _searchCarParams[paramKey.name] = paramValue;
     _searchCarParams.removeWhere((key, value) => value == null);
+    _searchCarParams.removeWhere((key, value) => value is String && value.toLowerCase() == 'all');
     emit(SetSearchCarParamState());
   }
 
@@ -222,6 +224,7 @@ class CarCubit extends Cubit<CarStates> {
     _searchCarParams.forEach((k, v) {
       searchParam = '$searchParam${searchParam.length < 2 ? '' : '&'}$k=${v is String ? v : v is Bool ? v : v.id}';
     });
+    log(searchParam.toString());
     return searchParam;
   }
 
