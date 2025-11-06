@@ -481,4 +481,12 @@ final Map<String, String> enData = {
   AppLangAssets.applyFilters: 'Apply Filters',
   AppLangAssets.adLocation: 'Search Location',
   AppLangAssets.resetFilter: 'Reset Filters',
+  AppLangAssets.priceLowToHigh: 'Price: Low to High',
+  AppLangAssets.priceHighToLow: 'Price: High to Low',
+  AppLangAssets.newestFirst: 'Year: Newest First',
+  AppLangAssets.oldestFirst: 'Year: Oldest First',
+  AppLangAssets.kiloMeteresLowToHigh: 'Kilometers: Low to High',
+  AppLangAssets.kiloMeteresHighToLow: 'Kilometers: High to Low',
+  AppLangAssets.sortBy: 'Sort by',
+  AppLangAssets.defaultSort: 'Bestem Recommendation',
 };

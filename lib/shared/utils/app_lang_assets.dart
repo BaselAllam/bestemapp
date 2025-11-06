@@ -480,4 +480,12 @@ class AppLangAssets {
   static String resetFilter = 'resetFilter';
   static String applyFilters = 'applyFilters';
   static String adLocation = 'adLocation';
+  static String priceLowToHigh = 'priceLowToHigh';
+  static String priceHighToLow = 'priceHighToLow';
+  static String newestFirst = 'newestFirst';
+  static String oldestFirst = 'oldestFirst';
+  static String kiloMeteresLowToHigh = 'kiloMeteresLowToHigh';
+  static String kiloMeteresHighToLow = 'kiloMeteresHighToLow';
+  static String sortBy = 'sortBy';
+  static String defaultSort = 'defaultSort';
 }

@@ -4,7 +4,6 @@ import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/car_app/widgets/filter_widget.dart';
-import 'package:bestemapp/car_app/widgets/sort_widget.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
@@ -22,8 +21,6 @@ class SearchResultsScreen extends StatefulWidget {
 }
 
 class _SearchResultsScreenState extends State<SearchResultsScreen> {
-  CarSortOption? _currentSort;
-  bool _isLoading = false;
 
   String _sortBy = 'Relevant';
 
@@ -50,11 +47,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
             return Column(
               children: [
                 _buildControlBar(),
-                if (_isLoading)
-                  const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                else if (widget.ads.isEmpty)
+                if (widget.ads.isEmpty)
                   _buildEmptyState()
                 else
                   Expanded(
@@ -159,7 +152,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   }
 
   String _getSortLabel() {
-    if (_sortBy == 'Relevant') return 'Sort';
     if (_sortBy.contains(':')) return _sortBy.split(':')[0];
     return _sortBy;
   }
@@ -246,83 +238,88 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 12),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
+        return BlocBuilder<CarCubit, CarStates>(
+          builder: (context, state) => Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 12),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.sort_rounded, color: Colors.grey[700]),
-                        const SizedBox(width: 12),
-                        Text(
-                          selectedLang[AppLangAssets.sort]!,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.sort_rounded, color: Colors.grey[700]),
+                          const SizedBox(width: 12),
+                          Text(
+                            selectedLang[AppLangAssets.sort]!,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSortOption('Relevant', Icons.stars_rounded),
-                    _buildSortOption('Price: Low to High', Icons.arrow_upward_rounded),
-                    _buildSortOption('Price: High to Low', Icons.arrow_downward_rounded),
-                    _buildSortOption('Year: Newest', Icons.new_releases_rounded),
-                    _buildSortOption('Year: Oldest', Icons.history_rounded),
-                    _buildSortOption('Mileage: Low to High', Icons.speed_rounded),
-                    const SizedBox(height: 8),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // _buildSortOption(SearchCarParamsKeys, selectedLang[AppLangAssets.defaultSort]!, Icons.stars_rounded),
+                      _buildSortOption(SearchCarParamsKeys.negative_price, selectedLang[AppLangAssets.priceLowToHigh]!, Icons.arrow_upward_rounded),
+                      _buildSortOption(SearchCarParamsKeys.price, selectedLang[AppLangAssets.priceHighToLow]!, Icons.arrow_downward_rounded),
+                      _buildSortOption(SearchCarParamsKeys.submitted_at, selectedLang[AppLangAssets.newestFirst]!, Icons.new_releases_rounded),
+                      _buildSortOption(SearchCarParamsKeys.negative_submitted_at, selectedLang[AppLangAssets.oldestFirst]!, Icons.history_rounded),
+                      _buildSortOption(SearchCarParamsKeys.kilometers, selectedLang[AppLangAssets.kiloMeteresLowToHigh]!, Icons.speed_rounded),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _buildSortOption(String option, IconData icon) {
+  Widget _buildSortOption(SearchCarParamsKeys key, String option, IconData icon) {
     final isSelected = _sortBy == option;
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: isSelected ? AppColors.primaryColor : Colors.grey[600],
-        size: 22,
-      ),
-      title: Text(
-        option,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          color: isSelected ? AppColors.primaryColor : Colors.black87,
+    return BlocBuilder<CarCubit, CarStates>(
+      builder: (context, state) => ListTile(
+        leading: Icon(
+          icon,
+          color: isSelected ? AppColors.primaryColor : Colors.grey[600],
+          size: 22,
         ),
+        title: Text(
+          option,
+          style: TextStyle(
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            color: isSelected ? AppColors.primaryColor : Colors.black87,
+          ),
+        ),
+        trailing: isSelected
+            ? Icon(Icons.check_circle_rounded, color: AppColors.primaryColor)
+            : null,
+        onTap: () {
+          BlocProvider.of<CarCubit>(context).setSearchCarParams(key, key.name);
+          setState(() {
+            _sortBy = option.split(' ').first;
+          });
+          Navigator.pop(context);
+        },
       ),
-      trailing: isSelected
-          ? Icon(Icons.check_circle_rounded, color: AppColors.primaryColor)
-          : null,
-      onTap: () {
-        setState(() {
-          _sortBy = option;
-        });
-        Navigator.pop(context);
-      },
     );
   }
 

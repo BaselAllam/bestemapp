@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-enum SearchCarParamsKeys {ad_area_id, ad_city_id, car_make_id, car_model_id, car_condition, fuel_type, transmission_type, min_price, max_price, min_year, max_year, min_kilometers, max_kilometers, sort_by, car_color__id, car_shape__id}
+enum SearchCarParamsKeys {ad_area_id, ad_city_id, car_make_id, car_model_id, car_condition, fuel_type, transmission_type, min_price, max_price, min_year, max_year, min_kilometers, max_kilometers, sort_by, car_color__id, car_shape__id, price, negative_price, submitted_at, negative_submitted_at, kilometers}
 
 class CarCubit extends Cubit<CarStates> {
 
@@ -211,6 +212,7 @@ class CarCubit extends Cubit<CarStates> {
     _searchCarParams.removeWhere((key, value) => value == null);
     _searchCarParams.removeWhere((key, value) => value is String && value.toLowerCase() == 'all');
     emit(SetSearchCarParamState());
+    log(_searchCarParams.toString());
   }
 
   void clearSearchCarParams() {

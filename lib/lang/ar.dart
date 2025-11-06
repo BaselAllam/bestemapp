@@ -480,4 +480,13 @@ final Map<String, String> arData = {
   AppLangAssets.applyFilters: 'اعرض النتائج',
   AppLangAssets.adLocation: 'هتدور فين',
   AppLangAssets.resetFilter: 'امسح كل الاختيارات',
+  AppLangAssets.priceLowToHigh: 'السعر: من الأقل للأعلى',
+  AppLangAssets.priceHighToLow: 'السعر: من الأعلى للأقل',
+  AppLangAssets.newestFirst: 'السنة: الأحدث الأول',
+  AppLangAssets.oldestFirst: 'السنة: الأقدم الأول',
+  AppLangAssets.kiloMeteresLowToHigh: 'الكيلومترات: من الأقل للأعلى',
+  AppLangAssets.kiloMeteresHighToLow: 'الكيلومترات: من الأعلى للأقل',
+  AppLangAssets.sortBy: 'رتّب حسب',
+  AppLangAssets.defaultSort: 'Bestem ترشيحات',
+
 };
