@@ -477,6 +477,7 @@ class AppLangAssets {
   static String max = 'max';
   static String to = 'to';
   static String reset = 'reset';
+  static String resetFilter = 'resetFilter';
   static String applyFilters = 'applyFilters';
   static String adLocation = 'adLocation';
 }

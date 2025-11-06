@@ -479,5 +479,5 @@ final Map<String, String> arData = {
   AppLangAssets.reset: 'اعادة ضبط',
   AppLangAssets.applyFilters: 'اعرض النتائج',
   AppLangAssets.adLocation: 'هتدور فين',
-
+  AppLangAssets.resetFilter: 'امسح كل الاختيارات',
 };

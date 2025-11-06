@@ -7,6 +7,7 @@ import 'package:bestemapp/car_app/screens/car_search_result_screen.dart';
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/shared_theme/app_fonts.dart';
 import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/shared_widgets/notification_btn.dart';
@@ -324,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           child: Stack(
             children: [
               Container(
-                height: 500,
+                height: 530,
               ),
               Positioned(
                 bottom: 0,
@@ -503,7 +504,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, value);
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -541,6 +542,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 0.5,
                                   ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: TextButton(
+                            onPressed: () {
+                              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_condition, BlocProvider.of<CarCubit>(context).conditions[0]);
+                              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_make_id, null);
+                              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, null);
+                              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_city_id, null);
+                              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, null);
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.refresh, color: AppColors.greyColor, size: 20),
+                                SizedBox(width: 10),
+                                Text(
+                                  selectedLang[AppLangAssets.resetFilter]!,
+                                  style: AppFonts.subFontGreyColor
                                 ),
                               ],
                             ),
