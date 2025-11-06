@@ -1,4 +1,5 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
 import 'package:bestemapp/car_app/screens/edit_car_ad_screen.dart';
@@ -76,18 +77,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                       itemBuilder: (context, index) {
                         return Container(
                           color: Colors.grey[300],
-                          child: Image.network(
-                            widget.carAdModel.adImgs[index].image,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: Colors.grey[300],
-                                child: const Center(
-                                  child: Icon(Icons.directions_car, size: 64, color: Colors.grey),
-                                ),
-                              );
-                            },
-                          ),
+                          child: CustomImageWidget(img: widget.carAdModel.adImgs[index].image),
                         );
                       },
                     ),
@@ -218,13 +208,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                           border: Border.all(color: Colors.grey[300]!, width: 1),
                         ),
                         padding: const EdgeInsets.all(4),
-                        child: Image.network(
-                          '${AppApi.imgIp}/${widget.carAdModel.carMake['make_logo']}',
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(Icons.directions_car, size: 20, color: Colors.grey[400]);
-                          },
-                        ),
+                        child: CustomImageWidget(img: '${AppApi.imgIp}/${widget.carAdModel.carMake['make_logo']}', fit: BoxFit.contain,)
                       ),
                       Expanded(
                         child: Column(
@@ -392,13 +376,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            sellerLogo,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return _buildInitialsAvatar();
-            },
-          ),
+          child: CustomImageWidget(img: sellerLogo)
         ),
       );
     } else {

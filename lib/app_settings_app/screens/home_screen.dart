@@ -1,5 +1,6 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_states.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
+import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -208,10 +209,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
-                          Image.network(
-                            offer.bannerImg,
-                            fit: BoxFit.cover,
-                          ),
+                          CustomImageWidget(img: offer.bannerImg),
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -836,7 +834,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(brand.makeLogo, height: 50, width: 100,),
+                              CustomImageWidget(img: brand.makeLogo, height: 55, width: 55, fit: BoxFit.fill,),
                               const SizedBox(height: 8),
                               Text(
                                 brand.makeName,

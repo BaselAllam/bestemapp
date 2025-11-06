@@ -1,4 +1,5 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
+import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/widgets/report_dialog.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
@@ -140,12 +141,8 @@ int get totalMediaItems => (widget.carAdModel.adVideo != null ? 1 : 0) + widget.
   final imageIndex = widget.carAdModel.adVideo != null ? _currentImageIndex - 1 : _currentImageIndex;
   return Hero(
     tag: 'car_image_$imageIndex',
-    child: Image.network(
-      '${widget.carAdModel.adImgs[imageIndex].image}',
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: 300,
-    ),
+    child: CustomImageWidget(img: '${widget.carAdModel.adImgs[imageIndex].image}', width: double.infinity,
+      height: 300,)
   );
 }
 
@@ -157,16 +154,7 @@ Widget _buildThumbnailItem(int index) {
       children: [
         // Use first image as video thumbnail or show placeholder
         if (widget.carAdModel.adImgs.isNotEmpty)
-          Image.network(
-            '${widget.carAdModel.adImgs[0].image}',
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                color: Colors.grey.shade300,
-                child: const Icon(Icons.video_library),
-              );
-            },
-          )
+        CustomImageWidget(img: '${widget.carAdModel.adImgs[0].image}')
         else
           Container(
             color: Colors.grey.shade300,
@@ -194,10 +182,7 @@ Widget _buildThumbnailItem(int index) {
     
     // Image thumbnail
     final imageIndex = widget.carAdModel.adVideo != null ? index - 1 : index;
-    return Image.network(
-      '${widget.carAdModel.adImgs[imageIndex].image}',
-      fit: BoxFit.cover,
-    );
+    return CustomImageWidget(img: '${widget.carAdModel.adImgs[imageIndex].image}');
   }
 
   @override
@@ -609,10 +594,7 @@ class _ImagePopupState extends State<ImagePopup> {
                   child: Hero(
                     tag: 'car_image_$index',
                     child: Center(
-                      child: Image.network(
-                        '${widget.images[index].image}',
-                        fit: BoxFit.contain,
-                      ),
+                      child: CustomImageWidget(img: '${widget.images[index].image}', fit: BoxFit.contain, width: double.infinity, height: 300,)
                     ),
                   ),
                 );
@@ -691,10 +673,7 @@ class _ImagePopupState extends State<ImagePopup> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6),
-                        child: Image.network(
-                          '${widget.images[index].image}',
-                          fit: BoxFit.cover,
-                        ),
+                        child: CustomImageWidget(img: '${widget.images[index].image}')
                       ),
                     ),
                   );
