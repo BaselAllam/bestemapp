@@ -8,6 +8,7 @@ import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CarAdWidget extends StatefulWidget {
   final bool isAdminView;
@@ -282,6 +283,16 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                         ),
                       ),
                       const Spacer(),
+                      Icon(Icons.access_time, size: 14, color: Colors.grey[500]),
+                      const SizedBox(width: 4),
+                      Text(
+                        _formatCreationDate(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
@@ -289,7 +300,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          widget.carAdModel.carCondition,
+                          widget.carAdModel.carCondition.replaceFirst(widget.carAdModel.carCondition[0], widget.carAdModel.carCondition[0].toUpperCase()),
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
@@ -343,6 +354,27 @@ class _CarAdWidgetState extends State<CarAdWidget> {
         ),
       ),
     );
+  }
+
+  String _formatCreationDate() {
+    
+    final DateTime createdDate = DateTime.parse(widget.carAdModel.submittedAt);
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(createdDate);
+
+    if (difference.inDays == 0) {
+      if (difference.inHours == 0) {
+        return '${difference.inMinutes}m ago';
+      }
+      return '${difference.inHours}h ago';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inDays < 30) {
+      final weeks = (difference.inDays / 7).floor();
+      return '${weeks}w ago';
+    } else {
+      return DateFormat('MMM d, yyyy').format(createdDate);
+    }
   }
 
   Widget _buildSellerAvatar() {
