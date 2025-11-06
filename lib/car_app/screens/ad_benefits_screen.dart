@@ -168,7 +168,7 @@ class _CarAdBenefitsScreenState extends State<CarAdBenefitsScreen> with SingleTi
                                 BlocProvider.of<CarCubit>(context).carAdsCount.toString(),
                                 selectedLang[AppLangAssets.ads]!,
                                 Icons.directions_car,
-                                const Color(0xFF3B82F6),
+                                AppColors.primaryColor,
                               ),
                             ),
                           ],
@@ -220,7 +220,7 @@ class _CarAdBenefitsScreenState extends State<CarAdBenefitsScreen> with SingleTi
                           icon: Icons.price_check_rounded,
                           title: selectedLang[AppLangAssets.benefitPricingTitle]!,
                           description: selectedLang[AppLangAssets.benefitPricingDescription]!,
-                          color: const Color(0xFF3B82F6),
+                          color: AppColors.primaryColor,
                         ),
                         
                         _buildBenefitItem(
@@ -282,7 +282,7 @@ class _CarAdBenefitsScreenState extends State<CarAdBenefitsScreen> with SingleTi
                           ),
                           child: Column(
                             children: [
-                              const Icon(Icons.security_rounded, size: 48, color: Color(0xFF3B82F6)),
+                              Icon(Icons.security_rounded, size: 48, color: AppColors.primaryColor),
                               const SizedBox(height: 12),
                               Text(
                                 selectedLang[AppLangAssets.yourPrivacyIsProtected]!,

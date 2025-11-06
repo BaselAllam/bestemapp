@@ -233,6 +233,9 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
             onChanged: (value) {
               BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_make_id, value);
               BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, null);
+              setState(() {
+                _selectedMake = value;
+              });
             },
           ),
 
@@ -269,6 +272,9 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
             ],
             onChanged: (value) {
               BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_model_id, value);
+              setState(() {
+                _selectedModel = value;
+              });
             },
           ),
           
@@ -326,10 +332,10 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
         duration: Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade100,
+          color: isSelected ? AppColors.primaryColor : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
+            color: isSelected ? AppColors.primaryColor : Colors.grey.shade300,
             width: 2,
           ),
         ),
@@ -342,7 +348,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
             ),
             SizedBox(height: 8),
             Text(
-              label,
+              label.replaceFirst(label[0], label[0].toUpperCase()),
               style: TextStyle(
                 color: isSelected ? Colors.white : Colors.grey.shade700,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
@@ -493,7 +499,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
               color: entry.colorCode,
               borderRadius: BorderRadius.circular(8),
               border: _selectedColor == null ? Border.all() : Border.all(
-                color: _selectedColor!.id == entry.id ? Color(0xFF3B82F6) : Colors.grey.shade300,
+                color: _selectedColor!.id == entry.id ? AppColors.primaryColor : Colors.grey.shade300,
                 width: _selectedColor!.id == entry.id ? 3 : 1,
               ),
             ),
@@ -551,7 +557,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
               onPressed: _applyFilters,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Color(0xFF3B82F6),
+                backgroundColor: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

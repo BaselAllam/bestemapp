@@ -275,7 +275,7 @@ Widget _buildThumbnailItem(int index) {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: isSelected
-                              ? const Color(0xFF3B82F6)
+                              ? AppColors.primaryColor
                               : Colors.grey.shade300,
                           width: isSelected ? 3 : 2,
                         ),
@@ -330,7 +330,7 @@ Widget _buildThumbnailItem(int index) {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF3B82F6),
+                                color: AppColors.primaryColor,
                               ),
                             ),
                           ],
@@ -360,7 +360,7 @@ Widget _buildThumbnailItem(int index) {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: TabBar(
                     controller: _tabController,
-                    labelColor: const Color(0xFF3B82F6),
+                    labelColor: AppColors.primaryColor,
                     unselectedLabelColor: Colors.grey.shade600,
                     labelStyle: const TextStyle(
                       fontSize: 16,
@@ -370,7 +370,7 @@ Widget _buildThumbnailItem(int index) {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
-                    indicatorColor: const Color(0xFF3B82F6),
+                    indicatorColor: AppColors.primaryColor,
                     indicatorWeight: 3,
                     tabs: [
                       Tab(text:selectedLang[AppLangAssets.overview]),
@@ -915,7 +915,7 @@ class AdStatisticsCard extends StatelessWidget {
                     icon: Icons.visibility,
                     title: 'Views',
                     value: '2,456',
-                    color: const Color(0xFF3B82F6),
+                    color: AppColors.primaryColor,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1109,21 +1109,21 @@ class AdStatisticsCard extends StatelessWidget {
             ),
             Text(
               percentage,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF3B82F6),
+                color: AppColors.primaryColor,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         ClipRRect(
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: value,
             backgroundColor: Colors.grey.shade200,
-            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3B82F6)),
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
             minHeight: 8,
           ),
         ),

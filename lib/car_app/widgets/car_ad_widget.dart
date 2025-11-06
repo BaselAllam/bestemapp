@@ -391,7 +391,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
     }
     final int colorIndex = (firstName.codeUnitAt(0) + lastName.codeUnitAt(0)) % 5;
     final List<Color> avatarColors = [
-      const Color(0xFF3B82F6),
+      AppColors.primaryColor,
       const Color(0xFF10B981),
       const Color(0xFFF59E0B),
       const Color(0xFFEF4444),

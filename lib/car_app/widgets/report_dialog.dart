@@ -132,8 +132,8 @@ class _ReportAdDialogState extends State<ReportAdDialog> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Color(0xFF3B82F6),
+                    borderSide: BorderSide(
+                      color: AppColors.primaryColor,
                       width: 2,
                     ),
                   ),
@@ -175,7 +175,7 @@ class _ReportAdDialogState extends State<ReportAdDialog> {
                           BlocProvider.of<CarCubit>(context).reportCarAd(carAd: widget.carAdModel, reason: _selectedReason!, comment: _detailsController.text);
                         },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3B82F6),
+                      backgroundColor: AppColors.primaryColor,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(

@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color(0xFF3B82F6),
+                AppColors.primaryColor,
                 const Color(0xFF2563EB),
               ],
             ),
@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   width: _currentCarouselIndex == index ? 24 : 8,
                   decoration: BoxDecoration(
                     color: _currentCarouselIndex == index
-                        ? const Color(0xFF3B82F6)
+                        ? AppColors.primaryColor
                         : Colors.grey[300],
                     borderRadius: BorderRadius.circular(4),
                   ),
@@ -313,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF3B82F6).withOpacity(0.15),
+              color: AppColors.primaryColor.withOpacity(0.15),
               blurRadius: 30,
               offset: const Offset(0, 10),
             ),
@@ -362,11 +362,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         const SizedBox(height: 24),
                         Row(
                           children: [
-                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[0], 0),
+                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[0]),
                             const SizedBox(width: 32),
-                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[1], 1),
+                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[1]),
                             const SizedBox(width: 32),
-                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[2], 2),
+                            _buildTab(BlocProvider.of<CarCubit>(context).conditions[2]),
                           ],
                         ),
                         const SizedBox(height: 20),
@@ -569,7 +569,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               icon: Icons.directions_car,
               count: '${carCount}+',
               label: selectedLang[AppLangAssets.ads]!,
-              color: const Color(0xFF3B82F6),
+              color: AppColors.primaryColor,
             ),
           ),
           const SizedBox(width: 12),
@@ -702,10 +702,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3B82F6).withOpacity(0.1),
+              color: AppColors.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: const Color(0xFF3B82F6), size: 20),
+            child: Icon(icon, color: AppColors.primaryColor, size: 20),
           ),
           const SizedBox(width: 12),
           Text(
@@ -723,16 +723,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               children: [
                 Text(
                   selectedLang[AppLangAssets.seeMore]!,
-                  style: const TextStyle(
-                    color: Color(0xFF3B82F6),
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: Color(0xFF3B82F6),
+                  color: AppColors.primaryColor,
                   size: 14,
                 ),
               ],
@@ -801,7 +801,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(16),
-                        onTap: () {},
+                        onTap: () {
+                          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.car_make_id, brand);
+                          BlocProvider.of<CarCubit>(context).searchCarAds();
+                          Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
+                            ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,
+                            screenTitle: brand.makeName
+                          )));
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Column(
@@ -833,7 +840,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   );
 }
 
-  Widget _buildTab(String label, int index) {
+  Widget _buildTab(String label) {
     return BlocBuilder<CarCubit, CarStates>(
       builder: (context, state) {
       return GestureDetector(
@@ -843,9 +850,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: Column(
           children: [
             Text(
-              label.toUpperCase(),
+              label.replaceFirst(label[0], label[0].toUpperCase()),
               style: TextStyle(
-                color: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? const Color(0xFF3B82F6) : Colors.grey[600],
+                color: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? AppColors.primaryColor : Colors.grey[600],
                 fontSize: 16,
                 fontWeight: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? FontWeight.w700 : FontWeight.w500,
               ),
@@ -856,7 +863,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               height: 3,
               width: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? 40 : 0,
               decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6),
+                color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),

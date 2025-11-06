@@ -1910,7 +1910,7 @@ void _setBoolValue(CarSpecsModel spec, bool value) {
               color: entry.colorCode,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isSelected ? Color(0xFF3B82F6) : Colors.grey.shade300,
+                color: isSelected ? AppColors.primaryColor : Colors.grey.shade300,
                 width: isSelected ? 3 : 1,
               ),
             ),
