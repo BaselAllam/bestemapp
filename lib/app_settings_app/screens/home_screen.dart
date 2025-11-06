@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           child: Stack(
             children: [
               Container(
-                height: 490,
+                height: 500,
               ),
               Positioned(
                 bottom: 0,
@@ -361,11 +361,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                         const SizedBox(height: 24),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             _buildTab(BlocProvider.of<CarCubit>(context).conditions[0]),
-                            const SizedBox(width: 32),
                             _buildTab(BlocProvider.of<CarCubit>(context).conditions[1]),
-                            const SizedBox(width: 32),
                             _buildTab(BlocProvider.of<CarCubit>(context).conditions[2]),
                           ],
                         ),

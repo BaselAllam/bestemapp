@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -143,7 +142,7 @@ class CarCubit extends Cubit<CarStates> {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         if (!carAd.isFav) {
-          CarAdWishlistModel newModel = CarAdWishlistModel(carAdModel: CarAdModel.fromJson(data['data']['car_ad']), id: data['data']['id']);
+          CarAdWishlistModel newModel = CarAdWishlistModel(carAdModel: carAd, id: data['data']['id']);
           _userWishlistCarAds.insert(0, newModel);
           carAd.isFav = true;
         } else {
@@ -224,7 +223,6 @@ class CarCubit extends Cubit<CarStates> {
     _searchCarParams.forEach((k, v) {
       searchParam = '$searchParam${searchParam.length < 2 ? '' : '&'}$k=${v is String ? v : v is Bool ? v : v.id}';
     });
-    log(searchParam.toString());
     return searchParam;
   }
 

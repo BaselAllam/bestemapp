@@ -112,7 +112,6 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     ),
                   ),
                 ),
-                // Favorite button
                 Positioned(
                   top: 12,
                   right: 12,
