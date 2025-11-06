@@ -360,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             color: Colors.grey[600],
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -369,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             _buildTab(BlocProvider.of<CarCubit>(context).conditions[2]),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         DropdownButtonFormField<CarMakeModel>(
                           dropdownColor: AppColors.whiteColor,
                           value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name],
@@ -874,16 +874,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             Text(
               label.replaceFirst(label[0], label[0].toUpperCase()),
               style: TextStyle(
-                color: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? AppColors.primaryColor : Colors.grey[600],
+                color: label == 'all' && BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == null ? AppColors.primaryColor :
+                 BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? AppColors.primaryColor : Colors.grey[600],
                 fontSize: 16,
-                fontWeight: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: label == 'all' && BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == null ? FontWeight.w700 :
+                BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
             const SizedBox(height: 6),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               height: 3,
-              width: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? 40 : 0,
+              width: label == 'all' && BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == null ? 40 :
+              BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] == label.toLowerCase() ? 40 : 0,
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(2),
