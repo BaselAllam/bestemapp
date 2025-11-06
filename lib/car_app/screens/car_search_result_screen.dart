@@ -313,10 +313,11 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
             ? Icon(Icons.check_circle_rounded, color: AppColors.primaryColor)
             : null,
         onTap: () {
-          BlocProvider.of<CarCubit>(context).setSearchCarParams(key, key.name);
+          BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.sort_by, key.name);
           setState(() {
             _sortBy = option.split(' ').first;
           });
+          BlocProvider.of<CarCubit>(context).searchCarAds();
           Navigator.pop(context);
         },
       ),

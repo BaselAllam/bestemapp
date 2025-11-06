@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -208,11 +207,14 @@ class CarCubit extends Cubit<CarStates> {
   Map<String, dynamic> get searchCarParams => _searchCarParams;
 
   void setSearchCarParams(SearchCarParamsKeys paramKey, dynamic paramValue) {
-    _searchCarParams[paramKey.name] = paramValue;
+    if (paramKey.name == SearchCarParamsKeys.sort_by.name && paramValue.toString().contains('negative')) {
+      _searchCarParams[paramKey.name] = paramValue.toString().replaceFirst('negative_', '-');
+    } else {
+      _searchCarParams[paramKey.name] = paramValue;
+    }
     _searchCarParams.removeWhere((key, value) => value == null);
     _searchCarParams.removeWhere((key, value) => value is String && value.toLowerCase() == 'all');
     emit(SetSearchCarParamState());
-    log(_searchCarParams.toString());
   }
 
   void clearSearchCarParams() {
