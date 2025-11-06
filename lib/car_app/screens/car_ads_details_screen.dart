@@ -42,14 +42,14 @@ class _CarDetailScreenState extends State<CarDetailScreen>
   }
 
   Future<void> _initializeMainVideo() async {
-  _mainVideoController = VideoPlayerController.network('${AppApi.imgIp}/${widget.carAdModel.adVideo}');
+  _mainVideoController = VideoPlayerController.network('${AppApi.imgIp}${widget.carAdModel.adVideo}', httpHeaders: {"Connection": "keep-alive"},);
   try {
     await _mainVideoController!.initialize();
     setState(() {
       _isMainVideoInitialized = true;
     });
   } catch (e) {
-    print('Error initializing video: $e');
+    
   }
 }
 
