@@ -478,7 +478,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           decoration: InputDecoration(
                             suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
                             prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
-                            hintText: selectedLang[AppLangAssets.selectCity]!,
+                            hintText: selectedLang[AppLangAssets.selectArea]!,
                             filled: true,
                             fillColor: Colors.grey.shade50,
                             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

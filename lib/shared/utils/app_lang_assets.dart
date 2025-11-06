@@ -478,4 +478,5 @@ class AppLangAssets {
   static String to = 'to';
   static String reset = 'reset';
   static String applyFilters = 'applyFilters';
+  static String adLocation = 'adLocation';
 }

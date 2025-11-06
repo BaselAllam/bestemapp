@@ -479,4 +479,5 @@ final Map<String, String> enData = {
   AppLangAssets.to: 'to',
   AppLangAssets.reset: 'Reset',
   AppLangAssets.applyFilters: 'Apply Filters',
+  AppLangAssets.adLocation: 'Search Location',
 };

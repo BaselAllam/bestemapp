@@ -478,5 +478,6 @@ final Map<String, String> arData = {
   AppLangAssets.to: 'لحد',
   AppLangAssets.reset: 'اعادة ضبط',
   AppLangAssets.applyFilters: 'اعرض النتائج',
+  AppLangAssets.adLocation: 'هتدور فين',
 
 };

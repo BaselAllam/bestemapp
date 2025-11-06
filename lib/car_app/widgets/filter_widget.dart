@@ -1,5 +1,6 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
+import 'package:bestemapp/app_settings_app/logic/country_model.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -30,6 +31,8 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
   final TextEditingController _kiloMeterMinController = TextEditingController();
   final TextEditingController _kiloMeterMaxController = TextEditingController();
   
+  CityModel? _selectedCity;
+  AreaModel? _selectedArea;
   CarMakeModel? _selectedMake;
   CarMakeModelModel? _selectedModel;
   String? _selectedTransmission;
@@ -39,6 +42,8 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
   @override
   void initState() {
     super.initState();
+    _selectedCity = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name];
+    _selectedArea = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name];
     _condition = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_condition.name] ?? BlocProvider.of<CarCubit>(context).conditions[0];
     _selectedMake = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_make_id.name];
     _selectedModel = BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.car_model_id.name];
@@ -75,6 +80,8 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
       _kiloMeterMaxController.text = '';
       _selectedMake = null;
       _selectedModel = null;
+      _selectedCity = null;
+      _selectedArea = null;
       _selectedTransmission = BlocProvider.of<CarCubit>(context).transmissions[0];
       _selectedFuelType = BlocProvider.of<CarCubit>(context).fuelType[0];
       _selectedColor = null;
@@ -92,6 +99,8 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
       SearchCarParamsKeys.max_kilometers: _kiloMeterMinController.text.isEmpty ? null : _kiloMeterMinController.text,
       SearchCarParamsKeys.car_make_id: _selectedMake ?? _selectedMake,
       SearchCarParamsKeys.car_model_id: _selectedModel ?? _selectedModel,
+      SearchCarParamsKeys.ad_city_id: _selectedCity ?? _selectedCity,
+      SearchCarParamsKeys.ad_area_id: _selectedArea ?? _selectedArea,
       SearchCarParamsKeys.transmission_type: _selectedTransmission ?? _selectedTransmission,
       SearchCarParamsKeys.fuel_type: _selectedFuelType ?? _selectedFuelType,
       SearchCarParamsKeys.car_color__id: _selectedColor ?? _selectedColor,
@@ -165,6 +174,79 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
           _buildSectionTitle(selectedLang[AppLangAssets.condition]!),
           SizedBox(height: 12),
           _buildConditionSelector(),
+
+          SizedBox(height: 32),
+          _buildSectionTitle(selectedLang[AppLangAssets.adLocation]!),
+          SizedBox(height: 12),
+          DropdownButtonFormField<CityModel>(
+            dropdownColor: AppColors.whiteColor,
+            value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name],
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+              prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
+              hintText: selectedLang[AppLangAssets.selectCity]!,
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+            ),
+            items: BlocProvider.of<AppSettingsCubit>(context).countries[0].cities.map((item) {
+              return DropdownMenuItem(value: item, child: Text(item.cityName));
+            }).toList(),
+            onChanged: (value) {
+              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_city_id, value);
+              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, null);setState(() {
+                _selectedCity = value;
+                _selectedArea = null;
+              });
+            },
+          ),
+          const SizedBox(height: 12),
+          DropdownButtonFormField<AreaModel>(
+            dropdownColor: AppColors.whiteColor,
+            value: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_area_id.name] ?? null,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 22),
+              prefixIcon: Icon(Icons.location_city, color: Colors.grey[700], size: 20),
+              hintText: selectedLang[AppLangAssets.selectArea]!,
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+            ),
+            items: BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name] == null ? [] : <DropdownMenuItem<AreaModel>>[
+              for (var item in BlocProvider.of<CarCubit>(context).searchCarParams[SearchCarParamsKeys.ad_city_id.name]!.areas)
+              DropdownMenuItem(value: item, child: Text(item.areaName))
+            ],
+            onChanged: (value) {
+              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.ad_area_id, value);
+              setState(() {
+                _selectedArea = value;
+              });
+            },
+          ),
           
           SizedBox(height: 32),
           _buildSectionTitle(selectedLang[AppLangAssets.priceRange]!),
