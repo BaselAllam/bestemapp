@@ -246,16 +246,18 @@ class CarCubit extends Cubit<CarStates> {
 
   Future<void> searchCarAds() async {
     if (_isLastPage) return;
-    emit(SearchCarAdsLoadingState());
     if (_nextPage == 1) {
       _searchCarAdsResult.clear();
+      emit(SearchCarAdsLoadingState());
+    } else {
+      emit(PaginateSearchCarAdsLoadingState());
     }
-    log(_nextPage.toString());
     try {
       Map<String, String> headers = AppApi.headerData;
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}'), headers: headers);
       log('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}');
       var data = json.decode(response.body);
+      log(data['results'].length.toString());
       if (response.statusCode == 200) {
         _searchCarResultsCounter = data['count'];
         _nextPage = data['next'] == null ? 1 : int.parse(data['next'][data['next'].length - 1]);

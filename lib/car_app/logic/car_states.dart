@@ -90,6 +90,8 @@ class GetUserCarWishlistAdsSomeThingWentWrongState extends CarStates {}
 
 class SearchCarAdsLoadingState extends CarStates {}
 
+class PaginateSearchCarAdsLoadingState extends CarStates {}
+
 class SearchCarAdsSuccessState extends CarStates {}
 
 class SearchCarAdsErrorState extends CarStates {

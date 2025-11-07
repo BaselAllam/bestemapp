@@ -41,7 +41,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       ),
       body: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
-          if (state is SearchCarAdsErrorState) {
+          if (state is SearchCarAdsLoadingState) {
+            return Center(child: CustomLoadingSpinner());
+          } else if (state is SearchCarAdsErrorState) {
             return Center(child: CustomErrorWidget());
           } else {
             return Column(
@@ -88,8 +90,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 Icon(Icons.search_rounded, size: 18, color: Colors.grey[600]),
                 const SizedBox(width: 8),
                 Text(
-                  // '${widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
-                  '',
+                  '${widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -161,9 +162,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   Widget _buildListView(CarStates state) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollInfo) {
-        if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-          BlocProvider.of<CarCubit>(context).searchCarAds();
-        }
+        // if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+        //   BlocProvider.of<CarCubit>(context).searchCarAds();
+        // }
         return false;
       },
       child: ListView.builder(
@@ -172,19 +173,14 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         itemCount: widget.ads.length + 1,
         itemBuilder: (context, index) {
           if (index == widget.ads.length) {
-          if (state is SearchCarAdsLoadingState) {
+          if (state is PaginateSearchCarAdsLoadingState) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Center(
                 child: SizedBox(
                   height: 24,
                   width: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.primaryColor,
-                    ),
-                  ),
+                  child: CustomLoadingSpinner()
                 ),
               ),
             );
@@ -346,7 +342,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         onTap: () {
           BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.sort_by, key.name);
           setState(() {
-            _sortBy = option.split(' ').first;
+            _sortBy = option;
           });
           BlocProvider.of<CarCubit>(context).resetNextPage();
           BlocProvider.of<CarCubit>(context).searchCarAds();
