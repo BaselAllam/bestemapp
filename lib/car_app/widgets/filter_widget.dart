@@ -108,6 +108,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
     filters.forEach((k, v) {
       BlocProvider.of<CarCubit>(context).setSearchCarParams(k, v);
     });
+    BlocProvider.of<CarCubit>(context).resetNextPage();
     BlocProvider.of<CarCubit>(context).searchCarAds();
     Navigator.pop(context);
   }

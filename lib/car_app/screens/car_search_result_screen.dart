@@ -24,6 +24,8 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 
   String _sortBy = 'Relevant';
 
+  ScrollController scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +41,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       ),
       body: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
-          if (state is SearchCarAdsLoadingState) {
-            return Center(child: CustomLoadingSpinner());
-          } else if (state is SearchCarAdsErrorState) {
+          if (state is SearchCarAdsErrorState) {
             return Center(child: CustomErrorWidget());
           } else {
             return Column(
@@ -53,9 +53,10 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () {
+                        BlocProvider.of<CarCubit>(context).resetNextPage();
                         return BlocProvider.of<CarCubit>(context).searchCarAds();
                       },
-                      child: _buildListView(),
+                      child: _buildListView(state),
                     ),
                   ),
               ],
@@ -87,7 +88,8 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 Icon(Icons.search_rounded, size: 18, color: Colors.grey[600]),
                 const SizedBox(width: 8),
                 Text(
-                  '${widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
+                  // '${widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
+                  '',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -156,16 +158,46 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     return _sortBy;
   }
 
-  Widget _buildListView() {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: widget.ads.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: CarAdWidget(carAdModel: widget.ads[index]),
-        );
+  Widget _buildListView(CarStates state) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollInfo) {
+        if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+          BlocProvider.of<CarCubit>(context).searchCarAds();
+        }
+        return false;
       },
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        controller: scrollController,
+        itemCount: widget.ads.length + 1,
+        itemBuilder: (context, index) {
+          if (index == widget.ads.length) {
+          if (state is SearchCarAdsLoadingState) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Center(
+                child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        }
+
+        return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            child: CarAdWidget(carAdModel: widget.ads[index]),
+          );
+        },
+      ),
     );
   }
 
@@ -275,7 +307,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      // _buildSortOption(SearchCarParamsKeys, selectedLang[AppLangAssets.defaultSort]!, Icons.stars_rounded),
                       _buildSortOption(SearchCarParamsKeys.negative_price, selectedLang[AppLangAssets.priceLowToHigh]!, Icons.arrow_upward_rounded),
                       _buildSortOption(SearchCarParamsKeys.price, selectedLang[AppLangAssets.priceHighToLow]!, Icons.arrow_downward_rounded),
                       _buildSortOption(SearchCarParamsKeys.submitted_at, selectedLang[AppLangAssets.newestFirst]!, Icons.new_releases_rounded),
@@ -317,6 +348,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           setState(() {
             _sortBy = option.split(' ').first;
           });
+          BlocProvider.of<CarCubit>(context).resetNextPage();
           BlocProvider.of<CarCubit>(context).searchCarAds();
           Navigator.pop(context);
         },

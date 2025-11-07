@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -40,6 +41,19 @@ class CarCubit extends Cubit<CarStates> {
 
   List<CarAdModel> _searchCarAdsResult = [];
   List<CarAdModel> get searchCarAdsResult => _searchCarAdsResult;
+
+  int _searchCarResultsCounter = 0;
+  int get searchCarResultsCounter => _searchCarResultsCounter;
+
+  int _nextPage = 1;
+
+  bool _isLastPage = false;
+  bool get isLastPage => _isLastPage;
+
+  void resetNextPage() {
+    _nextPage = 1;
+    _isLastPage = false;
+  }
 
   int _carAdsCount = 0;
   int get carAdsCount => _carAdsCount;
@@ -223,22 +237,30 @@ class CarCubit extends Cubit<CarStates> {
   }
   
   String _prepareSearchCarParam() {
-    String searchParam = '?';
+    String searchParam = '';
     _searchCarParams.forEach((k, v) {
-      searchParam = '$searchParam${searchParam.length < 2 ? '' : '&'}$k=${v is String ? v : v is Bool ? v : v.id}';
+      searchParam = '$searchParam&$k=${v is String ? v : v is Bool ? v : v.id}';
     });
     return searchParam;
   }
 
   Future<void> searchCarAds() async {
+    if (_isLastPage) return;
     emit(SearchCarAdsLoadingState());
-    _searchCarAdsResult.clear();
+    if (_nextPage == 1) {
+      _searchCarAdsResult.clear();
+    }
+    log(_nextPage.toString());
     try {
       Map<String, String> headers = AppApi.headerData;
-      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/${_prepareSearchCarParam()}'), headers: headers);
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}'), headers: headers);
+      log('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}');
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
-        for (var i in data['data']) {
+        _searchCarResultsCounter = data['count'];
+        _nextPage = data['next'] == null ? 1 : int.parse(data['next'][data['next'].length - 1]);
+        if (data['next'] == null) _isLastPage = true;
+        for (var i in data['results']) {
           CarAdModel newObj = CarAdModel.fromJson(i);
           bool isFav = handleIsFavModelValue(newObj);
           newObj.isFav = isFav;

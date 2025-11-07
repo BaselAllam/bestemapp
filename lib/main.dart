@@ -54,6 +54,12 @@ class _MyAppState extends State<MyApp> {
               surfaceTintColor: AppColors.whiteColor,
               scrolledUnderElevation: 0,
             ),
+            progressIndicatorTheme: ProgressIndicatorThemeData(
+              circularTrackColor: AppColors.primaryColor,
+              linearTrackColor: AppColors.primaryColor,
+              refreshBackgroundColor: AppColors.whiteColor,
+              color: AppColors.primaryColor
+            ),
           ),
           debugShowCheckedModeBanner: false,
           locale: BlocProvider.of<AppSettingsCubit>(context).selectedLocale,

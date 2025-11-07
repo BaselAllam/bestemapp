@@ -513,6 +513,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 return;
                               }
                               BlocProvider.of<CarCubit>(context).searchCarAds();
+                              BlocProvider.of<CarCubit>(context).resetNextPage();
+                              BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.sort_by, null);
                               Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
                                 screenTitle: selectedLang[AppLangAssets.searchResult]!,
                                 ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,
