@@ -1,12 +1,18 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
+import 'package:bestemapp/car_app/logic/car_states.dart';
+import 'package:bestemapp/car_app/widgets/car_ad_widget.dart';
 import 'package:bestemapp/car_app/widgets/report_dialog.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
+import 'package:bestemapp/shared/shared_widgets/error_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/loading_spinner.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -198,375 +204,416 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      body: CustomScrollView(
-        controller: _mainScrollController,
-        slivers: [
-          // App Bar with Image Gallery
-          SliverAppBar(
-            expandedHeight: 300,
-            pinned: true,
-            backgroundColor: Colors.white,
-            elevation: _showAppBarTitle ? 2 : 0,
-            leading: Container(
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: _showAppBarTitle ? Colors.transparent : Colors.black.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: _showAppBarTitle ? Colors.black : Colors.white,
+      body: BlocBuilder<CarCubit, CarStates>(
+        builder: (context, state) {
+          if (state is CarAdsDetailLoadingState) {
+            return Center(child: CustomLoadingSpinner());
+          } else if (state is CarAdsDetailErrorState || state is CarAdsDetailSomeThingWentWrongState) {
+            return Center(child: CustomErrorWidget());
+          } else {
+            return CustomScrollView(
+          controller: _mainScrollController,
+          slivers: [
+            // App Bar with Image Gallery
+            SliverAppBar(
+              expandedHeight: 300,
+              pinned: true,
+              backgroundColor: Colors.white,
+              elevation: _showAppBarTitle ? 2 : 0,
+              leading: Container(
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: _showAppBarTitle ? Colors.transparent : Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
-            title: _showAppBarTitle
-                ? Text(
-                    widget.carAdModel.adTitle,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : null,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () => _openImagePopup(_currentImageIndex),
-                    child: _buildMainMediaView(),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: _showAppBarTitle ? Colors.black : Colors.white,
                   ),
-                  Positioned(
-                    bottom: 16,
-                    right: 16,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        '${_currentImageIndex + 1}/$totalMediaItems',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  onPressed: () => Navigator.pop(context),
+                ),
               ),
-            ),
-          ),
-          
-          // Thumbnail Gallery
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: SizedBox(
-                height: 80,
-                child: ListView.builder(
-                  controller: _thumbnailScrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: totalMediaItems,
-                  itemBuilder: (context, index) {
-                    final isSelected = _currentImageIndex == index;
-                    
-                    return GestureDetector(
-                      onTap: () => _selectImage(index),
+              title: _showAppBarTitle
+                  ? Text(
+                      widget.carAdModel.adTitle,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : null,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () => _openImagePopup(_currentImageIndex),
+                      child: _buildMainMediaView(),
+                    ),
+                    Positioned(
+                      bottom: 16,
+                      right: 16,
                       child: Container(
-                        width: 80,
-                        margin: const EdgeInsets.only(right: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: isSelected
-                                ? AppColors.primaryColor
-                                : Colors.grey.shade300,
-                            width: isSelected ? 3 : 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: _buildThumbnailItem(index),
+                        child: Text(
+                          '${_currentImageIndex + 1}/$totalMediaItems',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-          
-          // Price & Title Section
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            
+            // Thumbnail Gallery
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: SizedBox(
+                  height: 80,
+                  child: ListView.builder(
+                    controller: _thumbnailScrollController,
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: totalMediaItems,
+                    itemBuilder: (context, index) {
+                      final isSelected = _currentImageIndex == index;
+                      
+                      return GestureDetector(
+                        onTap: () => _selectImage(index),
+                        child: Container(
+                          width: 80,
+                          margin: const EdgeInsets.only(right: 12),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.primaryColor
+                                  : Colors.grey.shade300,
+                              width: isSelected ? 3 : 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: _buildThumbnailItem(index),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            
+            // Price & Title Section
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.carAdModel.adTitle,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'EGP ${widget.carAdModel.price}',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          if (widget.carAdModel.isNegotiable)
+                            Container(
+                              margin: const EdgeInsets.only(top: 6),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                selectedLang[AppLangAssets.isNegotiable]!,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Row(
                       children: [
+                        _buildIconButton(Icons.share_outlined),
+                        const SizedBox(width: 8),
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: FavButton(carAdModel: widget.carAdModel),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        
+            // Spacing
+            SliverToBoxAdapter(
+              child: Container(
+                height: 8,
+                color: Colors.grey.shade100,
+              ),
+            ),
+            
+            // Description Section
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.description, color: AppColors.primaryColor, size: 24),
+                        const SizedBox(width: 8),
                         Text(
-                          widget.carAdModel.adTitle,
+                          selectedLang[AppLangAssets.overview]!,
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'EGP ${widget.carAdModel.price}',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        if (widget.carAdModel.isNegotiable)
-                          Container(
-                            margin: const EdgeInsets.only(top: 6),
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              selectedLang[AppLangAssets.isNegotiable]!,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
                       ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      _buildIconButton(Icons.share_outlined),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: FavButton(carAdModel: widget.carAdModel),
+                    const SizedBox(height: 16),
+                    Text(
+                      widget.carAdModel.adDescription,
+                      style: TextStyle(
+                        fontSize: 15,
+                        height: 1.6,
+                        color: Colors.grey.shade700,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Spacing
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8,
-              color: Colors.grey.shade100,
-            ),
-          ),
-          
-          // Description Section
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.description, color: AppColors.primaryColor, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        selectedLang[AppLangAssets.overview]!,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    widget.carAdModel.adDescription,
-                    style: TextStyle(
-                      fontSize: 15,
-                      height: 1.6,
-                      color: Colors.grey.shade700,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-
-          // Spacing
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8,
-              color: Colors.grey.shade100,
+        
+            // Spacing
+            SliverToBoxAdapter(
+              child: Container(
+                height: 8,
+                color: Colors.grey.shade100,
+              ),
             ),
-          ),
-          
-          // Key Highlights Section
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: AppColors.primaryColor, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        selectedLang[AppLangAssets.keyHighlights]!,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+            
+            // Key Highlights Section
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: AppColors.primaryColor, size: 24),
+                        const SizedBox(width: 8),
+                        Text(
+                          selectedLang[AppLangAssets.keyHighlights]!,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  _buildHighlightCard(
-                    icon: Icons.directions_car,
-                    label: selectedLang[AppLangAssets.model]!,
-                    value: widget.carAdModel.carModel.modelName,
-                  ),
-                  _buildHighlightCard(
-                    icon: Icons.verified,
-                    label: selectedLang[AppLangAssets.condition]!,
-                    value: widget.carAdModel.carCondition,
-                  ),
-                  _buildHighlightCard(
-                    icon: Icons.local_gas_station,
-                    label: selectedLang[AppLangAssets.fuelType]!,
-                    value: widget.carAdModel.fuelType,
-                  ),
-                  _buildHighlightCard(
-                    icon: Icons.settings,
-                    label: selectedLang[AppLangAssets.transmission]!,
-                    value: widget.carAdModel.transmissionType,
-                  ),
-                  _buildHighlightCard(
-                    icon: Icons.palette,
-                    label: selectedLang[AppLangAssets.color]!,
-                    value: widget.carAdModel.carColor.colorName,
-                  ),
-                  _buildHighlightCard(
-                    icon: Icons.category,
-                    label: selectedLang[AppLangAssets.shape]!,
-                    value: widget.carAdModel.carShape.shapeName,
-                  ),
-                  _buildHighlightCard(
-                    icon: Icons.calendar_today,
-                    label: selectedLang[AppLangAssets.year]!,
-                    value: widget.carAdModel.carYear.toString(),
-                  ),
-                  if (widget.carAdModel.distanceRange != 0)
+                      ],
+                    ),
+                    const SizedBox(height: 16),
                     _buildHighlightCard(
-                      icon: Icons.speed,
-                      label: selectedLang[AppLangAssets.distanceRange]!,
-                      value: widget.carAdModel.distanceRange.toString(),
+                      icon: Icons.directions_car,
+                      label: selectedLang[AppLangAssets.model]!,
+                      value: widget.carAdModel.carModel.modelName,
                     ),
-                  _buildHighlightCard(
-                    icon: Icons.engineering,
-                    label: selectedLang[AppLangAssets.engine]!,
-                    value: widget.carAdModel.engineCapacity.toString(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Spacing
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8,
-              color: Colors.grey.shade100,
-            ),
-          ),
-          
-          // Specifications Section
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.checklist, color: AppColors.primaryColor, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        selectedLang[AppLangAssets.specifications]!,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                    _buildHighlightCard(
+                      icon: Icons.verified,
+                      label: selectedLang[AppLangAssets.condition]!,
+                      value: widget.carAdModel.carCondition,
+                    ),
+                    _buildHighlightCard(
+                      icon: Icons.local_gas_station,
+                      label: selectedLang[AppLangAssets.fuelType]!,
+                      value: widget.carAdModel.fuelType,
+                    ),
+                    _buildHighlightCard(
+                      icon: Icons.settings,
+                      label: selectedLang[AppLangAssets.transmission]!,
+                      value: widget.carAdModel.transmissionType,
+                    ),
+                    _buildHighlightCard(
+                      icon: Icons.palette,
+                      label: selectedLang[AppLangAssets.color]!,
+                      value: widget.carAdModel.carColor.colorName,
+                    ),
+                    _buildHighlightCard(
+                      icon: Icons.category,
+                      label: selectedLang[AppLangAssets.shape]!,
+                      value: widget.carAdModel.carShape.shapeName,
+                    ),
+                    _buildHighlightCard(
+                      icon: Icons.calendar_today,
+                      label: selectedLang[AppLangAssets.year]!,
+                      value: widget.carAdModel.carYear.toString(),
+                    ),
+                    if (widget.carAdModel.distanceRange != 0)
+                      _buildHighlightCard(
+                        icon: Icons.speed,
+                        label: selectedLang[AppLangAssets.distanceRange]!,
+                        value: widget.carAdModel.distanceRange.toString(),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ...widget.carAdModel.specs.map((spec) {
-                    return _buildSpecRow(
-                      spec['spec']['spec'],
-                      spec['spec']['spec_type'] == 'boolean'
-                          ? selectedLang[AppLangAssets.included]
-                          : spec['spec']['spec_type'] == 'number'
-                              ? spec['value_number']
-                              : spec['value_text'],
-                    );
-                  }).toList(),
-                ],
+                    _buildHighlightCard(
+                      icon: Icons.engineering,
+                      label: selectedLang[AppLangAssets.engine]!,
+                      value: widget.carAdModel.engineCapacity.toString(),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-
-          // Spacing
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8,
-              color: Colors.grey.shade100,
+        
+            // Spacing
+            SliverToBoxAdapter(
+              child: Container(
+                height: 8,
+                color: Colors.grey.shade100,
+              ),
             ),
-          ),
-          
-          // Seller Info / Admin Statistics
-          SliverToBoxAdapter(
-            child: widget.isAdmin
-                ? const AdStatisticsCard()
-                : SellerCard(
-                    onReport: _showReportDialog,
-                    adModel: widget.carAdModel,
-                  ),
-          ),
-
-          // Bottom Spacing
-          SliverToBoxAdapter(
-            child: SizedBox(height: 20),
-          ),
-        ],
+            
+            // Specifications Section
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.checklist, color: AppColors.primaryColor, size: 24),
+                        const SizedBox(width: 8),
+                        Text(
+                          selectedLang[AppLangAssets.specifications]!,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    ...widget.carAdModel.specs.map((spec) {
+                      return _buildSpecRow(
+                        spec['spec']['spec'],
+                        spec['spec']['spec_type'] == 'boolean'
+                            ? selectedLang[AppLangAssets.included]
+                            : spec['spec']['spec_type'] == 'number'
+                                ? spec['value_number']
+                                : spec['value_text'],
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+        SliverToBoxAdapter(
+              child: Container(
+                height: 8,
+                color: Colors.grey.shade100,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: widget.isAdmin
+                  ? const AdStatisticsCard()
+                  : SellerCard(
+                      onReport: _showReportDialog,
+                      adModel: widget.carAdModel,
+                    ),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: 20),
+            ),
+            if (!widget.isAdmin || BlocProvider.of<CarCubit>(context).adDetail['related'].isNotEmpty)
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.directions_car, color: AppColors.primaryColor, size: 24),
+                        const SizedBox(width: 8),
+                        Text(
+                          selectedLang[AppLangAssets.relatedAds]!,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 500,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: BlocProvider.of<CarCubit>(context).adDetail['related'].length,
+                        itemBuilder: (context, index) {
+                          return CarAdWidget(carAdModel: BlocProvider.of<CarCubit>(context).adDetail['related'][index], isAdminView: false);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+          }
+        },
       ),
     );
   }

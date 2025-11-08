@@ -488,4 +488,5 @@ class AppLangAssets {
   static String kiloMeteresHighToLow = 'kiloMeteresHighToLow';
   static String sortBy = 'sortBy';
   static String defaultSort = 'defaultSort';
+  static String relatedAds = 'relatedAds';
 }

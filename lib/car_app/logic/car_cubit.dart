@@ -277,6 +277,40 @@ class CarCubit extends Cubit<CarStates> {
     }
   }
 
+  Map<String, dynamic> _adDetail = {
+    'detail': [],
+    'related': [],
+  };
+  Map<String, dynamic> get adDetail => _adDetail;
+
+  Future<void> getCarAdDetail(CarAdModel adModel) async {
+    emit(CarAdsDetailLoadingState());
+    _adDetail.clear();
+    try {
+      Map<String, String> headers = AppApi.headerData;
+      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/car_ad_detail/?id=${adModel.id}'), headers: headers);
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        CarAdModel detailObj = CarAdModel.fromJson(data['data']['detail']);
+        _adDetail['detail'] = detailObj;
+        List _relatedAds = [];
+        for (var i in data['data']['related']) {
+          CarAdModel newObj = CarAdModel.fromJson(i);
+          bool isFav = handleIsFavModelValue(newObj);
+          newObj.isFav = isFav;
+          _relatedAds.add(newObj);
+        }
+        _adDetail['related'] = _relatedAds;
+        emit(CarAdsDetailSuccessState());
+      } else {
+        emit(CarAdsDetailErrorState(data['data']));
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(CarAdsDetailSomeThingWentWrongState());
+    }
+  }
+
   Future<void> getCarsLanding() async {
     emit(LandingCarAdsLoadingState());
     try {

@@ -488,5 +488,6 @@ final Map<String, String> arData = {
   AppLangAssets.kiloMeteresHighToLow: 'الكيلومترات: من الأعلى للأقل',
   AppLangAssets.sortBy: 'رتّب حسب',
   AppLangAssets.defaultSort: 'Bestem ترشيحات',
+  AppLangAssets.relatedAds: 'عربيات تانيه ممكن تعجبك',
 
 };

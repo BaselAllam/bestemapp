@@ -102,6 +102,18 @@ class SearchCarAdsErrorState extends CarStates {
 
 class SearchCarAdsSomeThingWentWrongState extends CarStates {}
 
+class CarAdsDetailLoadingState extends CarStates {}
+
+class CarAdsDetailSuccessState extends CarStates {}
+
+class CarAdsDetailErrorState extends CarStates {
+
+  String errorMsg;
+  CarAdsDetailErrorState(this.errorMsg);
+}
+
+class CarAdsDetailSomeThingWentWrongState extends CarStates {}
+
 class SetSearchCarParamState extends CarStates {}
 
 class LandingCarAdsLoadingState extends CarStates {}

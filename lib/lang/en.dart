@@ -489,4 +489,5 @@ final Map<String, String> enData = {
   AppLangAssets.kiloMeteresHighToLow: 'Kilometers: High to Low',
   AppLangAssets.sortBy: 'Sort by',
   AppLangAssets.defaultSort: 'Bestem Recommendation',
+  AppLangAssets.relatedAds: 'also like',
 };

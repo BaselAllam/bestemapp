@@ -1,5 +1,6 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
+import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
 import 'package:bestemapp/car_app/screens/edit_car_ad_screen.dart';
@@ -9,6 +10,7 @@ import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class CarAdWidget extends StatefulWidget {
@@ -50,6 +52,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
       ),
       child: InkWell(
         onTap: () {
+          BlocProvider.of<CarCubit>(context).getCarAdDetail(widget.carAdModel);
           Navigator.push(context, CupertinoPageRoute(builder: (_) => CarDetailScreen(carAdModel: widget.carAdModel, isAdmin: widget.isAdminView,)));
         },
         borderRadius: BorderRadius.circular(12),
