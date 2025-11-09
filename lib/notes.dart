@@ -8,6 +8,5 @@
   2- UpdateAd
 
   - secureStorage
-  - .env file 
 
 */

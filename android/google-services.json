@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "968410933561",
+    "project_id": "bestem-b57e1",
+    "storage_bucket": "bestem-b57e1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968410933561:android:009981821230b591d5e0e8",
+        "android_client_info": {
+          "package_name": "com.bestem.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB41yqyzfzvQlj1bog2XJ_f6WF8X2Q5Jzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

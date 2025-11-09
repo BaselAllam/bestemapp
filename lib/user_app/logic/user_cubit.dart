@@ -5,6 +5,7 @@ import 'package:bestemapp/user_app/logic/user_model.dart';
 import 'package:bestemapp/user_app/logic/user_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'dart:convert';
 import 'package:restart_app/restart_app.dart';
 
@@ -14,6 +15,11 @@ class UserCubit extends Cubit<UserStates> {
 
   UserModel? _userModel;
   UserModel? get userModel => _userModel;
+
+  String _getPlayerId() {
+    final deviceState = OneSignal.User.pushSubscription.id;
+    return deviceState!;
+  }
 
   Future<void> login(String phone, String password) async {
     emit(LoginLoadingState());
@@ -27,6 +33,7 @@ class UserCubit extends Cubit<UserStates> {
           emit(LoginOTPState());
           return;
         }
+        await _setOneSignalPlayerId();
         await getUserData();
         emit(LoginSuccessState());
         return;
@@ -36,6 +43,23 @@ class UserCubit extends Cubit<UserStates> {
       }
     } catch (e) {
       emit(LoginSomeThingWentWrongState());
+    }
+  }
+
+  Future<bool> _setOneSignalPlayerId() async {
+    try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
+      Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
+      String ids = _getPlayerId();
+      http.Response response = await http.post(Uri.parse('${AppApi.ipAddress}/users/set_player_id/'), headers: AppApi.headerData, body: json.encode({'player_id': ids}));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 

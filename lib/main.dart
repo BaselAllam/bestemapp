@@ -8,8 +8,18 @@ import 'package:bestemapp/user_app/logic/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  final oneSignalAppId = dotenv.env['ONESIGNAL_APP_ID'];
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize(oneSignalAppId!);
+  OneSignal.Notifications.requestPermission(true);
+  runApp(MyApp());
+}
 
 
 class MyApp extends StatefulWidget {
