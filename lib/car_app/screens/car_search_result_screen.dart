@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -43,7 +41,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       ),
       body: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
-          log(state.toString());
           if (state is SearchCarAdsLoadingState) {
             return Center(child: CustomLoadingSpinner());
           } else if (state is SearchCarAdsErrorState) {

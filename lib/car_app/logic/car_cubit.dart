@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -255,9 +254,7 @@ class CarCubit extends Cubit<CarStates> {
     try {
       Map<String, String> headers = AppApi.headerData;
       http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}'), headers: headers);
-      log('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}');
       var data = json.decode(response.body);
-      log(data['results'].length.toString());
       if (response.statusCode == 200) {
         _searchCarResultsCounter = data['count'];
         _nextPage = data['next'] == null ? 1 : _nextPage++;
@@ -273,7 +270,6 @@ class CarCubit extends Cubit<CarStates> {
         emit(SearchCarAdsErrorState(data['data']));
       }
     } catch (e) {
-      log(e.toString());
       emit(SearchCarAdsSomeThingWentWrongState());
     }
   }
@@ -307,7 +303,6 @@ class CarCubit extends Cubit<CarStates> {
         emit(CarAdsDetailErrorState(data['data']));
       }
     } catch (e) {
-      log(e.toString());
       emit(CarAdsDetailSomeThingWentWrongState());
     }
   }

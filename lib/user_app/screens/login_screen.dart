@@ -129,7 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           type: ToasterType.success,
                           position: ToasterPosition.top,
                         );
-                        initData(context);
                         initAuthData(context);
                         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) => BottomNavBarScreen()));
                       }
