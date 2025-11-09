@@ -512,9 +512,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 Toaster.show(context, message: selectedLang[AppLangAssets.selectAreaFirst]!, type: ToasterType.error, position: ToasterPosition.top);
                                 return;
                               }
-                              BlocProvider.of<CarCubit>(context).searchCarAds();
                               BlocProvider.of<CarCubit>(context).resetNextPage();
                               BlocProvider.of<CarCubit>(context).setSearchCarParams(SearchCarParamsKeys.sort_by, null);
+                              BlocProvider.of<CarCubit>(context).searchCarAds();
                               Navigator.push(context, CupertinoPageRoute(builder: (_) => SearchResultsScreen(
                                 screenTitle: selectedLang[AppLangAssets.searchResult]!,
                                 ads: BlocProvider.of<CarCubit>(context).searchCarAdsResult,

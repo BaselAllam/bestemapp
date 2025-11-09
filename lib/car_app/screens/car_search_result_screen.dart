@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -41,6 +43,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       ),
       body: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
+          log(state.toString());
           if (state is SearchCarAdsLoadingState) {
             return Center(child: CustomLoadingSpinner());
           } else if (state is SearchCarAdsErrorState) {
@@ -303,10 +306,10 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      _buildSortOption(SearchCarParamsKeys.negative_price, selectedLang[AppLangAssets.priceLowToHigh]!, Icons.arrow_upward_rounded),
-                      _buildSortOption(SearchCarParamsKeys.price, selectedLang[AppLangAssets.priceHighToLow]!, Icons.arrow_downward_rounded),
-                      _buildSortOption(SearchCarParamsKeys.submitted_at, selectedLang[AppLangAssets.newestFirst]!, Icons.new_releases_rounded),
-                      _buildSortOption(SearchCarParamsKeys.negative_submitted_at, selectedLang[AppLangAssets.oldestFirst]!, Icons.history_rounded),
+                      _buildSortOption(SearchCarParamsKeys.negative_price, selectedLang[AppLangAssets.priceHighToLow]!, Icons.arrow_upward_rounded),
+                      _buildSortOption(SearchCarParamsKeys.price, selectedLang[AppLangAssets.priceLowToHigh]!, Icons.arrow_downward_rounded),
+                      _buildSortOption(SearchCarParamsKeys.submitted_at, selectedLang[AppLangAssets.oldestFirst]!, Icons.new_releases_rounded),
+                      _buildSortOption(SearchCarParamsKeys.negative_submitted_at, selectedLang[AppLangAssets.newestFirst]!, Icons.history_rounded),
                       _buildSortOption(SearchCarParamsKeys.kilometers, selectedLang[AppLangAssets.kiloMeteresLowToHigh]!, Icons.speed_rounded),
                       const SizedBox(height: 8),
                     ],

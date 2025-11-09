@@ -260,7 +260,7 @@ class CarCubit extends Cubit<CarStates> {
       log(data['results'].length.toString());
       if (response.statusCode == 200) {
         _searchCarResultsCounter = data['count'];
-        _nextPage = data['next'] == null ? 1 : int.parse(data['next'][data['next'].length - 1]);
+        _nextPage = data['next'] == null ? 1 : _nextPage++;
         if (data['next'] == null) _isLastPage = true;
         for (var i in data['results']) {
           CarAdModel newObj = CarAdModel.fromJson(i);
@@ -273,6 +273,7 @@ class CarCubit extends Cubit<CarStates> {
         emit(SearchCarAdsErrorState(data['data']));
       }
     } catch (e) {
+      log(e.toString());
       emit(SearchCarAdsSomeThingWentWrongState());
     }
   }
