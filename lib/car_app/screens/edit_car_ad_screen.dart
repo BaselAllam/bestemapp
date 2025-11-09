@@ -72,7 +72,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
   void _initializeControllers() {
     _adTitleController = TextEditingController(text: widget.carAd.adTitle);
     _yearController = TextEditingController(text: widget.carAd.carYear.toString());
-    _mileageController = TextEditingController(text: widget.carAd.distanceRange.toString());
+    _mileageController = TextEditingController(text: widget.carAd.kilometers.toString());
     _maxDistanceController = TextEditingController(text: widget.carAd.distanceRange.toString());
     _descriptionController = TextEditingController(text: widget.carAd.adDescription);
     _priceController = TextEditingController(text: widget.carAd.price);
@@ -1863,26 +1863,26 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
                           flex: 2,
                           child: BlocConsumer<CarCubit, CarStates>(
                             listener: (context, state) {
-                              if (state is CreateCarAdsErrorState) {
+                              if (state is UpdateCarAdsErrorState) {
                                 Toaster.show(
                                   context,
                                   message: state.errorMsg,
                                   position: ToasterPosition.top,
                                   type: ToasterType.error
                                 );
-                              } else if (state is CreateCarAdsSomeThingWentWrongState) {
+                              } else if (state is UpdateCarAdsSomeThingWentWrongState) {
                                 Toaster.show(
                                   context,
                                   message: selectedLang[AppLangAssets.someThingWentWrong]!,
                                   position: ToasterPosition.top,
                                   type: ToasterType.error
                                 );
-                              } else if (state is CreateCarAdsSuccessState) {
+                              } else if (state is UpdateCarAdsSuccessState) {
                                 _showSuccessDialog(context);
                               }
                             },
                             builder: (context, state) => ElevatedButton(
-                              onPressed: state is CreateCarAdsLoadingState ? () {} : () {
+                              onPressed: state is UpdateCarAdsLoadingState ? () {} : () {
                                 if (_currentStep < steps.length - 1) {
                                   setState(() => _currentStep++);
                                 } else {

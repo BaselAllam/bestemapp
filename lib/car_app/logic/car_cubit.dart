@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:bestemapp/car_app/logic/car_model.dart';
@@ -427,6 +428,7 @@ class CarCubit extends Cubit<CarStates> {
       var request = http.MultipartRequest('PATCH', uri)
         ..headers.addAll(headers);
 
+      request.fields['ad_id'] = carAd.id;
       if (carAd.adTitle != adTitle) request.fields['ad_title'] = adTitle;
       if (carAd.adDescription != adDescription) request.fields['ad_description'] = adDescription;
       if (carAd.carModel.id != carModel) request.fields['car_model'] = carModel;
@@ -473,6 +475,7 @@ class CarCubit extends Cubit<CarStates> {
         _userCarAds.insert(0, CarAdModel.fromJson(data['data']));
         emit(UpdateCarAdsSuccessState());
       } else {
+        log(data['data']);
         emit(UpdateCarAdsErrorState(data['data']));
       }
     } catch (e) {
