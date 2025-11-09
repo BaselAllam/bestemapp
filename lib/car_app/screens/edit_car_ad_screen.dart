@@ -78,10 +78,7 @@ class _CarAdEditScreenState extends State<CarAdEditScreen> {
     _priceController = TextEditingController(text: widget.carAd.price);
     _engineSizeController = TextEditingController(text: widget.carAd.engineCapacity.toString());
     _phoneController = TextEditingController(text: widget.carAd.contactPhone.isEmpty ? BlocProvider.of<UserCubit>(context).userModel!.phone : widget.carAd.contactPhone.toString());
-    
-    _descriptionController.addListener(() {
-      setState(() {});
-    });
+    _descriptionController = TextEditingController(text: widget.carAd.adDescription);
   }
 
   void _loadExistingData() {

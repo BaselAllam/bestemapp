@@ -2,10 +2,12 @@ import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
+import 'package:bestemapp/car_app/logic/car_states.dart';
 import 'package:bestemapp/car_app/screens/car_ads_details_screen.dart';
 import 'package:bestemapp/car_app/screens/edit_car_ad_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
+import 'package:bestemapp/shared/shared_widgets/toaster.dart';
 import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
@@ -268,13 +270,52 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     ]
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    '${widget.carAdModel.price.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}EGP',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[700],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${widget.carAdModel.price.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}EGP',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[700],
+                        ),
+                      ),
+                      if (widget.isAdminView)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: widget.carAdModel.adStatus == 'sold' 
+                              ? Colors.red[50] 
+                              : widget.carAdModel.adStatus == 'active'
+                                  ? Colors.green[50]
+                                  : Colors.orange[50],
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: widget.carAdModel.adStatus == 'sold'
+                                ? Colors.red[200]!
+                                : widget.carAdModel.adStatus == 'active'
+                                    ? Colors.green[200]!
+                                    : Colors.orange[200]!,
+                          ),
+                        ),
+                        child: Text(
+                          widget.carAdModel.adStatus.replaceFirst(
+                            widget.carAdModel.adStatus[0],
+                            widget.carAdModel.adStatus[0].toUpperCase()
+                          ),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: widget.carAdModel.adStatus == 'sold'
+                                ? Colors.red[700]
+                                : widget.carAdModel.adStatus == 'active'
+                                    ? Colors.green[700]
+                                    : Colors.orange[700],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -358,6 +399,57 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            if (widget.isAdminView)
+            BlocConsumer<CarCubit, CarStates>(
+              listener: (context, state) {
+                if (state is UpdateCarAdsErrorState || state is UpdateCarAdsSomeThingWentWrongState) {
+                  Toaster.show(context, message: selectedLang[AppLangAssets.someThingWentWrong]!, position: ToasterPosition.top, type: ToasterType.error);
+                } else if (state is UpdateCarAdsSuccessState) {
+                  Toaster.show(context, message: selectedLang[AppLangAssets.success]!, position: ToasterPosition.top, type: ToasterType.success);
+                }
+              },
+              builder: (context, state) => Container(
+                color: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: state is UpdateCarAdsLoadingState || widget.carAdModel.adStatus == 'deleted' ? () {} : () {
+                          BlocProvider.of<CarCubit>(context).updateCarAdStatus(carAd: widget.carAdModel, newStatus: 'deleted');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: state is UpdateCarAdsLoadingState || widget.carAdModel.adStatus == 'deleted' ? Colors.grey : Colors.red,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: state is UpdateCarAdsLoadingState ? Text(selectedLang[AppLangAssets.loading]!) : Text(selectedLang[AppLangAssets.deleteAd]!),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: state is UpdateCarAdsLoadingState || widget.carAdModel.adStatus == 'sold' ? () {} : () {
+                          BlocProvider.of<CarCubit>(context).updateCarAdStatus(carAd: widget.carAdModel, newStatus: 'sold');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: state is UpdateCarAdsLoadingState || widget.carAdModel.adStatus == 'sold' ? Colors.grey : Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: state is UpdateCarAdsLoadingState ? Text(selectedLang[AppLangAssets.loading]!) : Text(selectedLang[AppLangAssets.markAdAsSold]!),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -489,4 +489,7 @@ class AppLangAssets {
   static String sortBy = 'sortBy';
   static String defaultSort = 'defaultSort';
   static String relatedAds = 'relatedAds';
+  static String changeStatus = 'changeStatus';
+  static String deleteAd = 'deleteAd';
+  static String markAdAsSold = 'markAdAsSold';
 }

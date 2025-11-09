@@ -489,5 +489,8 @@ final Map<String, String> arData = {
   AppLangAssets.sortBy: 'رتّب حسب',
   AppLangAssets.defaultSort: 'Bestem ترشيحات',
   AppLangAssets.relatedAds: 'عربيات تانيه ممكن تعجبك',
+  AppLangAssets.changeStatus: 'غير الاعلان',
+  AppLangAssets.deleteAd: 'حذف',
+  AppLangAssets.markAdAsSold: 'تم البيع',
 
 };

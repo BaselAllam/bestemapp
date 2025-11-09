@@ -490,4 +490,7 @@ final Map<String, String> enData = {
   AppLangAssets.sortBy: 'Sort by',
   AppLangAssets.defaultSort: 'Bestem Recommendation',
   AppLangAssets.relatedAds: 'also like',
+  AppLangAssets.changeStatus: 'Change a status...',
+  AppLangAssets.deleteAd: 'Delete',
+  AppLangAssets.markAdAsSold: 'Ad Sold',
 };

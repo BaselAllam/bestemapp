@@ -479,6 +479,34 @@ class CarCubit extends Cubit<CarStates> {
         emit(UpdateCarAdsErrorState(data['data']));
       }
     } catch (e) {
+      log(e.toString());
+      emit(UpdateCarAdsSomeThingWentWrongState());
+    }
+  }
+
+  void updateCarAdStatus({ required CarAdModel carAd, required String newStatus}) async {
+    emit(UpdateCarAdsLoadingState());
+    try {
+      String userToken = await getStringFromLocal(AppApi.userToken);
+      Map<String, String> headers = AppApi.headerData;
+      headers['Authorization'] = 'Bearer $userToken';
+      var uri = Uri.parse('${AppApi.ipAddress}/cars/user_car_ads/');
+      var request = http.MultipartRequest('PATCH', uri)
+        ..headers.addAll(headers);
+
+      request.fields['ad_id'] = carAd.id;
+      request.fields['ad_status'] = newStatus;
+
+      http.StreamedResponse response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+      var data = json.decode(responseBody);
+      if (response.statusCode == 200) {
+        carAd.adStatus = newStatus;
+        emit(UpdateCarAdsSuccessState());
+      } else {
+        emit(UpdateCarAdsErrorState(data['data']));
+      }
+    } catch (e) {
       emit(UpdateCarAdsSomeThingWentWrongState());
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
@@ -37,11 +39,14 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
   VideoPlayerController? _mainVideoController;
   bool _isMainVideoInitialized = false;
   bool _showAppBarTitle = false;
+  String? selectedStatus;
 
   @override
   void initState() {
     super.initState();
     _currentImageIndex = 0;
+    selectedStatus = widget.carAdModel.adStatus;
+    log(selectedStatus.toString());
     if (widget.carAdModel.adVideo != null && widget.carAdModel.adVideo!.isNotEmpty) {
       _initializeMainVideo();
     }
@@ -365,6 +370,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
                         ],
                       ),
                     ),
+                    if (!widget.isAdmin)
                     Row(
                       children: [
                         _buildIconButton(Icons.share_outlined),
@@ -384,7 +390,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
                 ),
               ),
             ),
-        
+
             // Spacing
             SliverToBoxAdapter(
               child: Container(
@@ -573,7 +579,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
             SliverToBoxAdapter(
               child: SizedBox(height: 20),
             ),
-            if (!widget.isAdmin || BlocProvider.of<CarCubit>(context).adDetail['related'].isNotEmpty)
+            if (!widget.isAdmin && BlocProvider.of<CarCubit>(context).adDetail['related'].isNotEmpty)
             SliverToBoxAdapter(
               child: Container(
                 color: Colors.white,
@@ -1226,48 +1232,6 @@ class AdStatisticsCard extends StatelessWidget {
           _buildProgressMetric('Engagement Rate', 0.42, '42%'),
           const SizedBox(height: 16),
           _buildProgressMetric('Response Rate', 0.65, '65%'),
-          
-          const SizedBox(height: 24),
-          
-          // Admin Actions
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Edit Ad'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    elevation: 0,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
-                  label: const Text(
-                    'Delete',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    side: const BorderSide(color: Colors.red, width: 2),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
