@@ -25,7 +25,7 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
 
   LanguageOption _selectedLangOption = LanguageOption.en;
   LanguageOption get selectedLangOption => _selectedLangOption;
-  Locale _selectedLocale = Locale('en');
+  Locale _selectedLocale = Locale('ar');
   Locale get selectedLocale => _selectedLocale;
 
   List _faqs = [];
@@ -71,30 +71,30 @@ class AppSettingsCubit extends Cubit<AppSettingsStates> {
 
   Future<void> changeLanguage(LanguageOption newLang) async {
     _selectedLangOption = newLang;
-    if (newLang == LanguageOption.ar) {
-      _selectedLocale = Locale('ar');
-      selectedLang = arData;
-      saveStringToLocal(AppAssets.appLang, LanguageOption.ar.name);
-    } else if (newLang == LanguageOption.en) {
+    if (newLang == LanguageOption.en) {
       _selectedLocale = Locale('en');
       selectedLang = enData;
-      saveStringToLocal(AppAssets.appLang, 'en');
+      saveStringToLocal(AppAssets.appLang, LanguageOption.en.name);
+    } else if (newLang == LanguageOption.ar) {
+      _selectedLocale = Locale('ar');
+      selectedLang = arData;
+      saveStringToLocal(AppAssets.appLang, 'at');
     }
     emit(ChangeLanguageState());
   }
 
   Future<void> checkLang() async {
     String lang = await getStringFromLocal(AppAssets.appLang);
-    if (lang == LanguageOption.ar.name) {
-      _selectedLangOption = LanguageOption.ar;
-      _selectedLocale = Locale('ar');
-      selectedLang = arData;
-      saveStringToLocal(AppAssets.appLang, 'ar');
-    } else if (lang == LanguageOption.en.name || lang.isEmpty) {
+    if (lang == LanguageOption.en.name) {
       _selectedLangOption = LanguageOption.en;
       _selectedLocale = Locale('en');
       selectedLang = enData;
-      saveStringToLocal(AppAssets.appLang, LanguageOption.en.name);
+      saveStringToLocal(AppAssets.appLang, 'en');
+    } else if (lang == LanguageOption.ar.name || lang.isEmpty) {
+      _selectedLangOption = LanguageOption.ar;
+      _selectedLocale = Locale('ar');
+      selectedLang = arData;
+      saveStringToLocal(AppAssets.appLang, LanguageOption.ar.name);
     }
     emit(ChangeLanguageState());
   }

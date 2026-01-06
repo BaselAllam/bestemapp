@@ -41,22 +41,26 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       ),
       body: BlocBuilder<CarCubit, CarStates>(
         builder: (context, state) {
-          if (state is SearchCarAdsLoadingState) {
-            return Center(child: CustomLoadingSpinner());
-          } else if (state is SearchCarAdsErrorState) {
-            return Center(child: CustomErrorWidget());
-          } else {
+          if (state is SearchCarAdsState) {
+            final ads = state.results;
+            if (state.isInitialLoading && ads.isEmpty) {
+              return const Center(child: CustomLoadingSpinner());
+            }
+            if (state.error != null && ads.isEmpty) {
+              return Center(child: CustomErrorWidget(errorMessage: state.error));
+            }
             return Column(
               children: [
-                _buildControlBar(),
-                if (widget.ads.isEmpty)
+                _buildControlBar(state),
+                if (state.isSearchLoading && ads.isNotEmpty)
+                  const LinearProgressIndicator(),
+                if (ads.isEmpty)
                   _buildEmptyState()
                 else
                   Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () {
-                        BlocProvider.of<CarCubit>(context).resetNextPage();
-                        return BlocProvider.of<CarCubit>(context).searchCarAds();
+                      onRefresh: () async {
+                        await context.read<CarCubit>().searchCarAds(isNewSearch: true);
                       },
                       child: _buildListView(state),
                     ),
@@ -64,12 +68,13 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               ],
             );
           }
+          return const SizedBox.shrink();
         },
-      ),
+      )
     );
   }
 
-  Widget _buildControlBar() {
+  Widget _buildControlBar(SearchCarAdsState state) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -90,7 +95,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 Icon(Icons.search_rounded, size: 18, color: Colors.grey[600]),
                 const SizedBox(width: 8),
                 Text(
-                  '${widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
+                  '${widget.ads.length < 1 ? state.results.length : widget.ads.length} ${selectedLang[AppLangAssets.ads]!} ${selectedLang[AppLangAssets.found]!}',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -159,43 +164,49 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     return _sortBy;
   }
 
-  Widget _buildListView(CarStates state) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scrollInfo) {
-        // if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-        //   BlocProvider.of<CarCubit>(context).searchCarAds();
-        // }
-        return false;
-      },
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        controller: scrollController,
-        itemCount: widget.ads.length + 1,
-        itemBuilder: (context, index) {
-          if (index == widget.ads.length) {
-          if (state is PaginateSearchCarAdsLoadingState) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Center(
-                child: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CustomLoadingSpinner()
-                ),
-              ),
-            );
-          }
-          return const SizedBox.shrink();
+  Widget _buildListView(SearchCarAdsState state) {
+  final ads = state.results;
+  return NotificationListener<ScrollNotification>(
+    onNotification: (scrollInfo) {
+      if (scrollInfo is ScrollUpdateNotification) {
+        final maxScroll = scrollController.position.maxScrollExtent;
+        final currentScroll = scrollController.position.pixels;
+        if (currentScroll >= maxScroll - 200 &&
+            !state.isPaginating &&
+            !state.isLastPage &&
+            !state.isSearchLoading) {
+          context.read<CarCubit>().searchCarAds();
         }
-
-        return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            child: CarAdWidget(carAdModel: widget.ads[index]),
+      }
+      return false;
+    },
+    child: ListView.builder(
+      controller: scrollController,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: ads.length + (state.isPaginating ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index == ads.length && state.isPaginating) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Center(
+              child: SizedBox(
+                height: 24,
+                width: 24,
+                child: CustomLoadingSpinner(),
+              ),
+            ),
           );
-        },
-      ),
-    );
-  }
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          child: CarAdWidget(
+            carAdModel: ads[index],
+          ),
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildEmptyState() {
     return Expanded(

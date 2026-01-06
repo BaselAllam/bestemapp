@@ -1,5 +1,7 @@
 
 
+import 'package:bestemapp/car_app/logic/car_model.dart';
+
 abstract class CarStates {}
 
 class InitCarStates extends CarStates{}
@@ -88,19 +90,45 @@ class GetUserCarWishlistAdsErrorState extends CarStates {
 
 class GetUserCarWishlistAdsSomeThingWentWrongState extends CarStates {}
 
-class SearchCarAdsLoadingState extends CarStates {}
+class SearchCarAdsState extends CarStates {
+  final List<CarAdModel> results;
+  final bool isInitialLoading;
+  final bool isPaginating;
+  final bool isSearchLoading;
+  final bool isLastPage;
+  final int totalCount;
+  final String? error;
 
-class PaginateSearchCarAdsLoadingState extends CarStates {}
+  SearchCarAdsState({
+    this.results = const [],
+    this.isInitialLoading = false,
+    this.isPaginating = false,
+    this.isSearchLoading = false,
+    this.isLastPage = false,
+    this.totalCount = 0,
+    this.error,
+  });
 
-class SearchCarAdsSuccessState extends CarStates {}
-
-class SearchCarAdsErrorState extends CarStates {
-
-  String errorMsg;
-  SearchCarAdsErrorState(this.errorMsg);
+  SearchCarAdsState copyWith({
+    List<CarAdModel>? results,
+    bool? isInitialLoading,
+    bool? isPaginating,
+    bool? isSearchLoading,
+    bool? isLastPage,
+    int? totalCount,
+    String? error,
+  }) {
+    return SearchCarAdsState(
+      results: results ?? this.results,
+      isInitialLoading: isInitialLoading ?? this.isInitialLoading,
+      isPaginating: isPaginating ?? this.isPaginating,
+      isSearchLoading: isSearchLoading ?? this.isSearchLoading,
+      isLastPage: isLastPage ?? this.isLastPage,
+      totalCount: totalCount ?? this.totalCount,
+      error: error,
+    );
+  }
 }
-
-class SearchCarAdsSomeThingWentWrongState extends CarStates {}
 
 class CarAdsDetailLoadingState extends CarStates {}
 

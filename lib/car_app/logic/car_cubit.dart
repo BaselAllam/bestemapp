@@ -244,34 +244,112 @@ class CarCubit extends Cubit<CarStates> {
     return searchParam;
   }
 
-  Future<void> searchCarAds() async {
-    if (_isLastPage) return;
-    if (_nextPage == 1) {
-      _searchCarAdsResult.clear();
-      emit(SearchCarAdsLoadingState());
+  // Future<void> searchCarAds() async {
+  //   if (_isLastPage) return;
+  //   if (_nextPage == 1) {
+  //     _searchCarAdsResult.clear();
+  //     emit(SearchCarAdsLoadingState());
+  //   } else {
+  //     emit(PaginateSearchCarAdsLoadingState());
+  //   }
+  //   try {
+  //     Map<String, String> headers = AppApi.headerData;
+  //     http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}'), headers: headers);
+  //     var data = json.decode(response.body);
+  //     if (response.statusCode == 200) {
+  //       _searchCarResultsCounter = data['count'];
+  //       _nextPage = data['next'] == null ? 1 : _nextPage++;
+  //       if (data['next'] == null) _isLastPage = true;
+  //       for (var i in data['results']) {
+  //         CarAdModel newObj = CarAdModel.fromJson(i);
+  //         bool isFav = handleIsFavModelValue(newObj);
+  //         newObj.isFav = isFav;
+  //         _searchCarAdsResult.add(newObj);
+  //       }
+  //       emit(SearchCarAdsSuccessState());
+  //     } else {
+  //       emit(SearchCarAdsErrorState(data['data']));
+  //     }
+  //   } catch (e) {
+  //     emit(SearchCarAdsSomeThingWentWrongState());
+  //   }
+  // }
+
+  Future<void> searchCarAds({bool isNewSearch = false}) async {
+    final currentState = state;
+    SearchCarAdsState searchState;
+
+    if (currentState is SearchCarAdsState) {
+      searchState = currentState;
     } else {
-      emit(PaginateSearchCarAdsLoadingState());
+      searchState = SearchCarAdsState();
     }
+
+    if (searchState.isPaginating || searchState.isLastPage) return;
+
+    if (isNewSearch) {
+      _nextPage = 1;
+      _isLastPage = false;
+      searchState = searchState.copyWith(
+        isInitialLoading: true,
+        results: [],
+        error: null,
+        isLastPage: false,
+      );
+      emit(searchState);
+    } else {
+      searchState = searchState.copyWith(isPaginating: true, error: null);
+      emit(searchState);
+    }
+
     try {
-      Map<String, String> headers = AppApi.headerData;
-      http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}'), headers: headers);
-      var data = json.decode(response.body);
+      final response = await http.get(
+        Uri.parse(
+          '${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}',
+        ),
+        headers: AppApi.headerData,
+      );
+
+      final data = json.decode(response.body);
+
       if (response.statusCode == 200) {
-        _searchCarResultsCounter = data['count'];
-        _nextPage = data['next'] == null ? 1 : _nextPage++;
-        if (data['next'] == null) _isLastPage = true;
-        for (var i in data['results']) {
-          CarAdModel newObj = CarAdModel.fromJson(i);
-          bool isFav = handleIsFavModelValue(newObj);
-          newObj.isFav = isFav;
-          _searchCarAdsResult.add(newObj);
-        }
-        emit(SearchCarAdsSuccessState());
+        final List<CarAdModel> newResults =
+            (data['results'] as List).map((e) {
+          final car = CarAdModel.fromJson(e);
+          car.isFav = handleIsFavModelValue(car);
+          return car;
+        }).toList();
+
+        searchState = searchState.copyWith(
+          results: [...searchState.results, ...newResults],
+          totalCount: data['count'],
+          isInitialLoading: false,
+          isPaginating: false,
+          isSearchLoading: false,
+          isLastPage: data['next'] == null,
+          error: null,
+        );
+
+        emit(searchState);
+
+        if (data['next'] != null) _nextPage++;
       } else {
-        emit(SearchCarAdsErrorState(data['data']));
+        searchState = searchState.copyWith(
+          isInitialLoading: false,
+          isPaginating: false,
+          isSearchLoading: false,
+          error: data['data'],
+        );
+        emit(searchState);
       }
     } catch (e) {
-      emit(SearchCarAdsSomeThingWentWrongState());
+      searchState = searchState.copyWith(
+        isInitialLoading: false,
+        isPaginating: false,
+        isSearchLoading: false,
+        error: 'Something went wrong',
+      );
+      emit(searchState);
     }
   }
 
