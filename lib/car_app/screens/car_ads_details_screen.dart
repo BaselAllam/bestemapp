@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
@@ -64,7 +63,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
 
   Future<void> _initializeMainVideo() async {
     _mainVideoController = VideoPlayerController.network(
-      '${AppApi.imgIp}${widget.carAdModel.adVideo}',
+      widget.carAdModel.adVideo,
       httpHeaders: {"Connection": "keep-alive"},
     );
     try {

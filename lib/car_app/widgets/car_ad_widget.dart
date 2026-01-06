@@ -8,7 +8,6 @@ import 'package:bestemapp/car_app/screens/edit_car_ad_screen.dart';
 import 'package:bestemapp/shared/shared_theme/app_colors.dart';
 import 'package:bestemapp/shared/shared_widgets/fav_widget.dart';
 import 'package:bestemapp/shared/shared_widgets/toaster.dart';
-import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/shared/utils/app_lang_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -242,7 +241,7 @@ class _CarAdWidgetState extends State<CarAdWidget> {
                           border: Border.all(color: Colors.grey[300]!, width: 1),
                         ),
                         padding: const EdgeInsets.all(4),
-                        child: CustomImageWidget(img: '${AppApi.imgIp}/${widget.carAdModel.carMake['make_logo']}', fit: BoxFit.contain,)
+                        child: CustomImageWidget(img: '${widget.carAdModel.carMake['make_logo']}', fit: BoxFit.contain,)
                       ),
                       Expanded(
                         child: Column(

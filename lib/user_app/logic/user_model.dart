@@ -1,5 +1,4 @@
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
-import 'package:bestemapp/shared/utils/app_api.dart';
 
 class UserModel {
   final String id;
@@ -21,7 +20,7 @@ class UserModel {
       id: userData['id'],
       firstName: userData['first_name'] ?? '',
       lastName: userData['last_name'] ?? '',
-      profilePic: userData['profile_pic'] == null ? '' : '${AppApi.imgIp}${userData['profile_pic']}',
+      profilePic: userData['profile_pic'] == null ? '' : '${userData['profile_pic']}',
       email: userData['email'] ?? '',
       phone: userData['phone'] ?? '',
       isAcceptNotification: userData['is_accept_notification'] ?? '',
@@ -41,6 +40,6 @@ class SellerModel {
   SellerModel({required this.profilePicture, required this.firstName, required this.lastName, required this.phone});
 
   factory SellerModel.fromJson(Map<String, dynamic> data) {
-    return SellerModel(profilePicture: data['profile_pic'] == null ? '' : '${AppApi.imgIp}${data['profile_pic']}', firstName: data['first_name'], lastName: data['last_name'], phone: data['phone']);
+    return SellerModel(profilePicture: data['profile_pic'] == null ? '' : '${data['profile_pic']}', firstName: data['first_name'], lastName: data['last_name'], phone: data['phone']);
   }
 }

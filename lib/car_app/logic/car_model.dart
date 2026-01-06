@@ -1,6 +1,5 @@
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
-import 'package:bestemapp/shared/utils/app_api.dart';
 import 'package:bestemapp/user_app/logic/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,7 @@ class CarAdImg {
   CarAdImg({required this.id, required this.image});
 
   factory CarAdImg.fromJson(Map<String, dynamic> data) {
-    return CarAdImg(id: data['id'], image: '${AppApi.imgIp}${data['image']}');
+    return CarAdImg(id: data['id'], image: '${data['image']}');
   }
 }
 
@@ -123,7 +122,7 @@ class CarShapeModel {
     return CarShapeModel(
       id: json['id'] ?? '',
       shapeName: json['shape_name'] ?? '',
-      shapeIcon: '${AppApi.imgIp}${json['shape_icon']}',
+      shapeIcon: '${json['shape_icon']}',
     );
   }
 }
@@ -147,7 +146,7 @@ class CarMakeModel {
     return CarMakeModel(
       id: json['id'] ?? '',
       makeName: json['make_name'] ?? '',
-      makeLogo: '${AppApi.imgIp}${json['make_logo']}',
+      makeLogo: '${json['make_logo']}',
       models: (json['models'] as List<dynamic>?)
               ?.map((m) => CarMakeModelModel.fromJson(m))
               .toList() ??
