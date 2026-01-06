@@ -17,7 +17,7 @@ class CarAdImg {
   CarAdImg({required this.id, required this.image});
 
   factory CarAdImg.fromJson(Map<String, dynamic> data) {
-    return CarAdImg(id: data['id'], image: '${data['image']}');
+    return CarAdImg(id: data['id'], image: '${data['image_url']}');
   }
 }
 
@@ -77,7 +77,7 @@ class CarAdModel {
       distanceRange: json['distance_range'] ?? 0,
       carShape: json['car_shape'] != null ? CarShapeModel.fromJson(json['car_shape']) : CarShapeModel(id: '', shapeName: '', shapeIcon: ''),
       seller: json['user'] != null ? SellerModel.fromJson(json['user']) : SellerModel(profilePicture: '', firstName: '', lastName: '', phone: ''),
-      adVideo: json['ad_video'] ?? '',
+      adVideo: json['ad_video_url'] ?? '',
       adImgs: (json['imgs'] as List?)?.map((img) => CarAdImg.fromJson(img)).toList() ?? [],
       specs: (json['specs_value'] as List?)?.map((spec) => Map<String, dynamic>.from(spec)).toList() ?? [],
       viewsCount: json['views_count'],
@@ -122,7 +122,7 @@ class CarShapeModel {
     return CarShapeModel(
       id: json['id'] ?? '',
       shapeName: json['shape_name'] ?? '',
-      shapeIcon: '${json['shape_icon']}',
+      shapeIcon: '${json['shape_icon_url']}',
     );
   }
 }
@@ -146,7 +146,7 @@ class CarMakeModel {
     return CarMakeModel(
       id: json['id'] ?? '',
       makeName: json['make_name'] ?? '',
-      makeLogo: '${json['make_logo']}',
+      makeLogo: '${json['make_logo_url']}',
       models: (json['models'] as List<dynamic>?)
               ?.map((m) => CarMakeModelModel.fromJson(m))
               .toList() ??

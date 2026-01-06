@@ -18,7 +18,7 @@ class CountryModel {
       id: json['id'] ?? '',
       countryName: json['country_name'] ?? '',
       countryNameAr: json['country_name_ar'] ?? '',
-      countryFlag: json['country_flag'] ?? '',
+      countryFlag: json['country_flag_url'] ?? '',
       cities: (json['cities'] as List<dynamic>?)
               ?.map((city) => CityModel.fromJson(city))
               .toList() ??

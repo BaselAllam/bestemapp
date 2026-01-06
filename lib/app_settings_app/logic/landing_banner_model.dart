@@ -26,7 +26,7 @@ class LandingBannerModel {
       bannerTitleAr: json['banner_title_ar'] ?? '',
       bannerDescription: json['banner_description'] ?? '',
       bannerDescriptionAr: json['banner_description_ar'] ?? '',
-      bannerImg: '${json['banner_img']}',
+      bannerImg: '${json['banner_img_url']}',
       createdAt: json['created_at'].toString().substring(0, 11),
     );
   }
