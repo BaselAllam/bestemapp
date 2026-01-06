@@ -40,10 +40,13 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         elevation: 0,
       ),
       body: BlocBuilder<CarCubit, CarStates>(
+        buildWhen: (previous, current) {
+          return current is SearchCarAdsState;
+        },
         builder: (context, state) {
           if (state is SearchCarAdsState) {
             final ads = state.results;
-            if (state.isInitialLoading && ads.isEmpty) {
+            if (state.isInitialLoading) {
               return const Center(child: CustomLoadingSpinner());
             }
             if (state.error != null && ads.isEmpty) {

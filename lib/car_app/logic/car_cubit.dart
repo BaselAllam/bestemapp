@@ -244,37 +244,6 @@ class CarCubit extends Cubit<CarStates> {
     return searchParam;
   }
 
-  // Future<void> searchCarAds() async {
-  //   if (_isLastPage) return;
-  //   if (_nextPage == 1) {
-  //     _searchCarAdsResult.clear();
-  //     emit(SearchCarAdsLoadingState());
-  //   } else {
-  //     emit(PaginateSearchCarAdsLoadingState());
-  //   }
-  //   try {
-  //     Map<String, String> headers = AppApi.headerData;
-  //     http.Response response = await http.get(Uri.parse('${AppApi.ipAddress}/cars/search_cars/?page=$_nextPage${_prepareSearchCarParam()}'), headers: headers);
-  //     var data = json.decode(response.body);
-  //     if (response.statusCode == 200) {
-  //       _searchCarResultsCounter = data['count'];
-  //       _nextPage = data['next'] == null ? 1 : _nextPage++;
-  //       if (data['next'] == null) _isLastPage = true;
-  //       for (var i in data['results']) {
-  //         CarAdModel newObj = CarAdModel.fromJson(i);
-  //         bool isFav = handleIsFavModelValue(newObj);
-  //         newObj.isFav = isFav;
-  //         _searchCarAdsResult.add(newObj);
-  //       }
-  //       emit(SearchCarAdsSuccessState());
-  //     } else {
-  //       emit(SearchCarAdsErrorState(data['data']));
-  //     }
-  //   } catch (e) {
-  //     emit(SearchCarAdsSomeThingWentWrongState());
-  //   }
-  // }
-
   Future<void> searchCarAds({bool isNewSearch = false}) async {
     final currentState = state;
     SearchCarAdsState searchState;
@@ -284,6 +253,13 @@ class CarCubit extends Cubit<CarStates> {
     } else {
       searchState = SearchCarAdsState();
     }
+    searchState = searchState.copyWith(
+        isInitialLoading: true,
+        results: [],
+        error: null,
+        isLastPage: false,
+      );
+      emit(searchState);
 
     if (searchState.isPaginating || searchState.isLastPage) return;
 

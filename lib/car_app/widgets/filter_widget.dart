@@ -1,6 +1,7 @@
 import 'package:bestemapp/app_settings_app/logic/app_settings_cubit.dart';
 import 'package:bestemapp/app_settings_app/logic/color_model.dart';
 import 'package:bestemapp/app_settings_app/logic/country_model.dart';
+import 'package:bestemapp/app_settings_app/widgets/custom_image_widget.dart';
 import 'package:bestemapp/car_app/logic/car_cubit.dart';
 import 'package:bestemapp/car_app/logic/car_model.dart';
 import 'package:bestemapp/car_app/logic/car_states.dart';
@@ -307,7 +308,7 @@ class _CarFilterBottomSheetState extends State<CarFilterBottomSheet> {
             items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
               return DropdownMenuItem(value: item, child: Row(
                 children: [
-                  Image.network(item.makeLogo, height: 20, width: 20),
+                  CustomImageWidget(img: item.makeLogo, height: 20, width: 20),
                   SizedBox(width: 10),
                   Text(item.makeName),
                 ],

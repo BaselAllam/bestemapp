@@ -394,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           items: BlocProvider.of<CarCubit>(context).carMakes.map((item) {
                             return DropdownMenuItem(value: item, child: Row(
                               children: [
-                                Image.network(item.makeLogo, height: 20, width: 20),
+                                CustomImageWidget(img: item.makeLogo, height: 20, width: 20),
                                 SizedBox(width: 10),
                                 Text(item.makeName),
                               ],

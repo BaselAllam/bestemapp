@@ -218,7 +218,7 @@ final Map<String, String> arData = {
   AppLangAssets.pricingAndLocation: 'التسعير والمكان',
   AppLangAssets.noDescription: 'انت مضفتش وصف',
   AppLangAssets.fuelType: 'نوع الوقود',
-  AppLangAssets.transmission: 'ناقل الحرمه',
+  AppLangAssets.transmission: 'ناقل الحركه',
   AppLangAssets.engine: 'سعه المحرك',
   AppLangAssets.media: 'ميديا',
   AppLangAssets.color: 'اللون',
